@@ -5,6 +5,10 @@
 package bookstoreproject.UI.Admin;
 
 import bookstoreproject.DAO.User;
+import bookstoreproject.Entities.Connect;
+import java.sql.ResultSet;
+import java.sql.Statement;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -49,8 +53,8 @@ public class Index extends javax.swing.JFrame {
         HeaderPanel = new javax.swing.JPanel();
         lbUser = new javax.swing.JLabel();
         btnHome = new javax.swing.JButton();
-        btnPaymentHistory = new javax.swing.JButton();
-        btnPaymentHistory1 = new javax.swing.JButton();
+        btnQuanLyCoupon = new javax.swing.JButton();
+        btnQuanLyUser = new javax.swing.JButton();
         Tabpanel = new javax.swing.JTabbedPane();
         HomePanel = new javax.swing.JPanel();
         btnSearchH = new javax.swing.JButton();
@@ -109,14 +113,19 @@ public class Index extends javax.swing.JFrame {
             }
         });
 
-        btnPaymentHistory.setText("Quản Lý Coupon");
-        btnPaymentHistory.addActionListener(new java.awt.event.ActionListener() {
+        btnQuanLyCoupon.setText("Quản Lý Coupon");
+        btnQuanLyCoupon.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnPaymentHistoryActionPerformed(evt);
+                btnQuanLyCouponActionPerformed(evt);
             }
         });
 
-        btnPaymentHistory1.setText("Thống Kê");
+        btnQuanLyUser.setText("Quản lý người dùng");
+        btnQuanLyUser.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnQuanLyUserActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout HeaderPanelLayout = new javax.swing.GroupLayout(HeaderPanel);
         HeaderPanel.setLayout(HeaderPanelLayout);
@@ -127,11 +136,11 @@ public class Index extends javax.swing.JFrame {
                 .addComponent(lbUser)
                 .addGap(53, 53, 53)
                 .addComponent(btnHome, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 82, Short.MAX_VALUE)
-                .addComponent(btnPaymentHistory)
-                .addGap(53, 53, 53)
-                .addComponent(btnPaymentHistory1, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(148, 148, 148))
+                .addGap(43, 43, 43)
+                .addComponent(btnQuanLyUser)
+                .addGap(54, 54, 54)
+                .addComponent(btnQuanLyCoupon)
+                .addContainerGap(148, Short.MAX_VALUE))
         );
         HeaderPanelLayout.setVerticalGroup(
             HeaderPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -139,19 +148,13 @@ public class Index extends javax.swing.JFrame {
                 .addGroup(HeaderPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, HeaderPanelLayout.createSequentialGroup()
                         .addContainerGap(12, Short.MAX_VALUE)
-                        .addGroup(HeaderPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(HeaderPanelLayout.createSequentialGroup()
-                                .addGap(17, 17, 17)
-                                .addComponent(btnPaymentHistory1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                            .addComponent(btnHome, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGroup(HeaderPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(btnHome, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnQuanLyCoupon, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnQuanLyUser, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(HeaderPanelLayout.createSequentialGroup()
-                        .addGroup(HeaderPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(HeaderPanelLayout.createSequentialGroup()
-                                .addGap(19, 19, 19)
-                                .addComponent(lbUser))
-                            .addGroup(HeaderPanelLayout.createSequentialGroup()
-                                .addContainerGap()
-                                .addComponent(btnPaymentHistory, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(19, 19, 19)
+                        .addComponent(lbUser)
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
@@ -196,7 +199,7 @@ public class Index extends javax.swing.JFrame {
             jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel9Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane2)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 714, Short.MAX_VALUE)
                 .addContainerGap())
         );
         jPanel9Layout.setVerticalGroup(
@@ -217,9 +220,9 @@ public class Index extends javax.swing.JFrame {
                     .addComponent(jPanel9, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(HomePanelLayout.createSequentialGroup()
                         .addComponent(txtSearchH, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGap(26, 26, 26)
                         .addComponent(btnSearchH)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 248, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(btnAddH)
                         .addGap(18, 18, 18)
                         .addComponent(btnXoaH)
@@ -263,6 +266,11 @@ public class Index extends javax.swing.JFrame {
         );
 
         btnAddC.setText("Thêm");
+        btnAddC.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAddCActionPerformed(evt);
+            }
+        });
 
         btnXoaC.setText("Xóa");
 
@@ -472,10 +480,10 @@ public class Index extends javax.swing.JFrame {
         
     }//GEN-LAST:event_btnHomeActionPerformed
 
-    private void btnPaymentHistoryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPaymentHistoryActionPerformed
+    private void btnQuanLyCouponActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnQuanLyCouponActionPerformed
         // TODO add your handling code here:
         Tabpanel.setSelectedIndex(1);
-    }//GEN-LAST:event_btnPaymentHistoryActionPerformed
+    }//GEN-LAST:event_btnQuanLyCouponActionPerformed
 
     private void lbUserMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lbUserMouseClicked
         // TODO add your handling code here:
@@ -508,7 +516,68 @@ public class Index extends javax.swing.JFrame {
 
     private void btnSavePActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSavePActionPerformed
         // TODO add your handling code here:
-        
+        try{
+             Connect sqlinstance = new Connect();
+            sqlinstance.Connect();
+            Statement statement = sqlinstance.conn.createStatement();
+            
+             /////Validation
+            String validation ="";
+            //
+            if(txtHoTenP.getText().isEmpty() || txtAddressP.getText().isEmpty() ||txtSdt.getText().isEmpty())
+            {
+                if(txtHoTenP.getText().isEmpty())
+                    validation += "Họ tên must be fill ";
+                if(txtAddressP.getText().isEmpty())
+                    validation += "- Address must be fill ";
+                if(txtSdt.getText().isEmpty())
+                    validation += "- Phone Number must be fill ";
+                JOptionPane.showMessageDialog(null, validation, "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+                return;
+            }
+            
+            ////////////////////PhoneNumber validation - only number
+            if(!txtSdt.getText().matches("\\d+"))
+            {
+               JOptionPane.showMessageDialog(null, "Phone number must only contain number", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+               return;
+            }
+            
+            
+            ////Validation
+            
+            String updatequery = "update Users\n" 
+            +"set FullName = '"
+            + txtHoTenP.getText()
+            + "',UserAddress = '"
+            + txtAddressP.getText()
+            +"',PhoneNumber = '"
+            + txtSdt.getText()
+            +"'\n" +
+            "where UserName = '"
+            + UserInstance.getUserName()
+            + "' and UserPass ='"
+            + UserInstance.getUserPass()
+            +"';";
+
+            int issucceed = statement.executeUpdate(updatequery);
+            if(issucceed != 0)
+            {
+               
+                this.UserInstance.setFullName(txtHoTenP.getText());
+                this.UserInstance.setUserAddress(txtAddressP.getText());
+                this.UserInstance.setPhoneNumber(txtSdt.getText());
+                lbUser.setText(this.UserInstance.getFullName());
+                JOptionPane.showMessageDialog(null, "Edited successful","Thông báo",JOptionPane.INFORMATION_MESSAGE);
+                sqlinstance.conn.close();
+            }
+            sqlinstance.conn.close();
+       
+        }catch(Exception e)
+        {
+            e.printStackTrace();
+        }
+       
         
         
         
@@ -520,6 +589,14 @@ public class Index extends javax.swing.JFrame {
         txtSdt.setEnabled(false);
         //End config
     }//GEN-LAST:event_btnSavePActionPerformed
+
+    private void btnQuanLyUserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnQuanLyUserActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnQuanLyUserActionPerformed
+
+    private void btnAddCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddCActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnAddCActionPerformed
 
     /**
      * @param args the command line arguments
@@ -582,8 +659,8 @@ public class Index extends javax.swing.JFrame {
     private javax.swing.JButton btnEditH;
     private javax.swing.JButton btnEditP;
     private javax.swing.JButton btnHome;
-    private javax.swing.JButton btnPaymentHistory;
-    private javax.swing.JButton btnPaymentHistory1;
+    private javax.swing.JButton btnQuanLyCoupon;
+    private javax.swing.JButton btnQuanLyUser;
     private javax.swing.JButton btnSaveP;
     private javax.swing.JButton btnSearchC;
     private javax.swing.JButton btnSearchH;
