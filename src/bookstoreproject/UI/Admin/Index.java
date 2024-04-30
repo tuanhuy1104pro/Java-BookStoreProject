@@ -8,6 +8,8 @@ import bookstoreproject.DAO.User;
 import bookstoreproject.Entities.Connect;
 import java.sql.ResultSet;
 import java.sql.Statement;
+
+
 import javax.swing.JOptionPane;
 
 /**
@@ -17,6 +19,7 @@ import javax.swing.JOptionPane;
 public class Index extends javax.swing.JFrame {
 
     private User UserInstance;
+   
     /**
      * Creates new form Index
      * @param UserInstance 
@@ -39,6 +42,7 @@ public class Index extends javax.swing.JFrame {
             lbUser.setText(this.UserInstance.getFullName());
         }
         //Config hiện tên người dùng
+        
     }
 
     /**
@@ -63,20 +67,8 @@ public class Index extends javax.swing.JFrame {
         btnAddH = new javax.swing.JButton();
         txtSearchH = new javax.swing.JTextField();
         jPanel9 = new javax.swing.JPanel();
-        jScrollPane2 = new javax.swing.JScrollPane();
-        jTable2 = new javax.swing.JTable();
-        CouponPanel = new javax.swing.JPanel();
-        txtCouponName = new javax.swing.JTextField();
-        jLabel3 = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
-        txtCouponPercent = new javax.swing.JTextField();
-        jPanel2 = new javax.swing.JPanel();
-        btnAddC = new javax.swing.JButton();
-        btnXoaC = new javax.swing.JButton();
-        btnEditC = new javax.swing.JButton();
-        txtSearchC = new javax.swing.JTextField();
-        btnSearchC = new javax.swing.JButton();
-        jLabel2 = new javax.swing.JLabel();
+        jScrollPane4 = new javax.swing.JScrollPane();
+        jTable3 = new javax.swing.JTable();
         ProfilePanel = new javax.swing.JPanel();
         txtSdt = new javax.swing.JTextField();
         btnSaveP = new javax.swing.JButton();
@@ -87,6 +79,34 @@ public class Index extends javax.swing.JFrame {
         jLabel7 = new javax.swing.JLabel();
         txtHoTenP = new javax.swing.JTextField();
         txtAddressP = new javax.swing.JTextField();
+        CouponPanel = new javax.swing.JPanel();
+        txtCouponName = new javax.swing.JTextField();
+        jLabel3 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+        txtCouponPercent = new javax.swing.JTextField();
+        jPanel2 = new javax.swing.JPanel();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        jTable2 = new javax.swing.JTable();
+        btnAddC = new javax.swing.JButton();
+        btnXoaC = new javax.swing.JButton();
+        btnEditC = new javax.swing.JButton();
+        txtSearchC = new javax.swing.JTextField();
+        btnSearchC = new javax.swing.JButton();
+        jLabel2 = new javax.swing.JLabel();
+        QLNguoiDung = new javax.swing.JPanel();
+        txtPassword = new javax.swing.JTextField();
+        jPanel3 = new javax.swing.JPanel();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        jTable1 = new javax.swing.JTable();
+        btnAdd = new javax.swing.JButton();
+        btnXoa = new javax.swing.JButton();
+        btnEdit = new javax.swing.JButton();
+        txtSearch = new javax.swing.JTextField();
+        btnSearch = new javax.swing.JButton();
+        jLabel8 = new javax.swing.JLabel();
+        txtUserName = new javax.swing.JTextField();
+        jLabel9 = new javax.swing.JLabel();
+        jLabel10 = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu2 = new javax.swing.JMenu();
         jMenu1 = new javax.swing.JMenu();
@@ -162,7 +182,11 @@ public class Index extends javax.swing.JFrame {
         getContentPane().add(HeaderPanel);
         HeaderPanel.setBounds(0, 0, 720, 96);
 
+        HomePanel.setLayout(null);
+
         btnSearchH.setText("Search");
+        HomePanel.add(btnSearchH);
+        btnSearchH.setBounds(167, 23, 72, 23);
 
         btnEditH.setText("Chỉnh Sửa");
         btnEditH.addActionListener(new java.awt.event.ActionListener() {
@@ -170,8 +194,12 @@ public class Index extends javax.swing.JFrame {
                 btnEditHActionPerformed(evt);
             }
         });
+        HomePanel.add(btnEditH);
+        btnEditH.setBounds(570, 20, 90, 23);
 
         btnXoaH.setText("Xóa");
+        HomePanel.add(btnXoaH);
+        btnXoaH.setBounds(490, 20, 72, 23);
 
         btnAddH.setText("Thêm");
         btnAddH.addActionListener(new java.awt.event.ActionListener() {
@@ -179,8 +207,12 @@ public class Index extends javax.swing.JFrame {
                 btnAddHActionPerformed(evt);
             }
         });
+        HomePanel.add(btnAddH);
+        btnAddH.setBounds(400, 20, 72, 23);
+        HomePanel.add(txtSearchH);
+        txtSearchH.setBounds(6, 23, 135, 22);
 
-        jTable2.setModel(new javax.swing.table.DefaultTableModel(
+        jTable3.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -191,7 +223,7 @@ public class Index extends javax.swing.JFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
-        jScrollPane2.setViewportView(jTable2);
+        jScrollPane4.setViewportView(jTable3);
 
         javax.swing.GroupLayout jPanel9Layout = new javax.swing.GroupLayout(jPanel9);
         jPanel9.setLayout(jPanel9Layout);
@@ -199,166 +231,20 @@ public class Index extends javax.swing.JFrame {
             jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel9Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 714, Short.MAX_VALUE)
-                .addContainerGap())
+                .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 686, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(18, Short.MAX_VALUE))
         );
         jPanel9Layout.setVerticalGroup(
             jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel9Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addGroup(jPanel9Layout.createSequentialGroup()
+                .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 277, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
-        javax.swing.GroupLayout HomePanelLayout = new javax.swing.GroupLayout(HomePanel);
-        HomePanel.setLayout(HomePanelLayout);
-        HomePanelLayout.setHorizontalGroup(
-            HomePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(HomePanelLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(HomePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanel9, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(HomePanelLayout.createSequentialGroup()
-                        .addComponent(txtSearchH, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(26, 26, 26)
-                        .addComponent(btnSearchH)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(btnAddH)
-                        .addGap(18, 18, 18)
-                        .addComponent(btnXoaH)
-                        .addGap(11, 11, 11)
-                        .addComponent(btnEditH)))
-                .addContainerGap())
-        );
-        HomePanelLayout.setVerticalGroup(
-            HomePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, HomePanelLayout.createSequentialGroup()
-                .addGap(23, 23, 23)
-                .addGroup(HomePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnAddH)
-                    .addComponent(btnXoaH)
-                    .addComponent(btnEditH)
-                    .addComponent(btnSearchH)
-                    .addComponent(txtSearchH, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel9, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
+        HomePanel.add(jPanel9);
+        jPanel9.setBounds(6, 52, 710, 283);
 
         Tabpanel.addTab("Home", HomePanel);
-
-        jLabel3.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
-        jLabel3.setForeground(new java.awt.Color(255, 51, 51));
-        jLabel3.setText("Thêm Coupon");
-
-        jLabel4.setText("Phần trăm giảm:");
-
-        jPanel2.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-
-        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
-        jPanel2.setLayout(jPanel2Layout);
-        jPanel2Layout.setHorizontalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 331, Short.MAX_VALUE)
-        );
-        jPanel2Layout.setVerticalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 216, Short.MAX_VALUE)
-        );
-
-        btnAddC.setText("Thêm");
-        btnAddC.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnAddCActionPerformed(evt);
-            }
-        });
-
-        btnXoaC.setText("Xóa");
-
-        btnEditC.setText("Chỉnh Sửa");
-
-        btnSearchC.setText("Search");
-
-        jLabel2.setText("Tên Coupon:");
-
-        javax.swing.GroupLayout CouponPanelLayout = new javax.swing.GroupLayout(CouponPanel);
-        CouponPanel.setLayout(CouponPanelLayout);
-        CouponPanelLayout.setHorizontalGroup(
-            CouponPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, CouponPanelLayout.createSequentialGroup()
-                .addContainerGap(97, Short.MAX_VALUE)
-                .addComponent(txtCouponName, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(69, 69, 69)
-                .addGroup(CouponPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(CouponPanelLayout.createSequentialGroup()
-                        .addComponent(txtSearchC, javax.swing.GroupLayout.PREFERRED_SIZE, 243, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(btnSearchC))
-                    .addGroup(CouponPanelLayout.createSequentialGroup()
-                        .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(CouponPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(btnEditC)
-                            .addComponent(btnXoaC, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addGap(7, 7, 7))
-            .addGroup(CouponPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(CouponPanelLayout.createSequentialGroup()
-                    .addGap(3, 3, 3)
-                    .addGroup(CouponPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, CouponPanelLayout.createSequentialGroup()
-                            .addGap(0, 0, Short.MAX_VALUE)
-                            .addComponent(jLabel3)
-                            .addGap(45, 45, 45))
-                        .addGroup(CouponPanelLayout.createSequentialGroup()
-                            .addGroup(CouponPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(jLabel2)
-                                .addGroup(CouponPanelLayout.createSequentialGroup()
-                                    .addComponent(jLabel4)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                    .addGroup(CouponPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(btnAddC)
-                                        .addComponent(txtCouponPercent, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                            .addGap(12, 74, Short.MAX_VALUE)))
-                    .addGap(431, 431, 431)))
-        );
-        CouponPanelLayout.setVerticalGroup(
-            CouponPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(CouponPanelLayout.createSequentialGroup()
-                .addGap(14, 14, 14)
-                .addGroup(CouponPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtSearchC, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnSearchC))
-                .addGroup(CouponPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(CouponPanelLayout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 56, Short.MAX_VALUE)
-                        .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(34, 34, 34))
-                    .addGroup(CouponPanelLayout.createSequentialGroup()
-                        .addGroup(CouponPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(CouponPanelLayout.createSequentialGroup()
-                                .addGap(41, 41, 41)
-                                .addComponent(btnEditC)
-                                .addGap(26, 26, 26)
-                                .addComponent(btnXoaC))
-                            .addGroup(CouponPanelLayout.createSequentialGroup()
-                                .addGap(100, 100, 100)
-                                .addComponent(txtCouponName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
-            .addGroup(CouponPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, CouponPanelLayout.createSequentialGroup()
-                    .addContainerGap(78, Short.MAX_VALUE)
-                    .addComponent(jLabel3)
-                    .addGap(31, 31, 31)
-                    .addComponent(jLabel2)
-                    .addGap(24, 24, 24)
-                    .addGroup(CouponPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(txtCouponPercent, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jLabel4))
-                    .addGap(18, 18, 18)
-                    .addComponent(btnAddC)
-                    .addGap(101, 101, 101)))
-        );
-
-        Tabpanel.addTab("Coupon", CouponPanel);
 
         txtSdt.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
 
@@ -401,7 +287,7 @@ public class Index extends javax.swing.JFrame {
         ProfilePanelLayout.setHorizontalGroup(
             ProfilePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, ProfilePanelLayout.createSequentialGroup()
-                .addContainerGap(496, Short.MAX_VALUE)
+                .addContainerGap(511, Short.MAX_VALUE)
                 .addComponent(btnSaveP)
                 .addGap(18, 18, 18)
                 .addComponent(btnEditP)
@@ -422,7 +308,7 @@ public class Index extends javax.swing.JFrame {
                             .addGroup(ProfilePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                 .addComponent(jLabel5, javax.swing.GroupLayout.Alignment.LEADING)
                                 .addComponent(jLabel1))
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 24, Short.MAX_VALUE)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 39, Short.MAX_VALUE)
                             .addComponent(txtHoTenP, javax.swing.GroupLayout.PREFERRED_SIZE, 402, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGap(78, 78, 78)))
         );
@@ -455,8 +341,151 @@ public class Index extends javax.swing.JFrame {
 
         Tabpanel.addTab("Profile", ProfilePanel);
 
+        CouponPanel.setLayout(null);
+        CouponPanel.add(txtCouponName);
+        txtCouponName.setBounds(100, 150, 134, 22);
+
+        jLabel3.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
+        jLabel3.setForeground(new java.awt.Color(255, 51, 51));
+        jLabel3.setText("Thêm Coupon");
+        CouponPanel.add(jLabel3);
+        jLabel3.setBounds(90, 90, 153, 32);
+
+        jLabel4.setText("Phần trăm giảm:");
+        CouponPanel.add(jLabel4);
+        jLabel4.setBounds(0, 190, 88, 16);
+        CouponPanel.add(txtCouponPercent);
+        txtCouponPercent.setBounds(100, 190, 134, 22);
+
+        jPanel2.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+
+        jTable2.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jScrollPane2.setViewportView(jTable2);
+
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 348, Short.MAX_VALUE)
+        );
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 258, Short.MAX_VALUE)
+        );
+
+        CouponPanel.add(jPanel2);
+        jPanel2.setBounds(260, 80, 350, 260);
+
+        btnAddC.setText("Thêm");
+        btnAddC.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAddCActionPerformed(evt);
+            }
+        });
+        CouponPanel.add(btnAddC);
+        btnAddC.setBounds(120, 230, 72, 23);
+
+        btnXoaC.setText("Xóa");
+        CouponPanel.add(btnXoaC);
+        btnXoaC.setBounds(620, 100, 83, 23);
+
+        btnEditC.setText("Chỉnh Sửa");
+        CouponPanel.add(btnEditC);
+        btnEditC.setBounds(620, 160, 100, 23);
+        CouponPanel.add(txtSearchC);
+        txtSearchC.setBounds(300, 20, 243, 22);
+
+        btnSearchC.setText("Search");
+        CouponPanel.add(btnSearchC);
+        btnSearchC.setBounds(560, 20, 72, 23);
+
+        jLabel2.setText("Tên Coupon:");
+        CouponPanel.add(jLabel2);
+        jLabel2.setBounds(20, 150, 68, 16);
+
+        Tabpanel.addTab("Coupon", CouponPanel);
+
+        QLNguoiDung.setLayout(null);
+        QLNguoiDung.add(txtPassword);
+        txtPassword.setBounds(65, 188, 134, 22);
+
+        jPanel3.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+
+        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jScrollPane3.setViewportView(jTable1);
+
+        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
+        jPanel3.setLayout(jPanel3Layout);
+        jPanel3Layout.setHorizontalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 331, Short.MAX_VALUE)
+        );
+        jPanel3Layout.setVerticalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 250, Short.MAX_VALUE)
+        );
+
+        QLNguoiDung.add(jPanel3);
+        jPanel3.setBounds(220, 80, 333, 252);
+
+        btnAdd.setText("Thêm");
+        QLNguoiDung.add(btnAdd);
+        btnAdd.setBounds(65, 231, 72, 23);
+
+        btnXoa.setText("Xóa");
+        QLNguoiDung.add(btnXoa);
+        btnXoa.setBounds(570, 150, 83, 23);
+
+        btnEdit.setText("Chỉnh Sửa");
+        QLNguoiDung.add(btnEdit);
+        btnEdit.setBounds(570, 80, 100, 23);
+        QLNguoiDung.add(txtSearch);
+        txtSearch.setBounds(220, 40, 243, 22);
+
+        btnSearch.setText("Search");
+        QLNguoiDung.add(btnSearch);
+        btnSearch.setBounds(480, 40, 72, 23);
+
+        jLabel8.setText("Email:");
+        QLNguoiDung.add(jLabel8);
+        jLabel8.setBounds(6, 151, 31, 16);
+        QLNguoiDung.add(txtUserName);
+        txtUserName.setBounds(65, 148, 134, 22);
+
+        jLabel9.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
+        jLabel9.setForeground(new java.awt.Color(255, 51, 51));
+        jLabel9.setText("Thêm User");
+        QLNguoiDung.add(jLabel9);
+        jLabel9.setBounds(65, 88, 114, 32);
+
+        jLabel10.setText("Password:");
+        QLNguoiDung.add(jLabel10);
+        jLabel10.setBounds(6, 191, 53, 16);
+
+        Tabpanel.addTab("Quản Lý Người dùng", QLNguoiDung);
+
         getContentPane().add(Tabpanel);
-        Tabpanel.setBounds(0, 54, 738, 380);
+        Tabpanel.setBounds(0, 54, 1351, 380);
 
         jMenu2.setText("Edit");
         jMenuBar1.add(jMenu2);
@@ -482,7 +511,7 @@ public class Index extends javax.swing.JFrame {
 
     private void btnQuanLyCouponActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnQuanLyCouponActionPerformed
         // TODO add your handling code here:
-        Tabpanel.setSelectedIndex(1);
+        Tabpanel.setSelectedComponent(CouponPanel);
     }//GEN-LAST:event_btnQuanLyCouponActionPerformed
 
     private void lbUserMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lbUserMouseClicked
@@ -592,10 +621,73 @@ public class Index extends javax.swing.JFrame {
 
     private void btnQuanLyUserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnQuanLyUserActionPerformed
         // TODO add your handling code here:
+        Tabpanel.setSelectedComponent(QLNguoiDung);
+        showProfilePanel();
     }//GEN-LAST:event_btnQuanLyUserActionPerformed
 
     private void btnAddCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddCActionPerformed
         // TODO add your handling code here:
+         /////Validation
+            String validation ="";
+            //
+            if(txtCouponName.getText().isEmpty() || txtCouponPercent.getText().isEmpty())
+            {
+                if(txtCouponName.getText().isEmpty())
+                    validation += "Name Coupon must be fill ";
+                if(txtCouponPercent.getText().isEmpty())
+                    validation += "- Discount value must be fill ";
+                
+                JOptionPane.showMessageDialog(null, validation, "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+                return;
+            }
+            
+            ////////////////////PhoneNumber validation - only number
+            if(!txtCouponPercent.getText().matches("\\d+\\.\\d+"))
+            {
+               JOptionPane.showMessageDialog(null, "Format error", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+               return;
+            }
+            ////Validation
+            
+           try{
+                Connect ConnectInstance  = new Connect();
+            ConnectInstance.Connect();
+            Statement statement = ConnectInstance.conn.createStatement();
+            String CoutQuery = "select Count(CouponId) as CouponId from Coupon;";
+            ResultSet countResult = statement.executeQuery(CoutQuery);
+            countResult.next();
+            int NumberCoupon = Integer.parseInt(countResult.getString("CouponId"));
+            
+            NumberCoupon++;
+            String InsertQuery = "insert into Coupon(CouponId,CouponName,Discount) values('"
+                    +"C"+NumberCoupon
+                    +"','"
+                    +txtCouponName.getText()
+                    +"',"
+                    +txtCouponPercent.getText()
+                    +");";
+                    
+            
+            Statement state = ConnectInstance.conn.createStatement();
+            int row = state.executeUpdate(InsertQuery);
+            if(row != 0)
+            {
+                JOptionPane.showMessageDialog(null, "Add mã coupon thành công", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+                txtCouponName.setText("");
+                txtCouponPercent.setText("");
+                ConnectInstance.conn.close();
+            }
+            else
+            {
+                JOptionPane.showMessageDialog(null, "Xảy ra lỗi khi add mã", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+
+                ConnectInstance.conn.close();
+            }
+           }catch(Exception e)
+           {
+               e.printStackTrace();
+           }
+            
     }//GEN-LAST:event_btnAddCActionPerformed
 
     /**
@@ -647,14 +739,21 @@ public class Index extends javax.swing.JFrame {
         txtAddressP.setText(UserInstance.getUserAddress());
         txtSdt.setText(UserInstance.getPhoneNumber());
     }
+    public final void showCouponTable()
+    {
+        
+    }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel CouponPanel;
     private javax.swing.JPanel HeaderPanel;
     private javax.swing.JPanel HomePanel;
     private javax.swing.JPanel ProfilePanel;
+    private javax.swing.JPanel QLNguoiDung;
     private javax.swing.JTabbedPane Tabpanel;
+    private javax.swing.JButton btnAdd;
     private javax.swing.JButton btnAddC;
     private javax.swing.JButton btnAddH;
+    private javax.swing.JButton btnEdit;
     private javax.swing.JButton btnEditC;
     private javax.swing.JButton btnEditH;
     private javax.swing.JButton btnEditP;
@@ -662,32 +761,45 @@ public class Index extends javax.swing.JFrame {
     private javax.swing.JButton btnQuanLyCoupon;
     private javax.swing.JButton btnQuanLyUser;
     private javax.swing.JButton btnSaveP;
+    private javax.swing.JButton btnSearch;
     private javax.swing.JButton btnSearchC;
     private javax.swing.JButton btnSearchH;
+    private javax.swing.JButton btnXoa;
     private javax.swing.JButton btnXoaC;
     private javax.swing.JButton btnXoaH;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel9;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JScrollPane jScrollPane4;
+    private javax.swing.JTable jTable1;
     private javax.swing.JTable jTable2;
+    private javax.swing.JTable jTable3;
     private javax.swing.JLabel lbUser;
     private javax.swing.JMenuItem miExit;
     private javax.swing.JTextField txtAddressP;
     private javax.swing.JTextField txtCouponName;
     private javax.swing.JTextField txtCouponPercent;
     private javax.swing.JTextField txtHoTenP;
+    private javax.swing.JTextField txtPassword;
     private javax.swing.JTextField txtSdt;
+    private javax.swing.JTextField txtSearch;
     private javax.swing.JTextField txtSearchC;
     private javax.swing.JTextField txtSearchH;
+    private javax.swing.JTextField txtUserName;
     // End of variables declaration//GEN-END:variables
 }

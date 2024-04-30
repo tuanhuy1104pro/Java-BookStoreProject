@@ -64,7 +64,7 @@ public class Login extends javax.swing.JFrame {
         jLabel3.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         jLabel3.setText("Password:");
 
-        txtUserName.setText("teominh@gmail.com");
+        txtUserName.setText("teominh2@gmail.com");
 
         txtPassword.setText("teo123");
 
