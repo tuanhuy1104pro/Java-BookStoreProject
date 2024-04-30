@@ -11,8 +11,8 @@ import java.util.Scanner;
  * @author Acer
  */
 public class Connect {
-    String DatabaseName,User,Password,Server;
-
+    String DatabaseName="DbBookStore",User="sa",Password="tumbao71661",Server="LAPTOP-753E617N\\TUANHUY1104PRO";
+    public Connection conn;
     public Connect() {
     }
 
@@ -50,6 +50,7 @@ public class Connect {
     
     public void Connect()
     {
+        
         Scanner sc = new Scanner(System.in);
         if(DatabaseName == null || User == null || Password == null)
         {
@@ -62,9 +63,35 @@ public class Connect {
             System.out.printf("Password: ");
             this.Password = sc.next();
         }
-        String ConnectionString = "jdbc:sqlserver://"+this.Server+":1433;databaseName="+this.DatabaseName+";user="+this.User+";password=" +this.Password;
+        try
+        {
+            String ConnectionString = "jdbc:sqlserver://"
+                   +this.Server
+                    +":1433;database="
+                    +this.DatabaseName+";user="
+                    +this.User+";password="
+                    +this.Password + ";encrypt=true;"
+                    + "trustServerCertificate=true;"
+                    +"integratedSecurity=false;";
         
-        
-
+            conn = DriverManager.getConnection(ConnectionString);
+            
+            
+        }catch(SQLException  e)
+        {
+            e.printStackTrace();
+            
+        }
     }
+    public void closeConnect()
+    {
+          try
+            {
+                conn.close();
+            }catch(SQLException ex)
+            {
+                ex.printStackTrace();
+            }
+    }
+      
 }

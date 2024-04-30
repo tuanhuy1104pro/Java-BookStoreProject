@@ -3,7 +3,17 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package bookstoreproject.UI;
-
+import bookstoreproject.DAO.User;
+import bookstoreproject.Entities.Connect;
+import bookstoreproject.UI.Admin.Index;
+import bookstoreproject.UI.User.IndexU;
+import com.microsoft.sqlserver.jdbc.SQLServerException;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.sql.Statement;
+import java.sql.SQLException;
+import  java.sql.ResultSet;
+import javax.swing.JOptionPane;
 /**
  *
  * @author Acer
@@ -15,6 +25,8 @@ public class Login extends javax.swing.JFrame {
      */
     public Login() {
         initComponents();
+        setSize(730, 520);
+        setLocationRelativeTo(null);
     }
 
     /**
@@ -52,16 +64,35 @@ public class Login extends javax.swing.JFrame {
         jLabel3.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         jLabel3.setText("Password:");
 
+        txtUserName.setText("teominh@gmail.com");
+
+        txtPassword.setText("teo123");
+
         btnLogin.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         btnLogin.setText("Login");
+        btnLogin.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLoginActionPerformed(evt);
+            }
+        });
 
         txtQuenMk.setFont(new java.awt.Font("Segoe UI", 3, 18)); // NOI18N
         txtQuenMk.setForeground(new java.awt.Color(255, 0, 0));
         txtQuenMk.setText("Quên mật khẩu?");
+        txtQuenMk.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                txtQuenMkMouseClicked(evt);
+            }
+        });
 
         txtNoAccount.setFont(new java.awt.Font("Segoe UI", 3, 18)); // NOI18N
         txtNoAccount.setForeground(new java.awt.Color(0, 102, 255));
         txtNoAccount.setText("Chưa có tài khoản?");
+        txtNoAccount.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                txtNoAccountMouseClicked(evt);
+            }
+        });
 
         jMenu2.setText("Edit");
         jMenuBar1.add(jMenu2);
@@ -129,6 +160,113 @@ public class Login extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void txtQuenMkMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_txtQuenMkMouseClicked
+        // TODO add your handling code here:
+        //////// trỏ tới index của admin -> Khi form mới close thì form cũ sẽ bật lại
+        QuenMatKhau  openNewFormButton = new QuenMatKhau();
+        openNewFormButton.setDefaultCloseOperation(openNewFormButton.DISPOSE_ON_CLOSE);
+        openNewFormButton.addWindowListener(new WindowAdapter() {
+                    @Override
+                    public void windowClosed(WindowEvent e) {
+                        // Khi form mới đóng, hiện lại form cũ
+                         setVisible(true);
+                    }
+                });
+        setVisible(false);
+        openNewFormButton.setVisible(true);
+        /////// trỏ tới index
+           
+    }//GEN-LAST:event_txtQuenMkMouseClicked
+
+    private void txtNoAccountMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_txtNoAccountMouseClicked
+        // TODO add your handling code here:
+        // TODO add your handling code here:
+        //////// trỏ tới index của admin -> Khi form mới close thì form cũ sẽ bật lại
+        Register  openNewFormButton = new Register();
+        openNewFormButton.setDefaultCloseOperation(openNewFormButton.DISPOSE_ON_CLOSE);
+        openNewFormButton.addWindowListener(new WindowAdapter() {
+                    @Override
+                    public void windowClosed(WindowEvent e) {
+                        // Khi form mới đóng, hiện lại form cũ
+                         setVisible(true);
+                    }
+                });
+        setVisible(false);
+        openNewFormButton.setVisible(true);
+        /////// trỏ tới index
+    }//GEN-LAST:event_txtNoAccountMouseClicked
+
+    private void btnLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoginActionPerformed
+        
+        try{
+            Connect sqlinstance = new Connect();
+            sqlinstance.Connect();
+            Statement statement = sqlinstance.conn.createStatement();
+            String select = "Select * from Users where UserName ='"
+                    +txtUserName.getText()
+                    +"' " 
+                    +" and"
+                    + " UserPass = '"
+                    +txtPassword.getText()
+                    +"'" ;
+                    
+            ResultSet resultSet  = statement.executeQuery(select);
+            if(resultSet.next()){
+                String role = resultSet.getString("UserRole");
+                if(role.equals("Admin"))
+                {
+                     User Userinstance = new User();
+                        Userinstance.setUserName(resultSet.getString("UserName"));
+                        Userinstance.setUserPass(resultSet.getString("UserPass"));
+        
+                    Index  openNewFormButton = new Index(Userinstance);
+                    openNewFormButton.setDefaultCloseOperation(openNewFormButton.DISPOSE_ON_CLOSE);
+                    openNewFormButton.addWindowListener(new WindowAdapter() {
+                    @Override
+                    public void windowClosed(WindowEvent e) {
+                        // Khi form mới đóng, hiện lại form cũ
+                         setVisible(true);
+                    }
+                });
+                 setVisible(false);
+                 openNewFormButton.setVisible(true);
+                 /////// trỏ tới index
+                }
+                if(role.equals("User"))
+                {
+                    User Userinstance = new User();
+                        Userinstance.setUserName(resultSet.getString("UserName"));
+                        Userinstance.setUserPass(resultSet.getString("UserPass"));
+        
+                    IndexU  openNewFormButton = new IndexU(Userinstance);
+                    openNewFormButton.setDefaultCloseOperation(openNewFormButton.DISPOSE_ON_CLOSE);
+                    openNewFormButton.addWindowListener(new WindowAdapter() {
+                    @Override
+                    public void windowClosed(WindowEvent e) {
+                        // Khi form mới đóng, hiện lại form cũ
+                         setVisible(true);
+                    }
+                    });
+                    setVisible(false);
+                    openNewFormButton.setVisible(true);
+                 /////// trỏ tới index
+                }
+                 //////// trỏ tới index của admin -> Khi form mới close thì form cũ sẽ bật lại
+                 
+                 //CLsoe instance sql
+                 sqlinstance.conn.close();
+            }
+            else{
+                JOptionPane.showMessageDialog(null, "Email hoặc mật khẩu không đúng!", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+                }
+        
+        }catch( Exception ex)
+        {
+            ex.printStackTrace();
+        }
+        
+    }//GEN-LAST:event_btnLoginActionPerformed
 
     /**
      * @param args the command line arguments

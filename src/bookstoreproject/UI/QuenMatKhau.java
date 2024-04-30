@@ -15,6 +15,8 @@ public class QuenMatKhau extends javax.swing.JFrame {
      */
     public QuenMatKhau() {
         initComponents();
+        setSize(730, 520);
+        setLocationRelativeTo(null);
     }
 
     /**
@@ -30,7 +32,6 @@ public class QuenMatKhau extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         txtUserName = new javax.swing.JTextField();
         btnConfirm = new javax.swing.JButton();
-        btnBack = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu2 = new javax.swing.JMenu();
         jMenu1 = new javax.swing.JMenu();
@@ -47,9 +48,6 @@ public class QuenMatKhau extends javax.swing.JFrame {
 
         btnConfirm.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         btnConfirm.setText("Xác nhận");
-
-        btnBack.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        btnBack.setText("Quay Lại");
 
         jMenu2.setText("Edit");
         jMenuBar1.add(jMenu2);
@@ -82,9 +80,6 @@ public class QuenMatKhau extends javax.swing.JFrame {
                         .addGap(299, 299, 299)
                         .addComponent(btnConfirm)))
                 .addContainerGap(143, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(btnBack))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -97,8 +92,7 @@ public class QuenMatKhau extends javax.swing.JFrame {
                     .addComponent(txtUserName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(40, 40, 40)
                 .addComponent(btnConfirm)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 80, Short.MAX_VALUE)
-                .addComponent(btnBack))
+                .addContainerGap(112, Short.MAX_VALUE))
         );
 
         pack();
@@ -140,7 +134,6 @@ public class QuenMatKhau extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnBack;
     private javax.swing.JButton btnConfirm;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
