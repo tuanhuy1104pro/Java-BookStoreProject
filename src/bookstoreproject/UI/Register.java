@@ -4,6 +4,15 @@
  */
 package bookstoreproject.UI;
 
+import bookstoreproject.DAO.User;
+import bookstoreproject.Entities.Connect;
+import bookstoreproject.UI.Admin.Index;
+import bookstoreproject.UI.User.IndexU;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.sql.*;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author Acer
@@ -55,6 +64,11 @@ public class Register extends javax.swing.JFrame {
 
         btnRegis.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         btnRegis.setText("Đăng Ký");
+        btnRegis.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRegisActionPerformed(evt);
+            }
+        });
 
         jLabel4.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         jLabel4.setText("Confirm Password:");
@@ -122,6 +136,144 @@ public class Register extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btnRegisActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegisActionPerformed
+        // TODO add your handling code here:
+        try{
+            Connect ConnectInstance  = new Connect();
+            ConnectInstance.Connect();
+            Statement statement = ConnectInstance.conn.createStatement();
+            String CoutQuery = "select Count(UserId) as CountById from Users;";
+            ResultSet countResult = statement.executeQuery(CoutQuery);
+            countResult.next();
+            int NumberMember = Integer.parseInt(countResult.getString("CountById"));
+            //Validation
+            String validation ="";
+            //
+            if(txtUserName.getText().isEmpty() || txtPassword.getText().isEmpty() ||txtConfirmPassword.getText().isEmpty())
+            {
+                if(txtUserName.getText().isEmpty())
+                    validation += "Username must be fill ";
+                if(txtPassword.getText().isEmpty())
+                    validation += "- Password must be fill ";
+                if(txtConfirmPassword.getText().isEmpty())
+                    validation += "- Confirm password must be fill ";
+                JOptionPane.showMessageDialog(null, validation, "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+                return;
+            }
+            if(!txtPassword.getText().equals(txtConfirmPassword.getText()))
+            {
+                JOptionPane.showMessageDialog(null,"Confirm password phải đúng với pasword đã nhập","Thông báo",JOptionPane.INFORMATION_MESSAGE);
+                return;
+            }
+            String FindUser = "Select * from Users where UserName ='"
+                    +txtUserName.getText()
+                    +"' " 
+                    +" and"
+                    + " UserPass = '"
+                    +txtPassword.getText()
+                    +"'" ;
+             ResultSet FindResult  = statement.executeQuery(FindUser);
+            if(FindResult.next()){
+                 JOptionPane.showMessageDialog(null, "Tài Khoản đã tồn tại", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+                 return;
+            }
+            //Validation
+            
+            NumberMember++;
+            String InsertQuery = "insert into Users(UserId,UserName,UserPass,UserRole) values('"
+                    +"U"+NumberMember
+                    +"','"
+                    +txtUserName.getText()
+                    +"','"
+                    +txtPassword.getText()
+                    +"','User');";
+                    
+            //Auto Login after Register
+            Statement state = ConnectInstance.conn.createStatement();
+            int row = state.executeUpdate(InsertQuery);
+            if(row == 0)
+            {
+                ConnectInstance.conn.close();
+             JOptionPane.showMessageDialog(null,"error","Thông báo",JOptionPane.INFORMATION_MESSAGE);
+            }
+            else
+            {
+             JOptionPane.showMessageDialog(null,"Tạo tài khoản thành công","Thông báo",JOptionPane.INFORMATION_MESSAGE);
+            
+             String select = "Select * from Users where UserName ='"
+                    +txtUserName.getText()
+                    +"' " 
+                    +" and"
+                    + " UserPass = '"
+                    +txtPassword.getText()
+                    +"'" ;
+                    
+            ResultSet resultSet  = statement.executeQuery(select);
+            if(resultSet.next()){
+                String role = resultSet.getString("UserRole");
+                if(role.equals("Admin"))
+                {
+                     User Userinstance = new User();
+                        Userinstance.setUserName(resultSet.getString("UserName"));
+                        Userinstance.setUserPass(resultSet.getString("UserPass"));
+                        Userinstance.setFullName(resultSet.getString("FullName"));
+                        Userinstance.setUserAddress(resultSet.getString("UserAddress"));
+                        Userinstance.setPhoneNumber(resultSet.getString("PhoneNumber"));
+                        Userinstance.setUserRole(resultSet.getString("UserRole"));
+        
+                    Index  openNewFormButton = new Index(Userinstance);
+                    openNewFormButton.setDefaultCloseOperation(openNewFormButton.DISPOSE_ON_CLOSE);
+                    openNewFormButton.addWindowListener(new WindowAdapter() {
+                    @Override
+                    public void windowClosed(WindowEvent e) {
+                        // Khi form mới đóng, hiện lại form cũ
+                         setVisible(true);
+                    }
+                });
+                 setVisible(false);
+                 openNewFormButton.setVisible(true);
+                 /////// trỏ tới index
+                }
+                //Thật ra thì thằng admin nó chẳng bao giờ tới đâu, chỉ là để phòng hờ lỗi thôi -> xóa cũng được do lúc đăng ký thì thằng nào chả là User :))
+                if(role.equals("User"))
+                {
+                    User Userinstance = new User();
+                        Userinstance.setUserName(resultSet.getString("UserName"));
+                        Userinstance.setUserPass(resultSet.getString("UserPass"));
+                        Userinstance.setFullName(resultSet.getString("FullName"));
+                        Userinstance.setUserAddress(resultSet.getString("UserAddress"));
+                        Userinstance.setPhoneNumber(resultSet.getString("PhoneNumber"));
+                        Userinstance.setUserRole(resultSet.getString("UserRole"));
+        
+                    IndexU  openNewFormButton = new IndexU(Userinstance);
+                    openNewFormButton.setDefaultCloseOperation(openNewFormButton.DISPOSE_ON_CLOSE);
+                    openNewFormButton.addWindowListener(new WindowAdapter() {
+                    @Override
+                    public void windowClosed(WindowEvent e) {
+                        // Khi form mới đóng, hiện lại form cũ
+                         setVisible(true);
+                    }
+                    });
+                    setVisible(false);
+                    openNewFormButton.setVisible(true);
+                 /////// trỏ tới index
+                }
+                 //////// trỏ tới index của admin -> Khi form mới close thì form cũ sẽ bật lại
+                 
+                 //CLsoe instance sql
+                
+            }
+           //Auto Login after Register
+             ConnectInstance.conn.close();
+             
+            }
+            
+        }catch(Exception e)
+        {
+            e.printStackTrace();
+        }
+    }//GEN-LAST:event_btnRegisActionPerformed
 
     /**
      * @param args the command line arguments

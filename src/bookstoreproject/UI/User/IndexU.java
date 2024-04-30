@@ -19,7 +19,16 @@ public class IndexU extends javax.swing.JFrame {
         this.UserInstance = UserInstance;
         setSize(730, 520);
         setLocationRelativeTo(null);
-        lbUser.setText(this.UserInstance.getUserName());
+        //config hiện tên người dùng
+        if(this.UserInstance.getFullName().equals(""))
+        {
+            lbUser.setText(this.UserInstance.getUserName());
+        }
+        else
+        {
+            lbUser.setText(this.UserInstance.getFullName());
+        }
+        //config hiện tên người dùng
     }
 
     /**

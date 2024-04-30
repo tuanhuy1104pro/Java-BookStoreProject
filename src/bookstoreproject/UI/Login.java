@@ -219,6 +219,10 @@ public class Login extends javax.swing.JFrame {
                      User Userinstance = new User();
                         Userinstance.setUserName(resultSet.getString("UserName"));
                         Userinstance.setUserPass(resultSet.getString("UserPass"));
+                        Userinstance.setFullName(resultSet.getString("FullName"));
+                        Userinstance.setUserAddress(resultSet.getString("UserAddress"));
+                        Userinstance.setPhoneNumber(resultSet.getString("PhoneNumber"));
+                        Userinstance.setUserRole(resultSet.getString("UserRole"));
         
                     Index  openNewFormButton = new Index(Userinstance);
                     openNewFormButton.setDefaultCloseOperation(openNewFormButton.DISPOSE_ON_CLOSE);
@@ -238,6 +242,10 @@ public class Login extends javax.swing.JFrame {
                     User Userinstance = new User();
                         Userinstance.setUserName(resultSet.getString("UserName"));
                         Userinstance.setUserPass(resultSet.getString("UserPass"));
+                        Userinstance.setFullName(resultSet.getString("FullName"));
+                        Userinstance.setUserAddress(resultSet.getString("UserAddress"));
+                        Userinstance.setPhoneNumber(resultSet.getString("PhoneNumber"));
+                        Userinstance.setUserRole(resultSet.getString("UserRole"));
         
                     IndexU  openNewFormButton = new IndexU(Userinstance);
                     openNewFormButton.setDefaultCloseOperation(openNewFormButton.DISPOSE_ON_CLOSE);

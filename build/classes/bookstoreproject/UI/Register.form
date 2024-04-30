@@ -145,6 +145,9 @@
         </Property>
         <Property name="text" type="java.lang.String" value="&#x110;&#x103;ng K&#xfd;"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnRegisActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel4">
       <Properties>

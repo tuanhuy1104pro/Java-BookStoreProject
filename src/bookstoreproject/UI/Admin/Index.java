@@ -19,10 +19,22 @@ public class Index extends javax.swing.JFrame {
      */
     public Index(User UserInstance) {
         initComponents();
+        /////Start-Up Config
         setSize(730, 520);
         setLocationRelativeTo(null);
         this.UserInstance = UserInstance;
-        lbUser.setText(this.UserInstance.getUserName());
+   
+         /////Start-Up Config
+        //Config hiện tên người dùng
+        if(this.UserInstance.getFullName().equals(""))
+        {
+            lbUser.setText(this.UserInstance.getUserName());
+        }
+        else
+        {
+            lbUser.setText(this.UserInstance.getFullName());
+        }
+        //Config hiện tên người dùng
     }
 
     /**
@@ -344,9 +356,19 @@ public class Index extends javax.swing.JFrame {
 
         btnSaveP.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         btnSaveP.setText("Save");
+        btnSaveP.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSavePActionPerformed(evt);
+            }
+        });
 
         btnEditP.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         btnEditP.setText("Edit");
+        btnEditP.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEditPActionPerformed(evt);
+            }
+        });
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(0, 153, 255));
@@ -458,6 +480,8 @@ public class Index extends javax.swing.JFrame {
     private void lbUserMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lbUserMouseClicked
         // TODO add your handling code here:
         Tabpanel.setSelectedComponent(ProfilePanel);
+        showProfilePanel();
+        
     }//GEN-LAST:event_lbUserMouseClicked
 
     private void btnAddHActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddHActionPerformed
@@ -471,6 +495,31 @@ public class Index extends javax.swing.JFrame {
         // TODO add your handling code here:
         
     }//GEN-LAST:event_btnEditHActionPerformed
+
+    private void btnEditPActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditPActionPerformed
+     
+        //Start up config
+        btnSaveP.setVisible(true);
+        txtHoTenP.setEnabled(true);
+        txtAddressP.setEnabled(true);
+        txtSdt.setEnabled(true);
+        //Start up config
+    }//GEN-LAST:event_btnEditPActionPerformed
+
+    private void btnSavePActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSavePActionPerformed
+        // TODO add your handling code here:
+        
+        
+        
+        
+        
+         //End config
+        btnSaveP.setVisible(false);
+        txtHoTenP.setEnabled(false);
+        txtAddressP.setEnabled(false);
+        txtSdt.setEnabled(false);
+        //End config
+    }//GEN-LAST:event_btnSavePActionPerformed
 
     /**
      * @param args the command line arguments
@@ -507,7 +556,20 @@ public class Index extends javax.swing.JFrame {
             }
         });
     }
-
+   
+    public void showProfilePanel()
+    {
+        //Start up config
+        btnSaveP.setVisible(false);
+        txtHoTenP.setEnabled(false);
+        txtAddressP.setEnabled(false);
+        txtSdt.setEnabled(false);
+        //Start up config
+        
+        txtHoTenP.setText(UserInstance.getFullName());
+        txtAddressP.setText(UserInstance.getUserAddress());
+        txtSdt.setText(UserInstance.getPhoneNumber());
+    }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel CouponPanel;
     private javax.swing.JPanel HeaderPanel;
