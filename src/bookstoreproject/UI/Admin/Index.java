@@ -11,6 +11,7 @@ import java.sql.Statement;
 
 
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -19,6 +20,7 @@ import javax.swing.JOptionPane;
 public class Index extends javax.swing.JFrame {
 
     private User UserInstance;
+    private String CurrentRowCouponId;
    
     /**
      * Creates new form Index
@@ -86,13 +88,14 @@ public class Index extends javax.swing.JFrame {
         txtCouponPercent = new javax.swing.JTextField();
         jPanel2 = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
-        jTable2 = new javax.swing.JTable();
+        tblCoupon = new javax.swing.JTable();
         btnAddC = new javax.swing.JButton();
         btnXoaC = new javax.swing.JButton();
         btnEditC = new javax.swing.JButton();
         txtSearchC = new javax.swing.JTextField();
         btnSearchC = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
+        btnReloadC = new javax.swing.JButton();
         QLNguoiDung = new javax.swing.JPanel();
         txtPassword = new javax.swing.JTextField();
         jPanel3 = new javax.swing.JPanel();
@@ -107,6 +110,8 @@ public class Index extends javax.swing.JFrame {
         txtUserName = new javax.swing.JTextField();
         jLabel9 = new javax.swing.JLabel();
         jLabel10 = new javax.swing.JLabel();
+        jLabel11 = new javax.swing.JLabel();
+        cboRoleQ = new javax.swing.JComboBox<>();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu2 = new javax.swing.JMenu();
         jMenu1 = new javax.swing.JMenu();
@@ -359,18 +364,20 @@ public class Index extends javax.swing.JFrame {
 
         jPanel2.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
-        jTable2.setModel(new javax.swing.table.DefaultTableModel(
+        tblCoupon.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+                "CouponId", "CouponName", "Discount"
             }
         ));
-        jScrollPane2.setViewportView(jTable2);
+        tblCoupon.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblCouponMouseClicked(evt);
+            }
+        });
+        jScrollPane2.setViewportView(tblCoupon);
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -396,22 +403,46 @@ public class Index extends javax.swing.JFrame {
         btnAddC.setBounds(120, 230, 72, 23);
 
         btnXoaC.setText("Xóa");
+        btnXoaC.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnXoaCActionPerformed(evt);
+            }
+        });
         CouponPanel.add(btnXoaC);
-        btnXoaC.setBounds(620, 100, 83, 23);
+        btnXoaC.setBounds(630, 140, 83, 23);
 
         btnEditC.setText("Chỉnh Sửa");
+        btnEditC.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEditCActionPerformed(evt);
+            }
+        });
         CouponPanel.add(btnEditC);
-        btnEditC.setBounds(620, 160, 100, 23);
+        btnEditC.setBounds(620, 200, 100, 23);
         CouponPanel.add(txtSearchC);
         txtSearchC.setBounds(300, 20, 243, 22);
 
         btnSearchC.setText("Search");
+        btnSearchC.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSearchCActionPerformed(evt);
+            }
+        });
         CouponPanel.add(btnSearchC);
         btnSearchC.setBounds(560, 20, 72, 23);
 
         jLabel2.setText("Tên Coupon:");
         CouponPanel.add(jLabel2);
         jLabel2.setBounds(20, 150, 68, 16);
+
+        btnReloadC.setText("Reload");
+        btnReloadC.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnReloadCActionPerformed(evt);
+            }
+        });
+        CouponPanel.add(btnReloadC);
+        btnReloadC.setBounds(630, 80, 72, 23);
 
         Tabpanel.addTab("Coupon", CouponPanel);
 
@@ -423,13 +454,10 @@ public class Index extends javax.swing.JFrame {
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+                "UserId", "UserName", "FullName", "PhoneNumber", "UserRole"
             }
         ));
         jScrollPane3.setViewportView(jTable1);
@@ -450,7 +478,7 @@ public class Index extends javax.swing.JFrame {
 
         btnAdd.setText("Thêm");
         QLNguoiDung.add(btnAdd);
-        btnAdd.setBounds(65, 231, 72, 23);
+        btnAdd.setBounds(90, 260, 72, 23);
 
         btnXoa.setText("Xóa");
         QLNguoiDung.add(btnXoa);
@@ -482,10 +510,19 @@ public class Index extends javax.swing.JFrame {
         QLNguoiDung.add(jLabel10);
         jLabel10.setBounds(6, 191, 53, 16);
 
+        jLabel11.setText("Role:");
+        QLNguoiDung.add(jLabel11);
+        jLabel11.setBounds(10, 230, 26, 16);
+
+        cboRoleQ.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "User", "Admin" }));
+        cboRoleQ.setEnabled(false);
+        QLNguoiDung.add(cboRoleQ);
+        cboRoleQ.setBounds(60, 230, 72, 22);
+
         Tabpanel.addTab("Quản Lý Người dùng", QLNguoiDung);
 
         getContentPane().add(Tabpanel);
-        Tabpanel.setBounds(0, 54, 1351, 380);
+        Tabpanel.setBounds(0, 54, 753, 380);
 
         jMenu2.setText("Edit");
         jMenuBar1.add(jMenu2);
@@ -512,6 +549,7 @@ public class Index extends javax.swing.JFrame {
     private void btnQuanLyCouponActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnQuanLyCouponActionPerformed
         // TODO add your handling code here:
         Tabpanel.setSelectedComponent(CouponPanel);
+        showCouponTable();
     }//GEN-LAST:event_btnQuanLyCouponActionPerformed
 
     private void lbUserMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lbUserMouseClicked
@@ -641,26 +679,50 @@ public class Index extends javax.swing.JFrame {
                 return;
             }
             
-            ////////////////////PhoneNumber validation - only number
+            ////////////////////Discount validation - float
             if(!txtCouponPercent.getText().matches("\\d+\\.\\d+"))
             {
                JOptionPane.showMessageDialog(null, "Format error", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
                return;
             }
+            
             ////Validation
             
            try{
                 Connect ConnectInstance  = new Connect();
             ConnectInstance.Connect();
             Statement statement = ConnectInstance.conn.createStatement();
-            String CoutQuery = "select Count(CouponId) as CouponId from Coupon;";
-            ResultSet countResult = statement.executeQuery(CoutQuery);
-            countResult.next();
-            int NumberCoupon = Integer.parseInt(countResult.getString("CouponId"));
             
-            NumberCoupon++;
+             //////////////////////Exist validation
+            String FindUser = "Select * from Coupon where CouponName ='"
+                    +txtCouponName.getText()
+                    +"'; " ;
+                    
+             ResultSet FindResult  = statement.executeQuery(FindUser);
+            if(FindResult.next()){
+                 JOptionPane.showMessageDialog(null, "Coupon đã tồn tại", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+                 return;
+            }
+            //////////////////////Exist validation
+            
+            /////////////////// add Coupon stage
+            // Get all existing IDs
+            String IdQuery = "select CouponId from Coupon order by CouponId;";
+            ResultSet idResult = statement.executeQuery(IdQuery);
+
+            // Find the first missing ID
+            int expectedId = 1;
+            while(idResult.next()){
+                    String currentId = idResult.getString("CouponId").substring(1); // Remove 'C' prefix
+                    int currentIdNumber = Integer.parseInt(currentId);
+                    if(currentIdNumber != expectedId){
+                        break;
+                     }
+                    expectedId++;
+            }
+            ///Begin add coupon
             String InsertQuery = "insert into Coupon(CouponId,CouponName,Discount) values('"
-                    +"C"+NumberCoupon
+                    +"C"+expectedId
                     +"','"
                     +txtCouponName.getText()
                     +"',"
@@ -675,6 +737,11 @@ public class Index extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(null, "Add mã coupon thành công", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
                 txtCouponName.setText("");
                 txtCouponPercent.setText("");
+                /////
+                DefaultTableModel model = (DefaultTableModel) tblCoupon.getModel(); //clear old table
+                model.setRowCount(0);
+                showCouponTable();
+                /////
                 ConnectInstance.conn.close();
             }
             else
@@ -689,6 +756,154 @@ public class Index extends javax.swing.JFrame {
            }
             
     }//GEN-LAST:event_btnAddCActionPerformed
+
+    private void tblCouponMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblCouponMouseClicked
+        // TODO add your handling code here:
+             DefaultTableModel model = (DefaultTableModel)tblCoupon.getModel();
+             int rowselected = tblCoupon.getSelectedRow();
+              CurrentRowCouponId = tblCoupon.getValueAt(rowselected, 0).toString();
+             txtCouponName.setText(tblCoupon.getValueAt(rowselected, 1).toString());
+             txtCouponPercent.setText(tblCoupon.getValueAt(rowselected, 2).toString());
+    }//GEN-LAST:event_tblCouponMouseClicked
+
+    private void btnEditCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditCActionPerformed
+        // TODO add your handling code here:
+        try
+        {
+            Connect sqlinstance = new Connect();
+            sqlinstance.Connect();
+            Statement statement = sqlinstance.conn.createStatement();
+            
+             /////Validation
+            //
+            if(txtCouponName.getText().isEmpty() || txtCouponPercent.getText().isEmpty())
+            {
+                
+                JOptionPane.showMessageDialog(null, "Can nhap day du thong tin de edit", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+                return;
+            }
+            ///validation float
+             if(!txtCouponPercent.getText().matches("\\d+\\.\\d+"))
+            {
+               JOptionPane.showMessageDialog(null, "Format error", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+               return;
+            }
+            ////Validation
+                //////////////////////Exist validation
+            String FindUser = "Select * from Coupon where CouponName ='"
+                    +txtCouponName.getText()
+                    +"'; " ;
+                    
+             ResultSet FindResult  = statement.executeQuery(FindUser);
+             
+            if(FindResult.next()){
+               
+                if(FindResult.getString("CouponName").equals(txtCouponName.getText())&& !FindResult.getString("CouponId").equals(CurrentRowCouponId))
+                {
+                     JOptionPane.showMessageDialog(null, "Coupon đã tồn tại", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+                    return;
+                }   
+            }
+            //////////////////////Exist validation
+            ///////////////////////update stage
+            
+            String updatequery = "update Coupon\n" 
+            +"set CouponName = '"
+            + txtCouponName.getText()
+            + "',Discount = "
+            + txtCouponPercent.getText()     
+            +"\n" 
+            +"where CouponId = '"
+            + CurrentRowCouponId
+            +"';";
+
+            int issucceed = statement.executeUpdate(updatequery);
+            if(issucceed != 0)
+            {
+                
+                
+                showCouponTable();
+               
+                JOptionPane.showMessageDialog(null, "Edited successful","Thông báo",JOptionPane.INFORMATION_MESSAGE);
+                sqlinstance.conn.close();
+            }
+            sqlinstance.conn.close();
+        }catch(Exception e)
+        {
+            
+        }
+    }//GEN-LAST:event_btnEditCActionPerformed
+
+    private void btnXoaCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnXoaCActionPerformed
+        // TODO add your handling code here:
+        try
+        {
+            Connect sqlinstance = new Connect();
+            sqlinstance.Connect();
+            Statement statement = sqlinstance.conn.createStatement();
+            
+             
+            ///////////////////////Delete stage
+            
+            String updatequery = "Delete from Coupon\n" 
+            +"\n" 
+            +"where CouponId = '"
+            + CurrentRowCouponId
+            +"';";
+
+            int issucceed = statement.executeUpdate(updatequery);
+            if(issucceed != 0)
+            {
+                
+                
+                showCouponTable();
+               
+                JOptionPane.showMessageDialog(null, "delete successful","Thông báo",JOptionPane.INFORMATION_MESSAGE);
+                showCouponTable();
+                sqlinstance.conn.close();
+            }
+            sqlinstance.conn.close();
+        }catch(Exception e)
+        {
+            
+        }
+    }//GEN-LAST:event_btnXoaCActionPerformed
+
+    private void btnSearchCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchCActionPerformed
+        // TODO add your handling code here:
+        DefaultTableModel model = (DefaultTableModel) tblCoupon.getModel();
+        model.setRowCount(0);
+        try
+        {
+            Connect sqlinstance = new Connect();
+            sqlinstance.Connect();
+            Statement stateget = sqlinstance.conn.createStatement();
+            String SelectQueryAll = "Select * from Coupon \n"
+                    +"Where "
+                    + "CouponName = '"
+                    + txtSearchC.getText()
+                    +"' or CouponId = '"
+                    + txtSearchC.getText()
+                    +"';";
+            
+                               
+            ResultSet couponResult = stateget.executeQuery(SelectQueryAll);
+            while(couponResult.next())
+            {
+                model.addRow(new Object[]{couponResult.getString("CouponId"),couponResult.getString("CouponName"),couponResult.getString("Discount")});
+            }
+            sqlinstance.conn.close();
+        }catch(Exception e)
+        {
+            
+            e.printStackTrace();
+        }
+    }//GEN-LAST:event_btnSearchCActionPerformed
+
+    private void btnReloadCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReloadCActionPerformed
+        // TODO add your handling code here:
+        showCouponTable();
+    }//GEN-LAST:event_btnReloadCActionPerformed
 
     /**
      * @param args the command line arguments
@@ -741,7 +956,24 @@ public class Index extends javax.swing.JFrame {
     }
     public final void showCouponTable()
     {
-        
+        DefaultTableModel model = (DefaultTableModel) tblCoupon.getModel();
+        model.setRowCount(0);
+        try
+        {
+            Connect sqlinstance = new Connect();
+            sqlinstance.Connect();
+            Statement stateget = sqlinstance.conn.createStatement();
+            String SelectQueryAll = "Select * from Coupon";
+            ResultSet couponResult = stateget.executeQuery(SelectQueryAll);
+            while(couponResult.next())
+            {
+                model.addRow(new Object[]{couponResult.getString("CouponId"),couponResult.getString("CouponName"),couponResult.getString("Discount")});
+            }
+            sqlinstance.conn.close();
+        }catch(Exception e)
+        {
+            e.printStackTrace();
+        }
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel CouponPanel;
@@ -760,6 +992,7 @@ public class Index extends javax.swing.JFrame {
     private javax.swing.JButton btnHome;
     private javax.swing.JButton btnQuanLyCoupon;
     private javax.swing.JButton btnQuanLyUser;
+    private javax.swing.JButton btnReloadC;
     private javax.swing.JButton btnSaveP;
     private javax.swing.JButton btnSearch;
     private javax.swing.JButton btnSearchC;
@@ -767,8 +1000,10 @@ public class Index extends javax.swing.JFrame {
     private javax.swing.JButton btnXoa;
     private javax.swing.JButton btnXoaC;
     private javax.swing.JButton btnXoaH;
+    private javax.swing.JComboBox<String> cboRoleQ;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -787,10 +1022,10 @@ public class Index extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JTable jTable1;
-    private javax.swing.JTable jTable2;
     private javax.swing.JTable jTable3;
     private javax.swing.JLabel lbUser;
     private javax.swing.JMenuItem miExit;
+    private javax.swing.JTable tblCoupon;
     private javax.swing.JTextField txtAddressP;
     private javax.swing.JTextField txtCouponName;
     private javax.swing.JTextField txtCouponPercent;

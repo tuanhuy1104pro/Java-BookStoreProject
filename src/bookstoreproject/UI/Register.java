@@ -166,6 +166,7 @@ public class Register extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(null,"Confirm password phải đúng với pasword đã nhập","Thông báo",JOptionPane.INFORMATION_MESSAGE);
                 return;
             }
+            ////////////////////////Exist validation
             String FindUser = "Select * from Users where UserName ='"
                     +txtUserName.getText()
                     +"' " 
@@ -178,6 +179,7 @@ public class Register extends javax.swing.JFrame {
                  JOptionPane.showMessageDialog(null, "Tài Khoản đã tồn tại", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
                  return;
             }
+            /////////////////////// exist validation
             //Validation
             
             NumberMember++;
