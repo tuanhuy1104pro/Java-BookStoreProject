@@ -6,6 +6,8 @@ package bookstoreproject.UI.Admin;
 
 import bookstoreproject.DAO.User;
 import bookstoreproject.Entities.Connect;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.sql.ResultSet;
 import java.sql.Statement;
 
@@ -21,6 +23,7 @@ public class Index extends javax.swing.JFrame {
 
     private User UserInstance;
     private String CurrentRowCouponId;
+    private String CurrentRowBookId;
     private String CurrentRowUserId; // được lấy tại event click của bản đấy
    
     /**
@@ -33,7 +36,7 @@ public class Index extends javax.swing.JFrame {
         setSize(730, 520);
         setLocationRelativeTo(null);
         this.UserInstance = UserInstance;
-   
+        btnReloadH.setVisible(false);
          /////Start-Up Config
         //Config hiện tên người dùng
         if(this.UserInstance.getFullName().equals(""))
@@ -45,7 +48,7 @@ public class Index extends javax.swing.JFrame {
             lbUser.setText(this.UserInstance.getFullName());
         }
         //Config hiện tên người dùng
-        
+        showBookTable();
     }
 
     /**
@@ -71,7 +74,8 @@ public class Index extends javax.swing.JFrame {
         txtSearchH = new javax.swing.JTextField();
         jPanel9 = new javax.swing.JPanel();
         jScrollPane4 = new javax.swing.JScrollPane();
-        jTable3 = new javax.swing.JTable();
+        tblBooktable = new javax.swing.JTable();
+        btnReloadH = new javax.swing.JButton();
         ProfilePanel = new javax.swing.JPanel();
         txtSdt = new javax.swing.JTextField();
         btnSaveP = new javax.swing.JButton();
@@ -193,6 +197,11 @@ public class Index extends javax.swing.JFrame {
         HomePanel.setLayout(null);
 
         btnSearchH.setText("Search");
+        btnSearchH.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSearchHActionPerformed(evt);
+            }
+        });
         HomePanel.add(btnSearchH);
         btnSearchH.setBounds(167, 23, 72, 23);
 
@@ -206,6 +215,11 @@ public class Index extends javax.swing.JFrame {
         btnEditH.setBounds(570, 20, 90, 23);
 
         btnXoaH.setText("Xóa");
+        btnXoaH.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnXoaHActionPerformed(evt);
+            }
+        });
         HomePanel.add(btnXoaH);
         btnXoaH.setBounds(490, 20, 72, 23);
 
@@ -220,18 +234,24 @@ public class Index extends javax.swing.JFrame {
         HomePanel.add(txtSearchH);
         txtSearchH.setBounds(6, 23, 135, 22);
 
-        jTable3.setModel(new javax.swing.table.DefaultTableModel(
+        tblBooktable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+                "BookId", "BookName", "Category", "Price", "GioiThieu"
             }
         ));
-        jScrollPane4.setViewportView(jTable3);
+        tblBooktable.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblBooktableMouseClicked(evt);
+            }
+        });
+        jScrollPane4.setViewportView(tblBooktable);
+        if (tblBooktable.getColumnModel().getColumnCount() > 0) {
+            tblBooktable.getColumnModel().getColumn(3).setResizable(false);
+            tblBooktable.getColumnModel().getColumn(4).setResizable(false);
+        }
 
         javax.swing.GroupLayout jPanel9Layout = new javax.swing.GroupLayout(jPanel9);
         jPanel9.setLayout(jPanel9Layout);
@@ -251,6 +271,15 @@ public class Index extends javax.swing.JFrame {
 
         HomePanel.add(jPanel9);
         jPanel9.setBounds(6, 52, 710, 283);
+
+        btnReloadH.setText("Reload");
+        btnReloadH.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnReloadHActionPerformed(evt);
+            }
+        });
+        HomePanel.add(btnReloadH);
+        btnReloadH.setBounds(250, 20, 72, 23);
 
         Tabpanel.addTab("Home", HomePanel);
 
@@ -588,7 +617,8 @@ public class Index extends javax.swing.JFrame {
     private void btnHomeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHomeActionPerformed
         // TODO add your handling code here:
         Tabpanel.setSelectedIndex(0);
-        
+        showBookTable();
+        btnReloadH.setVisible(false);
         
     }//GEN-LAST:event_btnHomeActionPerformed
 
@@ -606,15 +636,39 @@ public class Index extends javax.swing.JFrame {
     }//GEN-LAST:event_lbUserMouseClicked
 
     private void btnAddHActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddHActionPerformed
-        // TODO add your handling code here:
-        QuanLySach sach = new QuanLySach();
-        sach.setVisible(true);
-        
+                //Open Form Quản lý người dùng
+                QuanLySach  openNewFormButton = new QuanLySach();
+                    openNewFormButton.setDefaultCloseOperation(openNewFormButton.DISPOSE_ON_CLOSE);
+                    openNewFormButton.addWindowListener(new WindowAdapter() {
+                    @Override
+                    public void windowClosed(WindowEvent e) {
+                        // Khi form mới đóng, hiện lại form cũ
+                         setVisible(true);
+                    }
+                });
+                 setVisible(false);
+                 openNewFormButton.setVisible(true);
+                 /////// trỏ tới index
     }//GEN-LAST:event_btnAddHActionPerformed
 
     private void btnEditHActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditHActionPerformed
-        // TODO add your handling code here:
+        ///////Find Books then create instance of DTO then pass to QuanLySach Form
         
+        ////////////////////////////
+        
+         /////////////////Open Form Quản lý người dùng
+                EditSach  openNewFormButton = new EditSach();
+                    openNewFormButton.setDefaultCloseOperation(openNewFormButton.DISPOSE_ON_CLOSE);
+                    openNewFormButton.addWindowListener(new WindowAdapter() {
+                    @Override
+                    public void windowClosed(WindowEvent e) {
+                        // Khi form mới đóng, hiện lại form cũ
+                         setVisible(true);
+                    }
+                });
+                 setVisible(false);
+                 openNewFormButton.setVisible(true);
+                 /////// trỏ tới index
     }//GEN-LAST:event_btnEditHActionPerformed
 
     private void btnEditPActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditPActionPerformed
@@ -1166,6 +1220,87 @@ public class Index extends javax.swing.JFrame {
         showUserTable();
     }//GEN-LAST:event_btnReloadUserActionPerformed
 
+    private void tblBooktableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblBooktableMouseClicked
+        DefaultTableModel model = (DefaultTableModel)tblBooktable.getModel();
+            int rowselected = tblBooktable.getSelectedRow();
+            CurrentRowBookId = tblBooktable.getValueAt(rowselected, 0).toString();
+              
+    }//GEN-LAST:event_tblBooktableMouseClicked
+
+    private void btnSearchHActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchHActionPerformed
+        // TODO add your handling code here:
+         DefaultTableModel model = (DefaultTableModel) tblBooktable.getModel();
+        model.setRowCount(0);
+        try
+        {
+            Connect sqlinstance = new Connect();
+            sqlinstance.Connect();
+            Statement stateget = sqlinstance.conn.createStatement();
+            String SelectQueryAll = "select BookId, BookName, CategoryName, Price, GioiThieu " +
+             "from Book, Category " +
+             "where Book.CategoryId = Category.CategoryId " +
+             "and (Book.BookId = '" + txtSearchH.getText() + "' " +
+             "or Book.BookName = '" + txtSearchH.getText() + "' " +
+             "or CategoryName =N'" + txtSearchH.getText() + "')";
+            
+                               
+            ResultSet BookResult = stateget.executeQuery(SelectQueryAll);
+            while(BookResult.next())
+            {
+                model.addRow(new Object[]{BookResult.getString("BookId"),BookResult.getString("BookName"),BookResult.getString("CategoryName"),BookResult.getString("Price"),BookResult.getString("GioiThieu")});
+            }
+            btnReloadH.setVisible(true);
+            sqlinstance.conn.close();
+        }catch(Exception e)
+        {
+            
+            e.printStackTrace();
+        }
+        
+        
+        
+    }//GEN-LAST:event_btnSearchHActionPerformed
+
+    private void btnReloadHActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReloadHActionPerformed
+        // TODO add your handling code here:
+        showBookTable();
+        btnReloadH.setVisible(false);
+    }//GEN-LAST:event_btnReloadHActionPerformed
+
+    private void btnXoaHActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnXoaHActionPerformed
+        try
+        {
+            Connect sqlinstance = new Connect();
+            sqlinstance.Connect();
+            Statement statement = sqlinstance.conn.createStatement();
+            
+             
+            ///////////////////////Delete stage
+            
+            String updatequery = "Delete from Book\n" 
+            +"\n" 
+            +"where BookId = '"
+            + CurrentRowBookId
+            +"';";
+
+            int issucceed = statement.executeUpdate(updatequery);
+            if(issucceed != 0)
+            {
+                
+                
+                showBookTable();
+               
+                JOptionPane.showMessageDialog(null, "delete successful","Thông báo",JOptionPane.INFORMATION_MESSAGE);
+                
+                sqlinstance.conn.close();
+            }
+            sqlinstance.conn.close();
+        }catch(Exception e)
+        {
+            
+        }
+    }//GEN-LAST:event_btnXoaHActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -1257,6 +1392,27 @@ public class Index extends javax.swing.JFrame {
             e.printStackTrace();
         }
     }
+    public final void showBookTable()
+    {
+         DefaultTableModel model = (DefaultTableModel) tblBooktable.getModel();
+        model.setRowCount(0);
+        try
+        {
+            Connect sqlinstance = new Connect();
+            sqlinstance.Connect();
+            Statement stateget = sqlinstance.conn.createStatement();
+            String SelectQueryAll = "select BookId,BookName,CategoryName,Price,GioiThieu from Book,Category where Book.CategoryId = Category.CategoryId";
+            ResultSet BookResult = stateget.executeQuery(SelectQueryAll);
+            while(BookResult.next())
+            {
+                model.addRow(new Object[]{BookResult.getString("BookId"),BookResult.getString("BookName"),BookResult.getString("CategoryName"),BookResult.getString("Price"),BookResult.getString("GioiThieu")});
+            }
+            sqlinstance.conn.close();
+        }catch(Exception e)
+        {
+            e.printStackTrace();
+        }
+    }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel CouponPanel;
     private javax.swing.JPanel HeaderPanel;
@@ -1275,6 +1431,7 @@ public class Index extends javax.swing.JFrame {
     private javax.swing.JButton btnQuanLyCoupon;
     private javax.swing.JButton btnQuanLyUser;
     private javax.swing.JButton btnReloadC;
+    private javax.swing.JButton btnReloadH;
     private javax.swing.JButton btnReloadUser;
     private javax.swing.JButton btnSaveEdit;
     private javax.swing.JButton btnSaveP;
@@ -1305,9 +1462,9 @@ public class Index extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
-    private javax.swing.JTable jTable3;
     private javax.swing.JLabel lbUser;
     private javax.swing.JMenuItem miExit;
+    private javax.swing.JTable tblBooktable;
     private javax.swing.JTable tblCoupon;
     private javax.swing.JTable tblUser;
     private javax.swing.JTextField txtAddressP;

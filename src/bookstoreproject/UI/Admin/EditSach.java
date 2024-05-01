@@ -8,12 +8,12 @@ package bookstoreproject.UI.Admin;
  *
  * @author Acer
  */
-public class QuanLySach extends javax.swing.JFrame {
+public class EditSach extends javax.swing.JFrame {
 
     /**
      * Creates new form Index
      */
-    public QuanLySach() {
+    public EditSach() {
         initComponents();
         setSize(670, 600);
         setLocationRelativeTo(null);
@@ -28,12 +28,9 @@ public class QuanLySach extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        txtTheLoai = new javax.swing.JTextField();
-        btnAddCate = new javax.swing.JButton();
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         txtAuthor = new javax.swing.JTextField();
-        jLabel6 = new javax.swing.JLabel();
         cboCategory = new javax.swing.JComboBox<>();
         jLabel7 = new javax.swing.JLabel();
         txtGiaTien = new javax.swing.JTextField();
@@ -42,12 +39,11 @@ public class QuanLySach extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         txtGioiThieu = new javax.swing.JTextArea();
         jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
         txtTenSach = new javax.swing.JTextField();
-        btnAddBook = new javax.swing.JButton();
-        btnDelCategory = new javax.swing.JButton();
+        btnEditBook = new javax.swing.JButton();
+        btnSave = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu2 = new javax.swing.JMenu();
         jMenu1 = new javax.swing.JMenu();
@@ -56,87 +52,69 @@ public class QuanLySach extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setSize(new java.awt.Dimension(1080, 720));
         getContentPane().setLayout(null);
-        getContentPane().add(txtTheLoai);
-        txtTheLoai.setBounds(100, 80, 183, 22);
-
-        btnAddCate.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        btnAddCate.setText("Add");
-        getContentPane().add(btnAddCate);
-        btnAddCate.setBounds(300, 80, 100, 32);
 
         jLabel4.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         jLabel4.setText("Tên Sách:");
         getContentPane().add(jLabel4);
-        jLabel4.setBounds(6, 217, 74, 25);
+        jLabel4.setBounds(10, 100, 74, 25);
 
         jLabel5.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         jLabel5.setText("Tác Giả");
         getContentPane().add(jLabel5);
-        jLabel5.setBounds(348, 217, 70, 25);
+        jLabel5.setBounds(350, 100, 70, 25);
         getContentPane().add(txtAuthor);
-        txtAuthor.setBounds(430, 221, 183, 22);
-
-        jLabel6.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        jLabel6.setText("Thể Loại");
-        getContentPane().add(jLabel6);
-        jLabel6.setBounds(10, 80, 80, 25);
+        txtAuthor.setBounds(430, 110, 183, 22);
         getContentPane().add(cboCategory);
-        cboCategory.setBounds(91, 265, 184, 22);
+        cboCategory.setBounds(90, 150, 184, 22);
 
         jLabel7.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         jLabel7.setText("Giá Tiền");
         getContentPane().add(jLabel7);
-        jLabel7.setBounds(348, 261, 70, 25);
+        jLabel7.setBounds(350, 150, 70, 25);
         getContentPane().add(txtGiaTien);
-        txtGiaTien.setBounds(430, 265, 183, 22);
+        txtGiaTien.setBounds(430, 150, 183, 22);
 
         jLabel8.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         jLabel8.setText("Tồn Kho:");
         getContentPane().add(jLabel8);
-        jLabel8.setBounds(348, 305, 70, 25);
+        jLabel8.setBounds(350, 190, 70, 25);
         getContentPane().add(txtTonKho);
-        txtTonKho.setBounds(430, 309, 183, 22);
+        txtTonKho.setBounds(430, 190, 183, 22);
 
         txtGioiThieu.setColumns(20);
         txtGioiThieu.setRows(5);
         jScrollPane1.setViewportView(txtGioiThieu);
 
         getContentPane().add(jScrollPane1);
-        jScrollPane1.setBounds(258, 349, 355, 101);
+        jScrollPane1.setBounds(260, 230, 355, 101);
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         jLabel1.setText("Giới Thiệu");
         getContentPane().add(jLabel1);
-        jLabel1.setBounds(91, 349, 100, 25);
-
-        jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
-        jLabel2.setForeground(new java.awt.Color(51, 255, 255));
-        jLabel2.setText("Thêm Thể Loại");
-        getContentPane().add(jLabel2);
-        jLabel2.setBounds(260, 20, 180, 32);
+        jLabel1.setBounds(90, 230, 100, 25);
 
         jLabel3.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
         jLabel3.setForeground(new java.awt.Color(51, 255, 255));
-        jLabel3.setText("Thêm Sách");
+        jLabel3.setText("Edit  Sách");
         getContentPane().add(jLabel3);
-        jLabel3.setBounds(266, 173, 122, 32);
+        jLabel3.setBounds(270, 60, 109, 32);
 
         jLabel9.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         jLabel9.setText("Thể Loại");
         getContentPane().add(jLabel9);
-        jLabel9.setBounds(6, 261, 80, 25);
+        jLabel9.setBounds(10, 150, 80, 25);
         getContentPane().add(txtTenSach);
-        txtTenSach.setBounds(92, 221, 183, 22);
+        txtTenSach.setBounds(90, 110, 183, 22);
 
-        btnAddBook.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        btnAddBook.setText("Add");
-        getContentPane().add(btnAddBook);
-        btnAddBook.setBounds(182, 462, 346, 32);
+        btnEditBook.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        btnEditBook.setText("Edit");
+        getContentPane().add(btnEditBook);
+        btnEditBook.setBounds(60, 390, 210, 32);
 
-        btnDelCategory.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        btnDelCategory.setText("Xóa");
-        getContentPane().add(btnDelCategory);
-        btnDelCategory.setBounds(420, 80, 100, 32);
+        btnSave.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        btnSave.setText("Save");
+        getContentPane().add(btnSave);
+        btnSave.setBounds(360, 390, 210, 32);
 
         jMenu2.setText("Edit");
         jMenuBar1.add(jMenu2);
@@ -170,36 +148,35 @@ public class QuanLySach extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(QuanLySach.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(EditSach.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(QuanLySach.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(EditSach.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(QuanLySach.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(EditSach.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(QuanLySach.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(EditSach.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
         //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new QuanLySach().setVisible(true);
+                new EditSach().setVisible(true);
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnAddBook;
-    private javax.swing.JButton btnAddCate;
-    private javax.swing.JButton btnDelCategory;
+    private javax.swing.JButton btnEditBook;
+    private javax.swing.JButton btnSave;
     private javax.swing.JComboBox<String> cboCategory;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
@@ -212,7 +189,6 @@ public class QuanLySach extends javax.swing.JFrame {
     private javax.swing.JTextField txtGiaTien;
     private javax.swing.JTextArea txtGioiThieu;
     private javax.swing.JTextField txtTenSach;
-    private javax.swing.JTextField txtTheLoai;
     private javax.swing.JTextField txtTonKho;
     // End of variables declaration//GEN-END:variables
 }
