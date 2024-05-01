@@ -21,6 +21,7 @@ public class Index extends javax.swing.JFrame {
 
     private User UserInstance;
     private String CurrentRowCouponId;
+    private String CurrentRowUserId; // được lấy tại event click của bản đấy
    
     /**
      * Creates new form Index
@@ -100,7 +101,7 @@ public class Index extends javax.swing.JFrame {
         txtPassword = new javax.swing.JTextField();
         jPanel3 = new javax.swing.JPanel();
         jScrollPane3 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        tblUser = new javax.swing.JTable();
         btnAdd = new javax.swing.JButton();
         btnXoa = new javax.swing.JButton();
         btnEdit = new javax.swing.JButton();
@@ -112,6 +113,8 @@ public class Index extends javax.swing.JFrame {
         jLabel10 = new javax.swing.JLabel();
         jLabel11 = new javax.swing.JLabel();
         cboRoleQ = new javax.swing.JComboBox<>();
+        btnSaveEdit = new javax.swing.JButton();
+        btnReloadUser = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu2 = new javax.swing.JMenu();
         jMenu1 = new javax.swing.JMenu();
@@ -452,7 +455,7 @@ public class Index extends javax.swing.JFrame {
 
         jPanel3.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tblUser.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
@@ -460,7 +463,12 @@ public class Index extends javax.swing.JFrame {
                 "UserId", "UserName", "FullName", "PhoneNumber", "UserRole"
             }
         ));
-        jScrollPane3.setViewportView(jTable1);
+        tblUser.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblUserMouseClicked(evt);
+            }
+        });
+        jScrollPane3.setViewportView(tblUser);
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -477,20 +485,40 @@ public class Index extends javax.swing.JFrame {
         jPanel3.setBounds(220, 80, 333, 252);
 
         btnAdd.setText("Thêm");
+        btnAdd.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAddActionPerformed(evt);
+            }
+        });
         QLNguoiDung.add(btnAdd);
         btnAdd.setBounds(90, 260, 72, 23);
 
         btnXoa.setText("Xóa");
+        btnXoa.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnXoaActionPerformed(evt);
+            }
+        });
         QLNguoiDung.add(btnXoa);
         btnXoa.setBounds(570, 150, 83, 23);
 
         btnEdit.setText("Chỉnh Sửa");
+        btnEdit.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEditActionPerformed(evt);
+            }
+        });
         QLNguoiDung.add(btnEdit);
         btnEdit.setBounds(570, 80, 100, 23);
         QLNguoiDung.add(txtSearch);
         txtSearch.setBounds(220, 40, 243, 22);
 
         btnSearch.setText("Search");
+        btnSearch.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSearchActionPerformed(evt);
+            }
+        });
         QLNguoiDung.add(btnSearch);
         btnSearch.setBounds(480, 40, 72, 23);
 
@@ -518,6 +546,24 @@ public class Index extends javax.swing.JFrame {
         cboRoleQ.setEnabled(false);
         QLNguoiDung.add(cboRoleQ);
         cboRoleQ.setBounds(60, 230, 72, 22);
+
+        btnSaveEdit.setText("Save Edit");
+        btnSaveEdit.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSaveEditActionPerformed(evt);
+            }
+        });
+        QLNguoiDung.add(btnSaveEdit);
+        btnSaveEdit.setBounds(570, 40, 130, 23);
+
+        btnReloadUser.setText("Reload");
+        btnReloadUser.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnReloadUserActionPerformed(evt);
+            }
+        });
+        QLNguoiDung.add(btnReloadUser);
+        btnReloadUser.setBounds(570, 200, 72, 23);
 
         Tabpanel.addTab("Quản Lý Người dùng", QLNguoiDung);
 
@@ -660,7 +706,8 @@ public class Index extends javax.swing.JFrame {
     private void btnQuanLyUserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnQuanLyUserActionPerformed
         // TODO add your handling code here:
         Tabpanel.setSelectedComponent(QLNguoiDung);
-        showProfilePanel();
+        showUserTable();
+        btnSaveEdit.setVisible(false);
     }//GEN-LAST:event_btnQuanLyUserActionPerformed
 
     private void btnAddCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddCActionPerformed
@@ -859,7 +906,7 @@ public class Index extends javax.swing.JFrame {
                 showCouponTable();
                
                 JOptionPane.showMessageDialog(null, "delete successful","Thông báo",JOptionPane.INFORMATION_MESSAGE);
-                showCouponTable();
+                
                 sqlinstance.conn.close();
             }
             sqlinstance.conn.close();
@@ -904,6 +951,220 @@ public class Index extends javax.swing.JFrame {
         // TODO add your handling code here:
         showCouponTable();
     }//GEN-LAST:event_btnReloadCActionPerformed
+
+    private void btnXoaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnXoaActionPerformed
+       
+         try
+        {
+            Connect sqlinstance = new Connect();
+            sqlinstance.Connect();
+            Statement statement = sqlinstance.conn.createStatement();
+            
+             
+            ///////////////////////Delete stage
+            
+            String updatequery = "Delete from Users\n" 
+            +"\n" 
+            +"where UserId = '"
+            + CurrentRowUserId
+            +"';";
+
+            int issucceed = statement.executeUpdate(updatequery);
+            if(issucceed != 0)
+            {
+                
+                
+                showUserTable();
+               
+                JOptionPane.showMessageDialog(null, "delete successful","Thông báo",JOptionPane.INFORMATION_MESSAGE);
+                
+                sqlinstance.conn.close();
+            }
+            sqlinstance.conn.close();
+        }catch(Exception e)
+        {
+            
+        }
+    }//GEN-LAST:event_btnXoaActionPerformed
+
+    private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
+        // TODO add your handling code here:
+          /////Validation
+            String validation ="";
+            //
+            if(txtUserName.getText().isEmpty() || txtPassword.getText().isEmpty())
+            {
+                if(txtUserName.getText().isEmpty())
+                    validation += "Email  must be fill ";
+                if(txtPassword.getText().isEmpty())
+                    validation += " Password must be fill ";
+                
+                JOptionPane.showMessageDialog(null, validation, "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+                return;
+            }
+            
+            ////Validation
+            
+           try{
+                Connect ConnectInstance  = new Connect();
+            ConnectInstance.Connect();
+            Statement statement = ConnectInstance.conn.createStatement();
+            
+             //////////////////////Exist validation
+            String FindUser = "Select * from Users where UserName ='"
+                    +txtUserName.getText()
+                    +"';";
+                    
+             ResultSet FindResult  = statement.executeQuery(FindUser);
+            if(FindResult.next()){
+                 JOptionPane.showMessageDialog(null, "User đã tồn tại", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+                 return;
+            }
+            //////////////////////Exist validation
+            
+            /////////////////// add User stage
+            // Get all existing IDs
+            String IdQuery = "select UserId from Users order by UserId;";
+            ResultSet idResult = statement.executeQuery(IdQuery);
+
+            // Find the first missing ID
+            int expectedId = 1;
+            while(idResult.next()){
+                    String currentId = idResult.getString("UserId").substring(1); // Remove 'C' prefix
+                    int currentIdNumber = Integer.parseInt(currentId);
+                    if(currentIdNumber != expectedId){
+                        break;
+                     }
+                    expectedId++;
+            }
+            ///Begin add User
+            String InsertQuery = "insert into Users(UserId,UserName,UserPass,UserRole) values('"
+                    +"U"+expectedId
+                    +"','"
+                    +txtUserName.getText()
+                    +"','"
+                    +txtPassword.getText()
+                    +"','"
+                    +"User"
+                    + "');";
+                    
+            
+            Statement state = ConnectInstance.conn.createStatement();
+            int row = state.executeUpdate(InsertQuery);
+            if(row != 0)
+            {
+                JOptionPane.showMessageDialog(null, "Add User thành công", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+                txtUserName.setText("");
+                txtPassword.setText("");
+                /////
+                DefaultTableModel model = (DefaultTableModel) tblUser.getModel(); //clear old table
+                model.setRowCount(0);
+                showUserTable();
+                /////
+                ConnectInstance.conn.close();
+            }
+            else
+            {
+                JOptionPane.showMessageDialog(null, "Xảy ra lỗi khi add mã", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+
+                ConnectInstance.conn.close();
+            }
+           }catch(Exception e)
+           {
+               e.printStackTrace();
+           }
+    }//GEN-LAST:event_btnAddActionPerformed
+
+    private void btnEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditActionPerformed
+        // TODO add your handling code here:
+        cboRoleQ.setEnabled(true);
+        btnSaveEdit.setVisible(true);
+        txtUserName.setEnabled(false);
+        txtPassword.setEnabled(false);
+    }//GEN-LAST:event_btnEditActionPerformed
+
+    private void tblUserMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblUserMouseClicked
+        // TODO add your handling code here:
+            DefaultTableModel model = (DefaultTableModel)tblUser.getModel();
+             int rowselected = tblUser.getSelectedRow();
+              CurrentRowUserId = tblUser.getValueAt(rowselected, 0).toString();
+              txtUserName.setText(tblUser.getValueAt(rowselected, 1).toString());
+              cboRoleQ.setSelectedItem(tblUser.getValueAt(rowselected, 4).toString());
+    }//GEN-LAST:event_tblUserMouseClicked
+
+    private void btnSaveEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveEditActionPerformed
+        // TODO add your handling code here:
+           try
+        {
+            Connect sqlinstance = new Connect();
+            sqlinstance.Connect();
+            Statement statement = sqlinstance.conn.createStatement();
+           
+            ///////////////////////update stage
+            
+            String updatequery = "update Users\n" 
+            +"set UserRole = '"
+            + cboRoleQ.getSelectedItem().toString()
+            +"' where UserId = '"
+            + CurrentRowUserId
+            + "';";
+
+            int issucceed = statement.executeUpdate(updatequery);
+            if(issucceed != 0)
+            {
+                
+                cboRoleQ.setEnabled(false);
+                btnSaveEdit.setVisible(false);
+                txtUserName.setEnabled(true);
+                txtPassword.setEnabled(true);
+                showUserTable();
+               
+                JOptionPane.showMessageDialog(null, "Edited successful","Thông báo",JOptionPane.INFORMATION_MESSAGE);
+                sqlinstance.conn.close();
+            }
+            sqlinstance.conn.close();
+        }catch(Exception e)
+        {
+            
+        }
+    }//GEN-LAST:event_btnSaveEditActionPerformed
+
+    private void btnSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchActionPerformed
+        // TODO add your handling code here:
+         DefaultTableModel model = (DefaultTableModel) tblUser.getModel();
+        model.setRowCount(0);
+        try
+        {
+            Connect sqlinstance = new Connect();
+            sqlinstance.Connect();
+            Statement stateget = sqlinstance.conn.createStatement();
+            String SelectQueryAll = "Select * from Users \n"
+                    +"Where "
+                    + "UserName = '"
+                    + txtSearch.getText()
+                    +"' or UserId = '"
+                    + txtSearch.getText()
+                    +"';";
+            
+                               
+            ResultSet UserResult = stateget.executeQuery(SelectQueryAll);
+            while(UserResult.next())
+            {
+                model.addRow(new Object[]{UserResult.getString("UserId"),UserResult.getString("UserName"),UserResult.getString("FullName"),UserResult.getString("PhoneNumber"),UserResult.getString("UserRole")});
+
+            }
+            sqlinstance.conn.close();
+        }catch(Exception e)
+        {
+            
+            e.printStackTrace();
+        }
+    }//GEN-LAST:event_btnSearchActionPerformed
+
+    private void btnReloadUserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReloadUserActionPerformed
+        // TODO add your handling code here:
+        showUserTable();
+    }//GEN-LAST:event_btnReloadUserActionPerformed
 
     /**
      * @param args the command line arguments
@@ -975,6 +1236,27 @@ public class Index extends javax.swing.JFrame {
             e.printStackTrace();
         }
     }
+    public final void showUserTable()
+    {
+        DefaultTableModel model = (DefaultTableModel) tblUser.getModel();
+        model.setRowCount(0);
+        try
+        {
+            Connect sqlinstance = new Connect();
+            sqlinstance.Connect();
+            Statement stateget = sqlinstance.conn.createStatement();
+            String SelectQueryAll = "Select * from Users";
+            ResultSet UserResult = stateget.executeQuery(SelectQueryAll);
+            while(UserResult.next())
+            {
+                model.addRow(new Object[]{UserResult.getString("UserId"),UserResult.getString("UserName"),UserResult.getString("FullName"),UserResult.getString("PhoneNumber"),UserResult.getString("UserRole")});
+            }
+            sqlinstance.conn.close();
+        }catch(Exception e)
+        {
+            e.printStackTrace();
+        }
+    }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel CouponPanel;
     private javax.swing.JPanel HeaderPanel;
@@ -993,6 +1275,8 @@ public class Index extends javax.swing.JFrame {
     private javax.swing.JButton btnQuanLyCoupon;
     private javax.swing.JButton btnQuanLyUser;
     private javax.swing.JButton btnReloadC;
+    private javax.swing.JButton btnReloadUser;
+    private javax.swing.JButton btnSaveEdit;
     private javax.swing.JButton btnSaveP;
     private javax.swing.JButton btnSearch;
     private javax.swing.JButton btnSearchC;
@@ -1021,11 +1305,11 @@ public class Index extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
-    private javax.swing.JTable jTable1;
     private javax.swing.JTable jTable3;
     private javax.swing.JLabel lbUser;
     private javax.swing.JMenuItem miExit;
     private javax.swing.JTable tblCoupon;
+    private javax.swing.JTable tblUser;
     private javax.swing.JTextField txtAddressP;
     private javax.swing.JTextField txtCouponName;
     private javax.swing.JTextField txtCouponPercent;

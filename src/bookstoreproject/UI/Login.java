@@ -205,7 +205,7 @@ public class Login extends javax.swing.JFrame {
             Statement statement = sqlinstance.conn.createStatement();
             String select = "Select * from Users where UserName ='"
                     +txtUserName.getText()
-                    +"' " 
+                    +"'" 
                     +" and"
                     + " UserPass = '"
                     +txtPassword.getText()
