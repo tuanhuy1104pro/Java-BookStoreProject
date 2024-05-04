@@ -5,6 +5,9 @@
 package bookstoreproject.UI.User;
 
 import bookstoreproject.DAO.User;
+import bookstoreproject.Entities.Connect;
+import java.sql.Statement;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -93,6 +96,11 @@ public class IndexU extends javax.swing.JFrame {
 
         lbUser.setForeground(new java.awt.Color(255, 51, 51));
         lbUser.setText("UserName");
+        lbUser.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                lbUserMouseClicked(evt);
+            }
+        });
 
         btnHome.setText("Home");
 
@@ -221,11 +229,21 @@ public class IndexU extends javax.swing.JFrame {
 
         btnSaveP.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         btnSaveP.setText("Save");
+        btnSaveP.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSavePActionPerformed(evt);
+            }
+        });
         ProfilePanel.add(btnSaveP);
         btnSaveP.setBounds(380, 190, 72, 32);
 
         btnEditP.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         btnEditP.setText("Edit");
+        btnEditP.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEditPActionPerformed(evt);
+            }
+        });
         ProfilePanel.add(btnEditP);
         btnEditP.setBounds(470, 190, 72, 32);
 
@@ -411,6 +429,108 @@ public class IndexU extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void lbUserMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lbUserMouseClicked
+        // TODO add your handling code here:
+        TabPanel.setSelectedComponent(ProfilePanel);
+        showProfilePanel();
+        
+    }//GEN-LAST:event_lbUserMouseClicked
+
+    private void btnEditPActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditPActionPerformed
+        // TODO add your handling code here:
+        btnSaveP.setVisible(true);
+        txtHoTenP.setEnabled(true);
+        txtAddressP.setEnabled(true);
+        txtSdt.setEnabled(true);
+    }//GEN-LAST:event_btnEditPActionPerformed
+
+    private void btnSavePActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSavePActionPerformed
+        // TODO add your handling code here:
+         try{
+             Connect sqlinstance = new Connect();
+            sqlinstance.Connect();
+            Statement statement = sqlinstance.conn.createStatement();
+            
+             /////Validation
+            String validation ="";
+            //
+            if(txtHoTenP.getText().isEmpty() || txtAddressP.getText().isEmpty() ||txtSdt.getText().isEmpty())
+            {
+                if(txtHoTenP.getText().isEmpty())
+                    validation += "Họ tên must be fill ";
+                if(txtAddressP.getText().isEmpty())
+                    validation += "- Address must be fill ";
+                if(txtSdt.getText().isEmpty())
+                    validation += "- Phone Number must be fill ";
+                JOptionPane.showMessageDialog(null, validation, "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+                return;
+            }
+            
+            ////////////////////PhoneNumber validation - only number
+            if(!txtSdt.getText().matches("\\d+"))
+            {
+               JOptionPane.showMessageDialog(null, "Phone number must only contain number", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+               return;
+            }
+            
+            
+            ////Validation
+            
+            String updatequery = "update Users\n" 
+            +"set FullName = '"
+            + txtHoTenP.getText()
+            + "',UserAddress = '"
+            + txtAddressP.getText()
+            +"',PhoneNumber = '"
+            + txtSdt.getText()
+            +"'\n" +
+            "where UserName = '"
+            + UserInstance.getUserName()
+            + "' and UserPass ='"
+            + UserInstance.getUserPass()
+            +"';";
+
+            int issucceed = statement.executeUpdate(updatequery);
+            if(issucceed != 0)
+            {
+               
+                this.UserInstance.setFullName(txtHoTenP.getText());
+                this.UserInstance.setUserAddress(txtAddressP.getText());
+                this.UserInstance.setPhoneNumber(txtSdt.getText());
+                lbUser.setText(this.UserInstance.getFullName());
+                JOptionPane.showMessageDialog(null, "Edited successful","Thông báo",JOptionPane.INFORMATION_MESSAGE);
+                sqlinstance.conn.close();
+            }
+            sqlinstance.conn.close();
+       
+        }catch(Exception e)
+        {
+            e.printStackTrace();
+        }
+       
+        
+        
+        
+        
+         //End config
+        btnSaveP.setVisible(false);
+        txtHoTenP.setEnabled(false);
+        txtAddressP.setEnabled(false);
+        txtSdt.setEnabled(false);
+    }//GEN-LAST:event_btnSavePActionPerformed
+       public void showProfilePanel()
+    {
+        //Start up config
+        btnSaveP.setVisible(false);
+        txtHoTenP.setEnabled(false);
+        txtAddressP.setEnabled(false);
+        txtSdt.setEnabled(false);
+        //Start up config
+        
+        txtHoTenP.setText(UserInstance.getFullName());
+        txtAddressP.setText(UserInstance.getUserAddress());
+        txtSdt.setText(UserInstance.getPhoneNumber());
+    }
     /**
      * @param args the command line arguments
      */
@@ -461,7 +581,7 @@ public class IndexU extends javax.swing.JFrame {
             }
         });
     }
-
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel CartPanel;
     private javax.swing.JPanel HomePanel;
