@@ -4,6 +4,8 @@
  */
 package bookstoreproject.DAO;
 
+import java.util.Objects;
+
 /**
  *
  * @author Acer
@@ -26,5 +28,18 @@ public class BookDetail {
     public void setAuthorId(String AuthorId) {
         this.AuthorId = AuthorId;
     }
-   
+   @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null || getClass() != obj.getClass())
+            return false;
+        BookDetail db = (BookDetail) obj;
+        return BookId == db.BookId && AuthorId == db.AuthorId;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(BookId, AuthorId);
+    }
 }

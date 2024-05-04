@@ -4,10 +4,17 @@
  */
 package bookstoreproject.UI.User;
 
+import bookstoreproject.DAO.BookDetail;
 import bookstoreproject.DAO.User;
 import bookstoreproject.Entities.Connect;
+import java.awt.List;
+import java.sql.ResultSet;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.Dictionary;
+import java.util.Hashtable;
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -15,7 +22,9 @@ import javax.swing.JOptionPane;
  */
 public class IndexU extends javax.swing.JFrame {
     private User UserInstance;
-  
+    private ArrayList<BookDetail> ListBookDetail;
+    private BookDetail currentBookDetail = new BookDetail();
+    private Dictionary<BookDetail,Integer> Dic = new Hashtable<>();
     /*@param UserInstance */
     public IndexU(User UserInstance) {
         initComponents();
@@ -55,10 +64,12 @@ public class IndexU extends javax.swing.JFrame {
         jScrollPane4 = new javax.swing.JScrollPane();
         LCategory3 = new javax.swing.JList<>();
         jPanel14 = new javax.swing.JPanel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        tblBooktable = new javax.swing.JTable();
         btnBuyH = new javax.swing.JButton();
-        txtSoLuongH = new javax.swing.JTextField();
         btnSearchH = new javax.swing.JButton();
         jLabel8 = new javax.swing.JLabel();
+        txtSoLuongH = new javax.swing.JTextField();
         ProfilePanel = new javax.swing.JPanel();
         txtSdt = new javax.swing.JTextField();
         btnSaveP = new javax.swing.JButton();
@@ -103,6 +114,11 @@ public class IndexU extends javax.swing.JFrame {
         });
 
         btnHome.setText("Home");
+        btnHome.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnHomeActionPerformed(evt);
+            }
+        });
 
         btnPaymentHistory.setText("Payment History");
 
@@ -149,18 +165,38 @@ public class IndexU extends javax.swing.JFrame {
 
         jPanel14.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
+        tblBooktable.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "BookName", "TacGia", "Price", "TonKho", "GioiThieu"
+            }
+        ));
+        tblBooktable.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblBooktableMouseClicked(evt);
+            }
+        });
+        jScrollPane1.setViewportView(tblBooktable);
+
         javax.swing.GroupLayout jPanel14Layout = new javax.swing.GroupLayout(jPanel14);
         jPanel14.setLayout(jPanel14Layout);
         jPanel14Layout.setHorizontalGroup(
             jPanel14Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 416, Short.MAX_VALUE)
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 416, Short.MAX_VALUE)
         );
         jPanel14Layout.setVerticalGroup(
             jPanel14Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
         );
 
         btnBuyH.setText("Mua Ngay");
+        btnBuyH.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnBuyHActionPerformed(evt);
+            }
+        });
 
         btnSearchH.setText("Search");
 
@@ -187,19 +223,19 @@ public class IndexU extends javax.swing.JFrame {
                         .addGap(18, 18, 18)
                         .addGroup(HomePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(HomePanelLayout.createSequentialGroup()
+                                .addComponent(btnBuyH)
+                                .addGap(0, 0, Short.MAX_VALUE))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, HomePanelLayout.createSequentialGroup()
                                 .addGap(0, 5, Short.MAX_VALUE)
-                                .addComponent(jLabel8)
-                                .addGap(153, 153, 153))
-                            .addGroup(HomePanelLayout.createSequentialGroup()
                                 .addGroup(HomePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(txtSoLuongH, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(btnBuyH))
-                                .addGap(0, 0, Short.MAX_VALUE))))))
+                                    .addComponent(txtSoLuongH, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel8))
+                                .addGap(131, 131, 131))))))
         );
         HomePanelLayout.setVerticalGroup(
             HomePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, HomePanelLayout.createSequentialGroup()
-                .addContainerGap()
+            .addGroup(HomePanelLayout.createSequentialGroup()
+                .addGap(21, 21, 21)
                 .addGroup(HomePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(HomePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(txtSearchH, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -209,13 +245,13 @@ public class IndexU extends javax.swing.JFrame {
                 .addGroup(HomePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(HomePanelLayout.createSequentialGroup()
                         .addComponent(jLabel8)
-                        .addGap(18, 18, 18)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(txtSoLuongH, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
+                        .addGap(24, 24, 24)
                         .addComponent(btnBuyH)
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addComponent(jPanel14, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 214, Short.MAX_VALUE))
+                    .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 239, Short.MAX_VALUE))
                 .addContainerGap())
         );
 
@@ -306,7 +342,7 @@ public class IndexU extends javax.swing.JFrame {
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 253, Short.MAX_VALUE)
+            .addGap(0, 293, Short.MAX_VALUE)
         );
 
         javax.swing.GroupLayout CartPanelLayout = new javax.swing.GroupLayout(CartPanel);
@@ -354,7 +390,7 @@ public class IndexU extends javax.swing.JFrame {
                 .addGroup(CartPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
                     .addComponent(txtCoupon, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 81, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 121, Short.MAX_VALUE)
                 .addGroup(CartPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel10)
                     .addComponent(txtThanhTien, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -375,7 +411,7 @@ public class IndexU extends javax.swing.JFrame {
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
+            .addGap(0, 287, Short.MAX_VALUE)
         );
 
         btnThanhToan1.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
@@ -396,7 +432,7 @@ public class IndexU extends javax.swing.JFrame {
         );
         PaymentHistoryLayout.setVerticalGroup(
             PaymentHistoryLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 255, Short.MAX_VALUE)
+            .addGap(0, 295, Short.MAX_VALUE)
             .addGroup(PaymentHistoryLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(PaymentHistoryLayout.createSequentialGroup()
                     .addContainerGap()
@@ -412,7 +448,7 @@ public class IndexU extends javax.swing.JFrame {
         TabPanel.addTab("Payment History", PaymentHistory);
 
         getContentPane().add(TabPanel);
-        TabPanel.setBounds(0, 122, 777, 290);
+        TabPanel.setBounds(0, 82, 777, 330);
 
         jMenu2.setText("Edit");
         jMenuBar1.add(jMenu2);
@@ -518,6 +554,32 @@ public class IndexU extends javax.swing.JFrame {
         txtAddressP.setEnabled(false);
         txtSdt.setEnabled(false);
     }//GEN-LAST:event_btnSavePActionPerformed
+
+    private void tblBooktableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblBooktableMouseClicked
+       DefaultTableModel model = (DefaultTableModel)tblBooktable.getModel();
+       int rowselected = tblBooktable.getSelectedRow();
+       currentBookDetail.setAuthorId(ListBookDetail.get(rowselected).getAuthorId());
+       currentBookDetail.setBookId(ListBookDetail.get(rowselected).getBookId());
+    }//GEN-LAST:event_tblBooktableMouseClicked
+
+    private void btnHomeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHomeActionPerformed
+        loadBooktable();
+    }//GEN-LAST:event_btnHomeActionPerformed
+
+    private void btnBuyHActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuyHActionPerformed
+        // TODO add your handling code here:
+        if(Dic.get(currentBookDetail) == null)
+            Dic.put(currentBookDetail, Integer.parseInt(txtSoLuongH.getText()));
+        else
+        {
+            int soluong = Dic.get(currentBookDetail);
+            soluong+=Integer.parseInt(txtSoLuongH.getText());
+            Dic.put(currentBookDetail, soluong);
+        }
+        
+       JOptionPane.showMessageDialog(null, "Đã thêm vào giỏ hàng","Thông báo",JOptionPane.INFORMATION_MESSAGE);
+
+    }//GEN-LAST:event_btnBuyHActionPerformed
        public void showProfilePanel()
     {
         //Start up config
@@ -531,6 +593,37 @@ public class IndexU extends javax.swing.JFrame {
         txtAddressP.setText(UserInstance.getUserAddress());
         txtSdt.setText(UserInstance.getPhoneNumber());
     }
+       public void loadCategory()
+       {
+           
+       }
+       public void loadBooktable()
+       {
+           DefaultTableModel model = (DefaultTableModel) tblBooktable.getModel();
+            model.setRowCount(0);
+            ListBookDetail = new ArrayList<BookDetail>();
+        try
+        {
+            Connect sqlinstance = new Connect();
+            sqlinstance.Connect();
+            Statement stateget = sqlinstance.conn.createStatement();
+            String SelectQueryAll = "select Book.BookId,BookName,CategoryName,Price,Book.GioiThieu,Author.AuthorId, Name as TacGia,TonKho from Book,Category,BookDetail,Author where Book.CategoryId = Category.CategoryId and Book.BookId = BookDetail.BookId and BookDetail.AuthorId = Author.AuthorId";
+            ResultSet BookResult = stateget.executeQuery(SelectQueryAll);
+            while(BookResult.next())
+            {
+                model.addRow(new Object[]{BookResult.getString("BookName"),BookResult.getString("TacGia"),BookResult.getString("Price"),BookResult.getString("TonKho"),BookResult.getString("GioiThieu")});
+                BookDetail book = new BookDetail();
+                book.setBookId(BookResult.getString("BookId"));
+                book.setAuthorId(BookResult.getString("AuthorId"));
+                ListBookDetail.add(book);
+                System.out.println(ListBookDetail.get(0).getAuthorId());
+            }
+            sqlinstance.conn.close();
+        }catch(Exception e)
+        {
+            e.printStackTrace();
+        }
+       }
     /**
      * @param args the command line arguments
      */
@@ -615,9 +708,11 @@ public class IndexU extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel14;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
+    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JLabel lbUser;
     private javax.swing.JMenuItem miExit;
+    private javax.swing.JTable tblBooktable;
     private javax.swing.JTextField txtAddressP;
     private javax.swing.JTextField txtCoupon;
     private javax.swing.JTextField txtHoTenP;
