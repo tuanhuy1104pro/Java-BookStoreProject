@@ -12,10 +12,21 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Dictionary;
+import java.util.HashMap;
 import java.util.Hashtable;
+import java.util.Map;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
+//////////////////iText - ---- pdf library open source
+//import com.itextpdf.text.Document;
+//import com.itextpdf.text.Paragraph;
+//import com.itextpdf.text.pdf.PdfWriter;
+
+import java.io.FileOutputStream;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
 /**
  *
  * @author Acer
@@ -24,7 +35,8 @@ public class IndexU extends javax.swing.JFrame {
     private User UserInstance;
     private ArrayList<BookDetail> ListBookDetail;
     private BookDetail currentBookDetail = new BookDetail();
-    private Dictionary<BookDetail,Integer> Dic = new Hashtable<>();
+    private int currentNumberOfBook;
+    private Map<BookDetail,Integer> Dic = new HashMap<>();
     /*@param UserInstance */
     public IndexU(User UserInstance) {
         initComponents();
@@ -41,6 +53,7 @@ public class IndexU extends javax.swing.JFrame {
             lbUser.setText(this.UserInstance.getFullName());
         }
         //config hiện tên người dùng
+        loadBooktable();
     }
 
     /**
@@ -91,6 +104,10 @@ public class IndexU extends javax.swing.JFrame {
         txtThanhTien = new javax.swing.JTextField();
         btnThanhToan = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        tblCart = new javax.swing.JTable();
+        btnRemoveCart = new javax.swing.JButton();
+        btnApplyCoupon = new javax.swing.JButton();
         PaymentHistory = new javax.swing.JPanel();
         jPanel3 = new javax.swing.JPanel();
         btnThanhToan1 = new javax.swing.JButton();
@@ -121,8 +138,18 @@ public class IndexU extends javax.swing.JFrame {
         });
 
         btnPaymentHistory.setText("Payment History");
+        btnPaymentHistory.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnPaymentHistoryActionPerformed(evt);
+            }
+        });
 
         btnCart.setText("Cart");
+        btnCart.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCartActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -322,6 +349,8 @@ public class IndexU extends javax.swing.JFrame {
         jLabel3.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel3.setText("Phí vận chuyển:");
 
+        txtPhiVanChuyen.setText("25000");
+
         jLabel4.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel4.setText("Coupon: ");
 
@@ -331,19 +360,41 @@ public class IndexU extends javax.swing.JFrame {
 
         btnThanhToan.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         btnThanhToan.setText("Thanh Toán");
+        btnThanhToan.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnThanhToanActionPerformed(evt);
+            }
+        });
 
         jPanel2.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+
+        tblCart.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Id", "Tên Sách", "Giá bán", "Số Lượng"
+            }
+        ));
+        jScrollPane2.setViewportView(tblCart);
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 449, Short.MAX_VALUE)
+            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 449, Short.MAX_VALUE)
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 293, Short.MAX_VALUE)
+            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
         );
+
+        btnRemoveCart.setText("Remove");
+
+        btnApplyCoupon.setText("Apply");
 
         javax.swing.GroupLayout CartPanelLayout = new javax.swing.GroupLayout(CartPanel);
         CartPanel.setLayout(CartPanelLayout);
@@ -352,33 +403,41 @@ public class IndexU extends javax.swing.JFrame {
             .addGroup(CartPanelLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(32, 32, 32)
                 .addGroup(CartPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btnThanhToan, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(CartPanelLayout.createSequentialGroup()
-                        .addComponent(jLabel10)
+                        .addGap(32, 32, 32)
+                        .addComponent(btnThanhToan, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(CartPanelLayout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtThanhTien))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, CartPanelLayout.createSequentialGroup()
-                        .addGroup(CartPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(CartPanelLayout.createSequentialGroup()
-                                .addComponent(jLabel4)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(txtCoupon))
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, CartPanelLayout.createSequentialGroup()
-                                .addComponent(jLabel3)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(txtPhiVanChuyen, javax.swing.GroupLayout.DEFAULT_SIZE, 134, Short.MAX_VALUE))
-                            .addGroup(CartPanelLayout.createSequentialGroup()
-                                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(txtTongTien)))
-                        .addGap(6, 6, 6)))
-                .addGap(45, 45, 45))
+                        .addGroup(CartPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(btnRemoveCart)
+                            .addGroup(CartPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addComponent(btnApplyCoupon)
+                                .addGroup(CartPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addGroup(CartPanelLayout.createSequentialGroup()
+                                        .addComponent(jLabel4)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(txtCoupon))
+                                    .addGroup(CartPanelLayout.createSequentialGroup()
+                                        .addComponent(jLabel3)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(txtPhiVanChuyen))
+                                    .addGroup(CartPanelLayout.createSequentialGroup()
+                                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addComponent(txtTongTien, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(CartPanelLayout.createSequentialGroup()
+                                        .addComponent(jLabel10)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(txtThanhTien)))))))
+                .addContainerGap(122, Short.MAX_VALUE))
         );
         CartPanelLayout.setVerticalGroup(
             CartPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(CartPanelLayout.createSequentialGroup()
+                .addGap(14, 14, 14)
+                .addComponent(btnRemoveCart)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(CartPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
                     .addComponent(txtTongTien, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -390,13 +449,18 @@ public class IndexU extends javax.swing.JFrame {
                 .addGroup(CartPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
                     .addComponent(txtCoupon, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 121, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnApplyCoupon)
+                .addGap(18, 18, 18)
                 .addGroup(CartPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel10)
                     .addComponent(txtThanhTien, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 43, Short.MAX_VALUE)
                 .addComponent(btnThanhToan))
-            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(CartPanelLayout.createSequentialGroup()
+                .addGap(30, 30, 30)
+                .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         TabPanel.addTab("Cart", CartPanel);
@@ -560,15 +624,17 @@ public class IndexU extends javax.swing.JFrame {
        int rowselected = tblBooktable.getSelectedRow();
        currentBookDetail.setAuthorId(ListBookDetail.get(rowselected).getAuthorId());
        currentBookDetail.setBookId(ListBookDetail.get(rowselected).getBookId());
+       currentNumberOfBook = Integer.parseInt(model.getValueAt(rowselected, 3).toString());
     }//GEN-LAST:event_tblBooktableMouseClicked
 
     private void btnHomeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHomeActionPerformed
+        TabPanel.setSelectedComponent(HomePanel);
         loadBooktable();
     }//GEN-LAST:event_btnHomeActionPerformed
 
     private void btnBuyHActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuyHActionPerformed
         // TODO add your handling code here:
-        if(Dic.get(currentBookDetail) == null)
+         if(Dic.get(currentBookDetail) == null)
             Dic.put(currentBookDetail, Integer.parseInt(txtSoLuongH.getText()));
         else
         {
@@ -576,10 +642,42 @@ public class IndexU extends javax.swing.JFrame {
             soluong+=Integer.parseInt(txtSoLuongH.getText());
             Dic.put(currentBookDetail, soluong);
         }
+
         
        JOptionPane.showMessageDialog(null, "Đã thêm vào giỏ hàng","Thông báo",JOptionPane.INFORMATION_MESSAGE);
-
     }//GEN-LAST:event_btnBuyHActionPerformed
+
+    private void btnCartActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCartActionPerformed
+        // TODO add your handling code here:
+        TabPanel.setSelectedComponent(CartPanel);
+        txtTongTien.setEnabled(false);
+        txtPhiVanChuyen.setEnabled(false);
+        txtThanhTien.setEnabled(false);
+        loadCartPanel();
+    }//GEN-LAST:event_btnCartActionPerformed
+
+    private void btnPaymentHistoryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPaymentHistoryActionPerformed
+        // TODO add your handling code here:
+        TabPanel.setSelectedComponent(PaymentHistory);
+    }//GEN-LAST:event_btnPaymentHistoryActionPerformed
+
+    private void btnThanhToanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnThanhToanActionPerformed
+        
+        /*
+        Document document = new Document();
+        try {
+            LocalDateTime now = LocalDateTime.now();
+            DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+            PdfWriter.getInstance(document, new FileOutputStream("../PdfStorage/" + UserInstance.getUserId()+"_"+dtf.format(now)));
+            document.open();
+            document.add(new Paragraph("Hello World!"));
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            document.close();
+        }
+        */
+    }//GEN-LAST:event_btnThanhToanActionPerformed
        public void showProfilePanel()
     {
         //Start up config
@@ -593,11 +691,11 @@ public class IndexU extends javax.swing.JFrame {
         txtAddressP.setText(UserInstance.getUserAddress());
         txtSdt.setText(UserInstance.getPhoneNumber());
     }
-       public void loadCategory()
+       public final void loadCategory()
        {
            
        }
-       public void loadBooktable()
+       public final void loadBooktable()
        {
            DefaultTableModel model = (DefaultTableModel) tblBooktable.getModel();
             model.setRowCount(0);
@@ -607,7 +705,7 @@ public class IndexU extends javax.swing.JFrame {
             Connect sqlinstance = new Connect();
             sqlinstance.Connect();
             Statement stateget = sqlinstance.conn.createStatement();
-            String SelectQueryAll = "select Book.BookId,BookName,CategoryName,Price,Book.GioiThieu,Author.AuthorId, Name as TacGia,TonKho from Book,Category,BookDetail,Author where Book.CategoryId = Category.CategoryId and Book.BookId = BookDetail.BookId and BookDetail.AuthorId = Author.AuthorId";
+            String SelectQueryAll = "select Book.BookId,BookName,CategoryName,Price,Book.GioiThieu,Author.AuthorId, Name as TacGia,TonKho from Book,Category,BookDetail,Author where Book.CategoryId = Category.CategoryId and Book.BookId = BookDetail.BookId and BookDetail.AuthorId = Author.AuthorId and Book.TonKho > 0";
             ResultSet BookResult = stateget.executeQuery(SelectQueryAll);
             while(BookResult.next())
             {
@@ -618,6 +716,79 @@ public class IndexU extends javax.swing.JFrame {
                 ListBookDetail.add(book);
                 System.out.println(ListBookDetail.get(0).getAuthorId());
             }
+            sqlinstance.conn.close();
+        }catch(Exception e)
+        {
+            e.printStackTrace();
+        }
+       }
+       public void updateDbAfterBuyBook(String BookId,int SOluongMua)
+       {
+           try
+           {
+                Connect sqlinstance = new Connect();
+                sqlinstance.Connect();
+                Statement state = sqlinstance.conn.createStatement();
+                String GetOldTonKho = "Select TonKho from Book where BookId = '"
+                   + BookId
+                   +"';";
+                ResultSet oldTonKho = state.executeQuery(GetOldTonKho);
+                oldTonKho.next();
+                int NewTonKho = Integer.parseInt(oldTonKho.getString("TonKho")) - SOluongMua;
+                
+                String updateString = "update  Book\n"
+                +"set TonKho = " + NewTonKho
+                + " where BookId = '" + BookId
+                + "'";
+                
+                int isUpdated = state.executeUpdate(updateString);
+                if(isUpdated > 0)
+                {
+                   JOptionPane.showMessageDialog(null, "Update sau mua thanh cong","Thông báo",JOptionPane.INFORMATION_MESSAGE);
+
+                }
+                else
+                   JOptionPane.showMessageDialog(null, "Update sau mua that bai","Thông báo",JOptionPane.INFORMATION_MESSAGE);
+
+           }
+           
+          catch(Exception e)
+          {
+              
+          }
+       }
+       public void loadCartPanel()
+       {
+           if(Dic.isEmpty())
+               return;
+           DefaultTableModel model = (DefaultTableModel) tblCart.getModel();
+            model.setRowCount(0);
+           
+        try
+        {
+            Connect sqlinstance = new Connect();
+            sqlinstance.Connect();
+            Statement stateget = sqlinstance.conn.createStatement();
+            int TongTien = 0;
+            for (Map.Entry<BookDetail, Integer> entry : Dic.entrySet()) {
+                BookDetail key = entry.getKey();
+                int value = entry.getValue();
+                String SelectQueryAll = "Select * from Book where BookId='"
+                        +key.getBookId()
+                        +"';";
+                ResultSet BookResult = stateget.executeQuery(SelectQueryAll);
+                BookResult.next();
+                TongTien+= Integer.parseInt(BookResult.getString("Price")) * value;
+                model.addRow(new Object[]{BookResult.getString("BookId"),BookResult.getString("BookName"),BookResult.getString("Price"),value});
+            }
+            //txt
+            /////////////
+            txtTongTien.setText(Integer.toString(TongTien));
+            int ThanhTien = TongTien + Integer.parseInt(txtPhiVanChuyen.getText());
+            txtThanhTien.setText(Integer.toString(ThanhTien));
+            
+            ////
+        
             sqlinstance.conn.close();
         }catch(Exception e)
         {
@@ -682,11 +853,13 @@ public class IndexU extends javax.swing.JFrame {
     private javax.swing.JPanel PaymentHistory;
     private javax.swing.JPanel ProfilePanel;
     private javax.swing.JTabbedPane TabPanel;
+    private javax.swing.JButton btnApplyCoupon;
     private javax.swing.JButton btnBuyH;
     private javax.swing.JButton btnCart;
     private javax.swing.JButton btnEditP;
     private javax.swing.JButton btnHome;
     private javax.swing.JButton btnPaymentHistory;
+    private javax.swing.JButton btnRemoveCart;
     private javax.swing.JButton btnSaveP;
     private javax.swing.JButton btnSearchH;
     private javax.swing.JButton btnThanhToan;
@@ -709,10 +882,12 @@ public class IndexU extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JLabel lbUser;
     private javax.swing.JMenuItem miExit;
     private javax.swing.JTable tblBooktable;
+    private javax.swing.JTable tblCart;
     private javax.swing.JTextField txtAddressP;
     private javax.swing.JTextField txtCoupon;
     private javax.swing.JTextField txtHoTenP;
