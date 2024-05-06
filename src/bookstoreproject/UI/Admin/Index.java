@@ -65,6 +65,7 @@ public class Index extends javax.swing.JFrame {
         btnHome = new javax.swing.JButton();
         btnQuanLyCoupon = new javax.swing.JButton();
         btnQuanLyUser = new javax.swing.JButton();
+        btnThongKe = new javax.swing.JButton();
         Tabpanel = new javax.swing.JTabbedPane();
         HomePanel = new javax.swing.JPanel();
         btnSearchH = new javax.swing.JButton();
@@ -158,6 +159,13 @@ public class Index extends javax.swing.JFrame {
             }
         });
 
+        btnThongKe.setText("Thống Kê");
+        btnThongKe.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnThongKeActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout HeaderPanelLayout = new javax.swing.GroupLayout(HeaderPanel);
         HeaderPanel.setLayout(HeaderPanelLayout);
         HeaderPanelLayout.setHorizontalGroup(
@@ -165,13 +173,15 @@ public class Index extends javax.swing.JFrame {
             .addGroup(HeaderPanelLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(lbUser)
-                .addGap(53, 53, 53)
+                .addGap(37, 37, 37)
                 .addComponent(btnHome, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(43, 43, 43)
+                .addGap(35, 35, 35)
                 .addComponent(btnQuanLyUser)
-                .addGap(54, 54, 54)
+                .addGap(52, 52, 52)
                 .addComponent(btnQuanLyCoupon)
-                .addContainerGap(148, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 43, Short.MAX_VALUE)
+                .addComponent(btnThongKe, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(17, 17, 17))
         );
         HeaderPanelLayout.setVerticalGroup(
             HeaderPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -182,7 +192,8 @@ public class Index extends javax.swing.JFrame {
                         .addGroup(HeaderPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(btnHome, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(btnQuanLyCoupon, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btnQuanLyUser, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(btnQuanLyUser, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnThongKe, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(HeaderPanelLayout.createSequentialGroup()
                         .addGap(19, 19, 19)
                         .addComponent(lbUser)
@@ -1195,7 +1206,7 @@ public class Index extends javax.swing.JFrame {
 
     private void btnSearchHActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchHActionPerformed
         // TODO add your handling code here:
-         DefaultTableModel model = (DefaultTableModel) tblBooktable.getModel();
+        DefaultTableModel model = (DefaultTableModel) tblBooktable.getModel();
         model.setRowCount(0);
         try
         {
@@ -1254,6 +1265,12 @@ public class Index extends javax.swing.JFrame {
             {
                 
                 ////
+            //// Delete chi tiet hoa don
+                
+            
+            ////
+                
+            ///
             ////Delete Book
             String updatequery = "Delete from Book\n" 
             +"\n" 
@@ -1279,9 +1296,13 @@ public class Index extends javax.swing.JFrame {
             
         }catch(Exception e)
         {
-            
+          e.printStackTrace();
         }
     }//GEN-LAST:event_btnXoaHActionPerformed
+
+    private void btnThongKeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnThongKeActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnThongKeActionPerformed
 
     /**
      * @param args the command line arguments
@@ -1419,6 +1440,7 @@ public class Index extends javax.swing.JFrame {
     private javax.swing.JButton btnSearch;
     private javax.swing.JButton btnSearchC;
     private javax.swing.JButton btnSearchH;
+    private javax.swing.JButton btnThongKe;
     private javax.swing.JButton btnXoa;
     private javax.swing.JButton btnXoaC;
     private javax.swing.JButton btnXoaH;

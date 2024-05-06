@@ -37,6 +37,7 @@ public class IndexU extends javax.swing.JFrame {
     private ArrayList<BookDetail> ListBookDetail = new ArrayList<BookDetail>();
     private BookDetail currentBookDetail;
     private int currentNumberOfBook;
+    private String CurrentIdCoupon = "";
     private Dictionary<BookDetail,Integer> Dic = new Hashtable<>();
     /*@param UserInstance */
     public IndexU(User UserInstance) {
@@ -72,10 +73,7 @@ public class IndexU extends javax.swing.JFrame {
         btnCart = new javax.swing.JButton();
         TabPanel = new javax.swing.JTabbedPane();
         HomePanel = new javax.swing.JPanel();
-        jLabel7 = new javax.swing.JLabel();
         txtSearchH = new javax.swing.JTextField();
-        jScrollPane4 = new javax.swing.JScrollPane();
-        LCategory3 = new javax.swing.JList<>();
         jPanel14 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblBooktable = new javax.swing.JTable();
@@ -171,15 +169,6 @@ public class IndexU extends javax.swing.JFrame {
         getContentPane().add(jPanel1);
         jPanel1.setBounds(0, 0, 783, 123);
 
-        jLabel7.setText("Category");
-
-        LCategory3.setModel(new javax.swing.AbstractListModel<String>() {
-            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
-            public int getSize() { return strings.length; }
-            public String getElementAt(int i) { return strings[i]; }
-        });
-        jScrollPane4.setViewportView(LCategory3);
-
         jPanel14.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
         tblBooktable.setModel(new javax.swing.table.DefaultTableModel(
@@ -216,6 +205,11 @@ public class IndexU extends javax.swing.JFrame {
         });
 
         btnSearchH.setText("Search");
+        btnSearchH.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSearchHActionPerformed(evt);
+            }
+        });
 
         jLabel8.setText("Số lượng");
 
@@ -226,49 +220,38 @@ public class IndexU extends javax.swing.JFrame {
             .addGroup(HomePanelLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(HomePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel7))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 22, Short.MAX_VALUE)
-                .addGroup(HomePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(HomePanelLayout.createSequentialGroup()
                         .addComponent(txtSearchH, javax.swing.GroupLayout.PREFERRED_SIZE, 269, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(btnSearchH)
-                        .addContainerGap())
+                        .addComponent(btnSearchH))
                     .addGroup(HomePanelLayout.createSequentialGroup()
                         .addComponent(jPanel14, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(17, 17, 17)
+                        .addComponent(jLabel8)
                         .addGap(18, 18, 18)
-                        .addGroup(HomePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(HomePanelLayout.createSequentialGroup()
-                                .addComponent(btnBuyH)
-                                .addGap(0, 0, Short.MAX_VALUE))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, HomePanelLayout.createSequentialGroup()
-                                .addGap(0, 5, Short.MAX_VALUE)
-                                .addGroup(HomePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(txtSoLuongH, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jLabel8))
-                                .addGap(131, 131, 131))))))
+                        .addGroup(HomePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(btnBuyH, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(txtSoLuongH))))
+                .addContainerGap(184, Short.MAX_VALUE))
         );
         HomePanelLayout.setVerticalGroup(
             HomePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(HomePanelLayout.createSequentialGroup()
                 .addGap(21, 21, 21)
-                .addGroup(HomePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(HomePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(txtSearchH, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(btnSearchH))
-                    .addComponent(jLabel7, javax.swing.GroupLayout.Alignment.TRAILING))
+                .addGroup(HomePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txtSearchH, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnSearchH))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(HomePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(HomePanelLayout.createSequentialGroup()
-                        .addComponent(jLabel8)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(txtSoLuongH, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(24, 24, 24)
+                        .addGap(58, 58, 58)
+                        .addGroup(HomePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(txtSoLuongH, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel8))
+                        .addGap(28, 28, 28)
                         .addComponent(btnBuyH)
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addComponent(jPanel14, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 239, Short.MAX_VALUE))
+                        .addGap(0, 108, Short.MAX_VALUE))
+                    .addComponent(jPanel14, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
 
@@ -343,6 +326,8 @@ public class IndexU extends javax.swing.JFrame {
 
         jLabel4.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel4.setText("Coupon: ");
+
+        txtCoupon.setText("None");
 
         jLabel10.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel10.setForeground(new java.awt.Color(255, 51, 51));
@@ -675,24 +660,92 @@ public class IndexU extends javax.swing.JFrame {
             document.close();
         }
         */
-        /////////////////// Xử lí mua
-        try
-        {
+        try{
+            DefaultTableModel model = (DefaultTableModel) tblCart.getModel();
+            Connect sqlinstance = new Connect();
+            sqlinstance.Connect();
+            Statement state = sqlinstance.conn.createStatement();
             
-        }catch(Exception e)
+            //////////////////////////////// Tạo Hóa ĐƠn
+            
+            LocalDateTime now = LocalDateTime.now();
+            DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd");
+            ////Tự động tìm mã hóa đơn trống để add
+            // Get all existing IDs
+            String IdQuery = "select IdHoaDon from HoaDon order by IdHoaDon;";
+            ResultSet idResult = state.executeQuery(IdQuery);
+            
+            // Find the first missing ID
+            int expectedId = 1;
+            while(idResult.next()){
+                    String currentId = idResult.getString("IdHoaDon").substring(1); // Remove 'C' prefix
+                    int currentIdNumber = Integer.parseInt(currentId);
+                    if(currentIdNumber != expectedId){
+                        break;
+                     }
+                    expectedId++;
+            }
+            if(txtCoupon.getText().equals("None"))
+            {
+                 String findCoupon = "Select * from Coupon where CouponName = N'"
+                    + txtCoupon.getText() +"';";
+                 ResultSet coupon = state.executeQuery(findCoupon);
+                 coupon.next();
+                 CurrentIdCoupon = coupon.getString("CouponId");
+            }
+            ///Begin add HoaDon
+            String ExpectedId = "H"+expectedId;
+            String InsertQuery = "insert into HoaDon values('"
+                    +ExpectedId
+                    +"','"
+                    +UserInstance.getUserId()
+                    +"',"
+                    +Long.parseLong(txtThanhTien.getText())
+                    +","
+                    + dtf.format(now)
+                    +",'"
+                    +CurrentIdCoupon
+                    +"');";
+                    
+            
+           
+            int row = state.executeUpdate(InsertQuery);
+            if(row != 0)
+            {
+                JOptionPane.showMessageDialog(null, "Tạo Hóa đơn thành công", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+                ////////////// Khi đã tạo hóa đơn rồi thì chỉ cần tạo các chi tiết hóa đơn
+                for (int i = 0; i < tblCart.getRowCount(); i++) {
+                    //////Lấy thông tin
+                    String BookId = model.getValueAt(i,0).toString();
+                    int Soluong = Integer.parseInt(model.getValueAt(i, 3).toString());
+                    //////
+                String InsertChiTietHoaDon = "insert into ChiTietHoaDon values('"
+                    +ExpectedId
+                    +"','"
+                    + BookId
+                    +"',"
+                    +Soluong
+                    +");";
+                int rowChitiet = state.executeUpdate(InsertChiTietHoaDon);
+          
+                ///////////////////Xử lí sau khi add thành công chi tiết hóa đơn
+                if(rowChitiet != 0)
+                {
+                     updateDbAfterBuyBook(BookId,Soluong);
+                }           
+                }
+            }
+            else
+            {
+              JOptionPane.showMessageDialog(null, "Tạo Hóa đơn không thành công", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+
+            }
+            sqlinstance.conn.close();
+        }
+        catch(Exception e)
         {
             e.printStackTrace();
-        }
-        ///////////////////Xử lí sau khi mua
-        DefaultTableModel model = (DefaultTableModel) tblCart.getModel();
-       
-        for (int i = 0; i < tblCart.getRowCount(); i++) {
-            
-            String BookId = model.getValueAt(i,0).toString();
-            int Soluong = Integer.parseInt(model.getValueAt(i, 3).toString());
-            updateDbAfterBuyBook(BookId,Soluong);
-        }
-        
+        }    
     }//GEN-LAST:event_btnThanhToanActionPerformed
 
     private void btnApplyCouponActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnApplyCouponActionPerformed
@@ -712,8 +765,9 @@ public class IndexU extends javax.swing.JFrame {
             {
                 int OldThanhTien = Integer.parseInt(txtThanhTien.getText());
                 float soTienGiam =   OldThanhTien * Float.parseFloat(coupon.getString("Discount"));
-                float newTongTien = OldThanhTien - soTienGiam;
-                txtThanhTien.setText(Float.toString(newTongTien));
+                int newTongTien = OldThanhTien - (int)soTienGiam;
+                CurrentIdCoupon = coupon.getString("CouponId");
+                txtThanhTien.setText(Integer.toString(newTongTien));
                 JOptionPane.showMessageDialog(null, "You have applied Coupon","Thông báo",JOptionPane.INFORMATION_MESSAGE);
                 sqlinstance.conn.close(); 
             }
@@ -760,6 +814,36 @@ public class IndexU extends javax.swing.JFrame {
         }
         
     }//GEN-LAST:event_btnRemoveCartActionPerformed
+
+    private void btnSearchHActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchHActionPerformed
+        DefaultTableModel model = (DefaultTableModel) tblBooktable.getModel();
+        model.setRowCount(0);
+        try
+        {
+            Connect sqlinstance = new Connect();
+            sqlinstance.Connect();
+            Statement stateget = sqlinstance.conn.createStatement();
+            String SelectQueryAll = "select BookId, BookName, CategoryName, Price, GioiThieu " +
+             "from Book, Category " +
+             "where Book.CategoryId = Category.CategoryId " +
+             "and (Book.BookId = '" + txtSearchH.getText() + "' " +
+             "or Book.BookName = N'" + txtSearchH.getText() + "' " +
+             "or CategoryName =N'" + txtSearchH.getText() + "')";
+            
+                               
+            ResultSet BookResult = stateget.executeQuery(SelectQueryAll);
+            while(BookResult.next())
+            {
+                model.addRow(new Object[]{BookResult.getString("BookId"),BookResult.getString("BookName"),BookResult.getString("CategoryName"),BookResult.getString("Price"),BookResult.getString("GioiThieu")});
+            }
+            
+            sqlinstance.conn.close();
+        }catch(Exception e)
+        {
+            
+            e.printStackTrace();
+        }
+    }//GEN-LAST:event_btnSearchHActionPerformed
        public void showProfilePanel()
     {
         //Start up config
@@ -930,7 +1014,6 @@ public class IndexU extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel CartPanel;
     private javax.swing.JPanel HomePanel;
-    private javax.swing.JList<String> LCategory3;
     private javax.swing.JPanel PaymentHistory;
     private javax.swing.JPanel ProfilePanel;
     private javax.swing.JTabbedPane TabPanel;
@@ -951,7 +1034,6 @@ public class IndexU extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
-    private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JMenu jMenu1;
@@ -963,7 +1045,6 @@ public class IndexU extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JLabel lbUser;
     private javax.swing.JMenuItem miExit;
     private javax.swing.JTable tblBooktable;

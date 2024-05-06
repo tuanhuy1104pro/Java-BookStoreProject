@@ -218,6 +218,7 @@ public class Login extends javax.swing.JFrame {
                 if(role.equals("Admin"))
                 {
                      User Userinstance = new User();
+                        Userinstance.setUserId(resultSet.getString("UserId"));
                         Userinstance.setUserName(resultSet.getString("UserName"));
                         Userinstance.setUserPass(resultSet.getString("UserPass"));
                         Userinstance.setFullName(resultSet.getString("FullName"));
@@ -241,6 +242,7 @@ public class Login extends javax.swing.JFrame {
                 if(role.equals("User"))
                 {
                     User Userinstance = new User();
+                        Userinstance.setUserId(resultSet.getString("UserId"));
                         Userinstance.setUserName(resultSet.getString("UserName"));
                         Userinstance.setUserPass(resultSet.getString("UserPass"));
                         Userinstance.setFullName(resultSet.getString("FullName"));
