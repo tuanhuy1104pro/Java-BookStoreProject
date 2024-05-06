@@ -715,11 +715,29 @@ public class IndexU extends javax.swing.JFrame {
 
     private void btnRemoveCartActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRemoveCartActionPerformed
         // TODO add your handling code here:
+        DefaultTableModel model = (DefaultTableModel) tblCart.getModel();
         try
         {
             Connect sqlinstane = new Connect();
             sqlinstane.Connect();
             Statement state = sqlinstane.conn.createStatement();
+            String selectBookDetail = "Select * from BookDetail where BookId = '"
+                    + model.getValueAt(tblCart.getSelectedRow(), 0) + "';";
+            ResultSet set = state.executeQuery(selectBookDetail);
+            while(set.next())
+            {
+                BookDetail temp = new BookDetail();
+                temp.setAuthorId(set.getString("AuthorId"));
+                temp.setBookId(set.getString("BookId"));
+                if(Dic.get(temp) != null)
+                {
+                    Dic.remove(temp);
+                    JOptionPane.showMessageDialog(null, "Xóa khỏi Cart thành công","Thông báo",JOptionPane.INFORMATION_MESSAGE);
+                    break;
+                }
+            }
+            loadCartPanel();
+            
         }catch(Exception e)
         {
             e.printStackTrace();
