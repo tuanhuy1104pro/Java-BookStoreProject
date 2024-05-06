@@ -76,9 +76,7 @@
                   <Component id="btnHome" min="-2" pref="103" max="-2" attributes="0"/>
                   <EmptySpace min="-2" pref="32" max="-2" attributes="0"/>
                   <Component id="btnCart" min="-2" pref="108" max="-2" attributes="0"/>
-                  <EmptySpace type="separate" max="-2" attributes="0"/>
-                  <Component id="btnPaymentHistory" min="-2" pref="130" max="-2" attributes="0"/>
-                  <EmptySpace pref="280" max="32767" attributes="0"/>
+                  <EmptySpace pref="428" max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -89,7 +87,6 @@
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="lbUser" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="btnHome" alignment="3" min="-2" pref="76" max="-2" attributes="0"/>
-                      <Component id="btnPaymentHistory" alignment="3" min="-2" pref="76" max="-2" attributes="0"/>
                       <Component id="btnCart" alignment="3" min="-2" pref="76" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace pref="16" max="32767" attributes="0"/>
@@ -115,14 +112,6 @@
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnHomeActionPerformed"/>
-          </Events>
-        </Component>
-        <Component class="javax.swing.JButton" name="btnPaymentHistory">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="Payment History"/>
-          </Properties>
-          <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnPaymentHistoryActionPerformed"/>
           </Events>
         </Component>
         <Component class="javax.swing.JButton" name="btnCart">
@@ -725,11 +714,17 @@
               <Properties>
                 <Property name="text" type="java.lang.String" value="Remove"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnRemoveCartActionPerformed"/>
+              </Events>
             </Component>
             <Component class="javax.swing.JButton" name="btnApplyCoupon">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Apply"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnApplyCouponActionPerformed"/>
+              </Events>
             </Component>
           </SubComponents>
         </Container>

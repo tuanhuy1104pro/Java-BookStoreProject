@@ -27,16 +27,17 @@ import java.io.FileOutputStream;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
+import java.util.Enumeration;
 /**
  *
  * @author Acer
  */
 public class IndexU extends javax.swing.JFrame {
     private User UserInstance;
-    private ArrayList<BookDetail> ListBookDetail;
-    private BookDetail currentBookDetail = new BookDetail();
+    private ArrayList<BookDetail> ListBookDetail = new ArrayList<BookDetail>();
+    private BookDetail currentBookDetail;
     private int currentNumberOfBook;
-    private Map<BookDetail,Integer> Dic = new HashMap<>();
+    private Dictionary<BookDetail,Integer> Dic = new Hashtable<>();
     /*@param UserInstance */
     public IndexU(User UserInstance) {
         initComponents();
@@ -68,7 +69,6 @@ public class IndexU extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         lbUser = new javax.swing.JLabel();
         btnHome = new javax.swing.JButton();
-        btnPaymentHistory = new javax.swing.JButton();
         btnCart = new javax.swing.JButton();
         TabPanel = new javax.swing.JTabbedPane();
         HomePanel = new javax.swing.JPanel();
@@ -137,13 +137,6 @@ public class IndexU extends javax.swing.JFrame {
             }
         });
 
-        btnPaymentHistory.setText("Payment History");
-        btnPaymentHistory.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnPaymentHistoryActionPerformed(evt);
-            }
-        });
-
         btnCart.setText("Cart");
         btnCart.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -162,9 +155,7 @@ public class IndexU extends javax.swing.JFrame {
                 .addComponent(btnHome, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(32, 32, 32)
                 .addComponent(btnCart, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(btnPaymentHistory, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(280, Short.MAX_VALUE))
+                .addContainerGap(428, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -173,7 +164,6 @@ public class IndexU extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lbUser)
                     .addComponent(btnHome, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnPaymentHistory, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnCart, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(16, Short.MAX_VALUE))
         );
@@ -393,8 +383,18 @@ public class IndexU extends javax.swing.JFrame {
         );
 
         btnRemoveCart.setText("Remove");
+        btnRemoveCart.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRemoveCartActionPerformed(evt);
+            }
+        });
 
         btnApplyCoupon.setText("Apply");
+        btnApplyCoupon.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnApplyCouponActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout CartPanelLayout = new javax.swing.GroupLayout(CartPanel);
         CartPanel.setLayout(CartPanelLayout);
@@ -622,8 +622,10 @@ public class IndexU extends javax.swing.JFrame {
     private void tblBooktableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblBooktableMouseClicked
        DefaultTableModel model = (DefaultTableModel)tblBooktable.getModel();
        int rowselected = tblBooktable.getSelectedRow();
-       currentBookDetail.setAuthorId(ListBookDetail.get(rowselected).getAuthorId());
-       currentBookDetail.setBookId(ListBookDetail.get(rowselected).getBookId());
+       BookDetail temp = new BookDetail();
+       temp.setAuthorId(ListBookDetail.get(rowselected).getAuthorId());
+       temp.setBookId(ListBookDetail.get(rowselected).getBookId());
+       currentBookDetail = temp;
        currentNumberOfBook = Integer.parseInt(model.getValueAt(rowselected, 3).toString());
     }//GEN-LAST:event_tblBooktableMouseClicked
 
@@ -634,7 +636,8 @@ public class IndexU extends javax.swing.JFrame {
 
     private void btnBuyHActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuyHActionPerformed
         // TODO add your handling code here:
-         if(Dic.get(currentBookDetail) == null)
+       
+         if(Dic.get(currentBookDetail)== null)
             Dic.put(currentBookDetail, Integer.parseInt(txtSoLuongH.getText()));
         else
         {
@@ -656,11 +659,6 @@ public class IndexU extends javax.swing.JFrame {
         loadCartPanel();
     }//GEN-LAST:event_btnCartActionPerformed
 
-    private void btnPaymentHistoryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPaymentHistoryActionPerformed
-        // TODO add your handling code here:
-        TabPanel.setSelectedComponent(PaymentHistory);
-    }//GEN-LAST:event_btnPaymentHistoryActionPerformed
-
     private void btnThanhToanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnThanhToanActionPerformed
         
         /*
@@ -677,7 +675,57 @@ public class IndexU extends javax.swing.JFrame {
             document.close();
         }
         */
+        
+        Dic = new Hashtable<>();
     }//GEN-LAST:event_btnThanhToanActionPerformed
+
+    private void btnApplyCouponActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnApplyCouponActionPerformed
+        // TODO add your handling code here:
+        if(Dic.isEmpty())
+            return;
+        try
+        {
+            Connect sqlinstance = new Connect();
+            sqlinstance.Connect();
+            Statement state = sqlinstance.conn.createStatement();
+            
+            String findCoupon = "Select * from Coupon where CouponName = N'"
+                    + txtCoupon.getText() +"';";
+            ResultSet coupon = state.executeQuery(findCoupon);
+            if(coupon.next())
+            {
+                int OldThanhTien = Integer.parseInt(txtThanhTien.getText());
+                float soTienGiam =   OldThanhTien * Float.parseFloat(coupon.getString("Discount"));
+                float newTongTien = OldThanhTien - soTienGiam;
+                txtThanhTien.setText(Float.toString(newTongTien));
+                JOptionPane.showMessageDialog(null, "You have applied Coupon","Thông báo",JOptionPane.INFORMATION_MESSAGE);
+                sqlinstance.conn.close(); 
+            }
+            else
+            {
+                sqlinstance.conn.close(); 
+                JOptionPane.showMessageDialog(null, "Coupon is not Exist","Thông báo",JOptionPane.INFORMATION_MESSAGE);
+
+            }
+        }catch(Exception e)
+        {
+            e.printStackTrace();
+        }
+    }//GEN-LAST:event_btnApplyCouponActionPerformed
+
+    private void btnRemoveCartActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRemoveCartActionPerformed
+        // TODO add your handling code here:
+        try
+        {
+            Connect sqlinstane = new Connect();
+            sqlinstane.Connect();
+            Statement state = sqlinstane.conn.createStatement();
+        }catch(Exception e)
+        {
+            e.printStackTrace();
+        }
+        
+    }//GEN-LAST:event_btnRemoveCartActionPerformed
        public void showProfilePanel()
     {
         //Start up config
@@ -699,7 +747,7 @@ public class IndexU extends javax.swing.JFrame {
        {
            DefaultTableModel model = (DefaultTableModel) tblBooktable.getModel();
             model.setRowCount(0);
-            ListBookDetail = new ArrayList<BookDetail>();
+            ListBookDetail.clear();
         try
         {
             Connect sqlinstance = new Connect();
@@ -714,7 +762,7 @@ public class IndexU extends javax.swing.JFrame {
                 book.setBookId(BookResult.getString("BookId"));
                 book.setAuthorId(BookResult.getString("AuthorId"));
                 ListBookDetail.add(book);
-                System.out.println(ListBookDetail.get(0).getAuthorId());
+                
             }
             sqlinstance.conn.close();
         }catch(Exception e)
@@ -759,6 +807,7 @@ public class IndexU extends javax.swing.JFrame {
        }
        public void loadCartPanel()
        {
+           tblCart.removeAll();
            if(Dic.isEmpty())
                return;
            DefaultTableModel model = (DefaultTableModel) tblCart.getModel();
@@ -770,9 +819,12 @@ public class IndexU extends javax.swing.JFrame {
             sqlinstance.Connect();
             Statement stateget = sqlinstance.conn.createStatement();
             int TongTien = 0;
-            for (Map.Entry<BookDetail, Integer> entry : Dic.entrySet()) {
-                BookDetail key = entry.getKey();
-                int value = entry.getValue();
+            
+            Enumeration<BookDetail> keys = Dic.keys();
+            while(keys.hasMoreElements())
+            {
+                BookDetail key = keys.nextElement();
+                int value = Dic.get(key);
                 String SelectQueryAll = "Select * from Book where BookId='"
                         +key.getBookId()
                         +"';";
@@ -780,7 +832,9 @@ public class IndexU extends javax.swing.JFrame {
                 BookResult.next();
                 TongTien+= Integer.parseInt(BookResult.getString("Price")) * value;
                 model.addRow(new Object[]{BookResult.getString("BookId"),BookResult.getString("BookName"),BookResult.getString("Price"),value});
+        
             }
+          
             //txt
             /////////////
             txtTongTien.setText(Integer.toString(TongTien));
@@ -858,7 +912,6 @@ public class IndexU extends javax.swing.JFrame {
     private javax.swing.JButton btnCart;
     private javax.swing.JButton btnEditP;
     private javax.swing.JButton btnHome;
-    private javax.swing.JButton btnPaymentHistory;
     private javax.swing.JButton btnRemoveCart;
     private javax.swing.JButton btnSaveP;
     private javax.swing.JButton btnSearchH;

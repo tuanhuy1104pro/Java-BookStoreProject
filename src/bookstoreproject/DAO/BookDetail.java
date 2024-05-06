@@ -28,18 +28,21 @@ public class BookDetail {
     public void setAuthorId(String AuthorId) {
         this.AuthorId = AuthorId;
     }
-   @Override
-    public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (obj == null || getClass() != obj.getClass())
-            return false;
-        BookDetail db = (BookDetail) obj;
-        return BookId == db.BookId && AuthorId == db.AuthorId;
-    }
+  @Override
+public boolean equals(Object obj) {
+    if (this == obj)
+        return true;
+    if (obj == null || getClass() != obj.getClass())
+        return false;
+    BookDetail db = (BookDetail) obj;
+    // Sử dụng phương thức equals của lớp String để so sánh BookId và AuthorId
+    return Objects.equals(BookId, db.BookId) && Objects.equals(AuthorId, db.AuthorId);
+}
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(BookId, AuthorId);
-    }
+@Override
+public int hashCode() {
+    // Tạo mã băm dựa trên BookId và AuthorId
+    return Objects.hash(BookId, AuthorId);
+}
+
 }
