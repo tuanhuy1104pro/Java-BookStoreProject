@@ -675,8 +675,24 @@ public class IndexU extends javax.swing.JFrame {
             document.close();
         }
         */
+        /////////////////// Xử lí mua
+        try
+        {
+            
+        }catch(Exception e)
+        {
+            e.printStackTrace();
+        }
+        ///////////////////Xử lí sau khi mua
+        DefaultTableModel model = (DefaultTableModel) tblCart.getModel();
+       
+        for (int i = 0; i < tblCart.getRowCount(); i++) {
+            
+            String BookId = model.getValueAt(i,0).toString();
+            int Soluong = Integer.parseInt(model.getValueAt(i, 3).toString());
+            updateDbAfterBuyBook(BookId,Soluong);
+        }
         
-        Dic = new Hashtable<>();
     }//GEN-LAST:event_btnThanhToanActionPerformed
 
     private void btnApplyCouponActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnApplyCouponActionPerformed
@@ -737,7 +753,7 @@ public class IndexU extends javax.swing.JFrame {
                 }
             }
             loadCartPanel();
-            
+            sqlinstane.conn.close();
         }catch(Exception e)
         {
             e.printStackTrace();
@@ -808,14 +824,7 @@ public class IndexU extends javax.swing.JFrame {
                 + "'";
                 
                 int isUpdated = state.executeUpdate(updateString);
-                if(isUpdated > 0)
-                {
-                   JOptionPane.showMessageDialog(null, "Update sau mua thanh cong","Thông báo",JOptionPane.INFORMATION_MESSAGE);
-
-                }
-                else
-                   JOptionPane.showMessageDialog(null, "Update sau mua that bai","Thông báo",JOptionPane.INFORMATION_MESSAGE);
-
+                sqlinstance.conn.close();
            }
            
           catch(Exception e)
