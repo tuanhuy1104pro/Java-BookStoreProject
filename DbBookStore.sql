@@ -19,9 +19,15 @@ create table Book
 )
 --select BookId,BookName,CategoryName,Price,GioiThieu from Book,Category where Book.CategoryId = Category.CategoryId
 --select BookId,BookName,CategoryName,Price,GioiThieu from Book,Category where Book.CategoryId = Category.CategoryId and (Book.BookId = 'Lịch sử' or Book.BookName = 'Lịch sử' or Category.CategoryName =N'Lịch sử')
-select Book.BookId,BookName,CategoryName,Price,Book.GioiThieu, Name as TacGia,TonKho from Book,Category,BookDetail,Author where Book.CategoryId = Category.CategoryId and Book.BookId = BookDetail.BookId and BookDetail.AuthorId = Author.AuthorId
+select Book.BookId,BookName,CategoryName,Price,Book.GioiThieu, Name as TacGia,TonKho from Book,Category,BookDetail,Author where Book.CategoryId = Category.CategoryId and Book.BookId = BookDetail.BookId and BookDetail.AuthorId = Author.AuthorId and Book.TonKho > 0
+
+update  Book
+set TonKho = 0 where BookId = ''
+
 alter table Book
 add TonKho int null;
+
+select Book.BookId,BookName,CategoryName,Price,Book.GioiThieu,Author.AuthorId, Name as TacGia,TonKho from Book,Category,BookDetail,Author where Book.CategoryId = Category.CategoryId and Book.BookId = BookDetail.BookId and BookDetail.AuthorId = Author.AuthorId
 
 --insert into Book values('',1,N'',1,'')
 create table Author
@@ -73,12 +79,6 @@ create table ChiTietHoaDon
 	IdHoaDon varchar(37) foreign key references HoaDon(IdHoaDon),
 	BookId varchar(37) foreign key references Book(BookId),
 	SoLuong int
-)
-create table LogComment
-(
-	UserId varchar(37) foreign key references Users(UserId),
-	BookId varchar(37) foreign key references Book(BookId),
-	Comment text
 )
 
 Insert into Category values(1,N'Lịch sử'),

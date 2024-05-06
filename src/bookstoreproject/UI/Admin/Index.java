@@ -1269,8 +1269,12 @@ public class Index extends javax.swing.JFrame {
                 
             
             ////
+            
+            ////////Delete Hoa Don
+            
                 
             ///
+            
             ////Delete Book
             String updatequery = "Delete from Book\n" 
             +"\n" 
