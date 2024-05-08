@@ -39,7 +39,7 @@ public class Index extends javax.swing.JFrame {
         btnReloadH.setVisible(false);
          /////Start-Up Config
         //Config hiện tên người dùng
-        if(this.UserInstance.getFullName().equals(""))
+        if(this.UserInstance.getFullName() == null)
         {
             lbUser.setText(this.UserInstance.getUserName());
         }
@@ -920,6 +920,35 @@ public class Index extends javax.swing.JFrame {
             sqlinstance.Connect();
             Statement statement = sqlinstance.conn.createStatement();
             
+             //////////////////Delete chitiet Hoadon
+            String SelectHoadonQ = "select IdHoaDon from HoaDon where CouponId = '"
+                    + CurrentRowCouponId
+                    + "';";
+            ResultSet rs = statement.executeQuery(SelectHoadonQ);
+            
+            while(rs.next())
+            {
+                String IdHoaDon = rs.getString("IdHoaDon");
+                 String DeleteChiTietHoaDonC = "Delete from ChiTietHoaDon\n" 
+                +"\n" 
+                +"where IdHoaDon = '"
+                + IdHoaDon
+                +"';";
+                 
+                Statement deleteStatement = sqlinstance.conn.createStatement();
+                deleteStatement.executeUpdate(DeleteChiTietHoaDonC);
+                deleteStatement.close();
+            }
+            ///////////Delete HoaDon Lien quan đến Coupon
+             String DeleteHoaDonQ = "Delete from HoaDon\n" 
+            +"\n" 
+            +"where CouponId = '"
+            + CurrentRowCouponId
+            +"';";
+
+            statement.executeUpdate(DeleteHoaDonQ);
+            
+            
              
             ///////////////////////Delete stage
             
@@ -991,8 +1020,34 @@ public class Index extends javax.swing.JFrame {
             sqlinstance.Connect();
             Statement statement = sqlinstance.conn.createStatement();
             
-             
-            ///////////////////////Delete stage
+            //////////////////Delete chitiet Hoadon
+            String SelectHoadonQ = "select IdHoaDon from HoaDon where UserId = '"
+                    + CurrentRowUserId
+                    + "';";
+            ResultSet rs = statement.executeQuery(SelectHoadonQ);
+            
+            while(rs.next())
+            {
+                String IdHoaDon = rs.getString("IdHoaDon");
+                 String DeleteChiTietHoaDonQ = "Delete from ChiTietHoaDon\n" 
+                +"\n" 
+                +"where IdHoaDon = '"
+                + IdHoaDon
+                +"';";
+                 
+                Statement deleteStatement = sqlinstance.conn.createStatement();
+                deleteStatement.executeUpdate(DeleteChiTietHoaDonQ);
+                deleteStatement.close();
+            }
+            ///////////Delete HoaDon Lien quan đến Users
+             String DeleteHoaDonQ = "Delete from HoaDon\n" 
+            +"\n" 
+            +"where UserId = '"
+            + CurrentRowUserId
+            +"';";
+
+            statement.executeUpdate(DeleteHoaDonQ);
+            ///////////////////////Delete User
             
             String updatequery = "Delete from Users\n" 
             +"\n" 
@@ -1014,7 +1069,9 @@ public class Index extends javax.swing.JFrame {
             sqlinstance.conn.close();
         }catch(Exception e)
         {
-            
+            e.printStackTrace();
+           JOptionPane.showMessageDialog(null, "Không thể xóa","Thông báo",JOptionPane.INFORMATION_MESSAGE);
+
         }
     }//GEN-LAST:event_btnXoaActionPerformed
 
@@ -1069,12 +1126,13 @@ public class Index extends javax.swing.JFrame {
                     expectedId++;
             }
             ///Begin add User
-            String InsertQuery = "insert into Users(UserId,UserName,UserPass,UserRole) values('"
+            String InsertQuery = "insert into Users(UserId,UserName,UserPass,FullName,UserRole) values('"
                     +"U"+expectedId
                     +"','"
                     +txtUserName.getText()
                     +"','"
                     +txtPassword.getText()
+                    +"','"
                     +"','"
                     +"User"
                     + "');";
@@ -1266,15 +1324,13 @@ public class Index extends javax.swing.JFrame {
                 
                 ////
             //// Delete chi tiet hoa don
-                
-            
-            ////
-            
-            ////////Delete Hoa Don
-            
-                
-            ///
-            
+              String DeleteCTHoaDonH = "Delete from ChiTietHoaDon\n" 
+            +"\n" 
+            +"where BookId = '"
+            + CurrentRowBookId
+            +"';";
+              int rowEffect = statement.executeUpdate(DeleteCTHoaDonH);
+            ////          
             ////Delete Book
             String updatequery = "Delete from Book\n" 
             +"\n" 

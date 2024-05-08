@@ -183,12 +183,13 @@ public class Register extends javax.swing.JFrame {
             //Validation
             
             NumberMember++;
-            String InsertQuery = "insert into Users(UserId,UserName,UserPass,UserRole) values('"
+            String InsertQuery = "insert into Users(UserId,UserName,UserPass,FullName,UserRole) values('"
                     +"U"+NumberMember
                     +"','"
                     +txtUserName.getText()
                     +"','"
                     +txtPassword.getText()
+                    + "','"
                     +"','User');";
                     
             //Auto Login after Register
