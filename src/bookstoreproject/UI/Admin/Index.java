@@ -4,8 +4,8 @@
  */
 package bookstoreproject.UI.Admin;
 
-import bookstoreproject.DAO.User;
-import bookstoreproject.Entities.Connect;
+import bookstoreproject.MODAL.User;
+import bookstoreproject.DAO.Connect;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.sql.ResultSet;
@@ -1176,9 +1176,9 @@ public class Index extends javax.swing.JFrame {
         // TODO add your handling code here:
             DefaultTableModel model = (DefaultTableModel)tblUser.getModel();
              int rowselected = tblUser.getSelectedRow();
-              CurrentRowUserId = tblUser.getValueAt(rowselected, 0).toString();
-              txtUserName.setText(tblUser.getValueAt(rowselected, 1).toString());
-              cboRoleQ.setSelectedItem(tblUser.getValueAt(rowselected, 4).toString());
+             CurrentRowUserId = tblUser.getValueAt(rowselected, 0).toString();
+             txtUserName.setText(tblUser.getValueAt(rowselected, 1).toString());
+             cboRoleQ.setSelectedItem(tblUser.getValueAt(rowselected, 4).toString());
     }//GEN-LAST:event_tblUserMouseClicked
 
     private void btnSaveEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveEditActionPerformed

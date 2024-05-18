@@ -3,8 +3,8 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package bookstoreproject.UI;
-import bookstoreproject.DAO.User;
-import bookstoreproject.Entities.Connect;
+import bookstoreproject.MODAL.User;
+import bookstoreproject.DAO.Connect;
 import bookstoreproject.UI.Admin.Index;
 import bookstoreproject.UI.User.IndexU;
 import com.microsoft.sqlserver.jdbc.SQLServerException;

@@ -4,7 +4,7 @@
  */
 package bookstoreproject.UI.Admin;
 
-import bookstoreproject.Entities.Connect;
+import bookstoreproject.DAO.Connect;
 import java.sql.*;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;

@@ -4,9 +4,9 @@
  */
 package bookstoreproject.UI.User;
 
-import bookstoreproject.DAO.BookDetail;
-import bookstoreproject.DAO.User;
-import bookstoreproject.Entities.Connect;
+import bookstoreproject.MODAL.BookDetail;
+import bookstoreproject.MODAL.User;
+import bookstoreproject.DAO.Connect;
 import java.awt.List;
 import java.sql.ResultSet;
 import java.sql.Statement;
