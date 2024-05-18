@@ -6,6 +6,7 @@ package bookstoreproject.UI;
 
 import bookstoreproject.MODAL.User;
 import bookstoreproject.DAO.Connect;
+import bookstoreproject.DAO.UserDAO;
 import bookstoreproject.UI.Admin.Index;
 import bookstoreproject.UI.User.IndexU;
 import java.awt.event.WindowAdapter;
@@ -148,25 +149,10 @@ public class Register extends javax.swing.JFrame {
             countResult.next();
             int NumberMember = Integer.parseInt(countResult.getString("CountById"));
             //Validation
-            String validation ="";
-            //
-            if(txtUserName.getText().isEmpty() || txtPassword.getText().isEmpty() ||txtConfirmPassword.getText().isEmpty())
-            {
-                if(txtUserName.getText().isEmpty())
-                    validation += "Username must be fill ";
-                if(txtPassword.getText().isEmpty())
-                    validation += "- Password must be fill ";
-                if(txtConfirmPassword.getText().isEmpty())
-                    validation += "- Confirm password must be fill ";
-                JOptionPane.showMessageDialog(null, validation, "Thông báo", JOptionPane.INFORMATION_MESSAGE);
-                return;
-            }
-            if(!txtPassword.getText().equals(txtConfirmPassword.getText()))
-            {
-                JOptionPane.showMessageDialog(null,"Confirm password phải đúng với pasword đã nhập","Thông báo",JOptionPane.INFORMATION_MESSAGE);
-                return;
-            }
+            
+           
             ////////////////////////Exist validation
+            boolean userIsExist = UserDAO.UserIsExist(txtUserName.getText(),txtPassword.getText());
             String FindUser = "Select * from Users where UserName ='"
                     +txtUserName.getText()
                     +"' " 
@@ -179,7 +165,6 @@ public class Register extends javax.swing.JFrame {
                  JOptionPane.showMessageDialog(null, "Tài Khoản đã tồn tại", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
                  return;
             }
-            /////////////////////// exist validation
             //Validation
             
             NumberMember++;
