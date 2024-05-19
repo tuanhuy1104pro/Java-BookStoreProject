@@ -140,125 +140,97 @@ public class Register extends javax.swing.JFrame {
 
     private void btnRegisActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegisActionPerformed
         // TODO add your handling code here:
-        try{
-            Connect ConnectInstance  = new Connect();
+        try {
+            Connect ConnectInstance = new Connect();
             ConnectInstance.Connect();
             Statement statement = ConnectInstance.conn.createStatement();
-            String CoutQuery = "select Count(UserId) as CountById from Users;";
-            ResultSet countResult = statement.executeQuery(CoutQuery);
-            countResult.next();
-            int NumberMember = Integer.parseInt(countResult.getString("CountById"));
             //Validation
-            
-           
-            ////////////////////////Exist validation
-            boolean userIsExist = UserDAO.UserIsExist(txtUserName.getText(),txtPassword.getText());
-            String FindUser = "Select * from Users where UserName ='"
-                    +txtUserName.getText()
-                    +"' " 
-                    +" and"
-                    + " UserPass = '"
-                    +txtPassword.getText()
-                    +"'" ;
-             ResultSet FindResult  = statement.executeQuery(FindUser);
-            if(FindResult.next()){
-                 JOptionPane.showMessageDialog(null, "Tài Khoản đã tồn tại", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
-                 return;
-            }
-            //Validation
-            
-            NumberMember++;
-            String InsertQuery = "insert into Users(UserId,UserName,UserPass,FullName,UserRole) values('"
-                    +"U"+NumberMember
-                    +"','"
-                    +txtUserName.getText()
-                    +"','"
-                    +txtPassword.getText()
-                    + "','"
-                    +"','User');";
-                    
-            //Auto Login after Register
-            Statement state = ConnectInstance.conn.createStatement();
-            int row = state.executeUpdate(InsertQuery);
-            if(row == 0)
-            {
-                ConnectInstance.conn.close();
-             JOptionPane.showMessageDialog(null,"error","Thông báo",JOptionPane.INFORMATION_MESSAGE);
-            }
-            else
-            {
-             JOptionPane.showMessageDialog(null,"Tạo tài khoản thành công","Thông báo",JOptionPane.INFORMATION_MESSAGE);
-            
-             String select = "Select * from Users where UserName ='"
-                    +txtUserName.getText()
-                    +"' " 
-                    +" and"
-                    + " UserPass = '"
-                    +txtPassword.getText()
-                    +"'" ;
-                    
-            ResultSet resultSet  = statement.executeQuery(select);
-            if(resultSet.next()){
-                String role = resultSet.getString("UserRole");
-                if(role.equals("Admin"))
-                {
-                     User Userinstance = new User();
-                        Userinstance.setUserName(resultSet.getString("UserName"));
-                        Userinstance.setUserPass(resultSet.getString("UserPass"));
-                        Userinstance.setFullName(resultSet.getString("FullName"));
-                        Userinstance.setUserAddress(resultSet.getString("UserAddress"));
-                        Userinstance.setPhoneNumber(resultSet.getString("PhoneNumber"));
-                        Userinstance.setUserRole(resultSet.getString("UserRole"));
-        
-                    Index  openNewFormButton = new Index(Userinstance);
-                    openNewFormButton.setDefaultCloseOperation(openNewFormButton.DISPOSE_ON_CLOSE);
-                    openNewFormButton.addWindowListener(new WindowAdapter() {
-                    @Override
-                    public void windowClosed(WindowEvent e) {
-                        // Khi form mới đóng, hiện lại form cũ
-                         setVisible(true);
-                    }
-                });
-                 setVisible(false);
-                 openNewFormButton.setVisible(true);
-                 /////// trỏ tới index
+
+            //Validation Message
+            String validation = UserDAO.ValidationRegister(txtUserName.getText(), txtPassword.getText(), txtConfirmPassword.getText());
+            if (validation.isEmpty()) {
+                User userIsExist = UserDAO.UserIsExist(txtUserName.getText(), txtPassword.getText());
+                ////////////////////////Exist validation
+                if (userIsExist != null) {
+                    JOptionPane.showMessageDialog(null, "Tài Khoản đã tồn tại", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+                    return;
                 }
-                //Thật ra thì thằng admin nó chẳng bao giờ tới đâu, chỉ là để phòng hờ lỗi thôi -> xóa cũng được do lúc đăng ký thì thằng nào chả là User :))
-                if(role.equals("User"))
-                {
-                    User Userinstance = new User();
-                        Userinstance.setUserName(resultSet.getString("UserName"));
-                        Userinstance.setUserPass(resultSet.getString("UserPass"));
-                        Userinstance.setFullName(resultSet.getString("FullName"));
-                        Userinstance.setUserAddress(resultSet.getString("UserAddress"));
-                        Userinstance.setPhoneNumber(resultSet.getString("PhoneNumber"));
-                        Userinstance.setUserRole(resultSet.getString("UserRole"));
-        
-                    IndexU  openNewFormButton = new IndexU(Userinstance);
-                    openNewFormButton.setDefaultCloseOperation(openNewFormButton.DISPOSE_ON_CLOSE);
-                    openNewFormButton.addWindowListener(new WindowAdapter() {
-                    @Override
-                    public void windowClosed(WindowEvent e) {
-                        // Khi form mới đóng, hiện lại form cũ
-                         setVisible(true);
-                    }
-                    });
-                    setVisible(false);
-                    openNewFormButton.setVisible(true);
-                 /////// trỏ tới index
-                }
-                 //////// trỏ tới index của admin -> Khi form mới close thì form cũ sẽ bật lại
-                 
-                 //CLsoe instance sql
+                User user = new User();
+                user.setUserName(txtUserName.getText());
+                user.setUserPass(txtPassword.getText());
+                Boolean isadd = UserDAO.AddUser(user);
                 
+               
+                if (isadd == false) {
+                    ConnectInstance.conn.close();
+                    JOptionPane.showMessageDialog(null, "Tạo tài khoàn thất bại", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+                } else {
+                    JOptionPane.showMessageDialog(null, "Tạo tài khoản thành công", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+                    
+                    
+                    ////Get user that we have added recently
+                    User getUser= UserDAO.GetUser(txtUserName.getText(), txtPassword.getText());
+                    if (getUser != null) {
+                        String role = getUser.getUserRole();
+                        if (role.equals("Admin")) {
+                            User Userinstance = new User();
+                            Userinstance.setUserId(getUser.getUserId());
+                            Userinstance.setUserName(getUser.getUserName());
+                            Userinstance.setUserPass(getUser.getUserPass());
+                            Userinstance.setFullName(getUser.getFullName());
+                            Userinstance.setUserAddress(getUser.getUserAddress());
+                            Userinstance.setPhoneNumber(getUser.getPhoneNumber());
+                            Userinstance.setUserRole(getUser.getUserRole());
+
+                            Index openNewFormButton = new Index(Userinstance);
+                            openNewFormButton.setDefaultCloseOperation(openNewFormButton.DISPOSE_ON_CLOSE);
+                            openNewFormButton.addWindowListener(new WindowAdapter() {
+                                @Override
+                                public void windowClosed(WindowEvent e) {
+                                    // Khi form mới đóng, hiện lại form cũ
+                                    setVisible(true);
+                                }
+                            });
+                            setVisible(false);
+                            openNewFormButton.setVisible(true);
+                            /////// trỏ tới index
+                        }
+                        //Thật ra thì thằng admin nó chẳng bao giờ tới đâu, chỉ là để phòng hờ lỗi thôi -> xóa cũng được do lúc đăng ký thì thằng nào chả là User :))
+                        if (role.equals("User")) {
+                            User Userinstance = new User();
+                            Userinstance.setUserId(getUser.getUserId());
+                            Userinstance.setUserName(getUser.getUserName());
+                            Userinstance.setUserPass(getUser.getUserPass());
+                            Userinstance.setFullName(getUser.getFullName());
+                            Userinstance.setUserAddress(getUser.getUserAddress());
+                            Userinstance.setPhoneNumber(getUser.getPhoneNumber());
+                            Userinstance.setUserRole(getUser.getUserRole());
+                            IndexU openNewFormButton = new IndexU(Userinstance);
+                            openNewFormButton.setDefaultCloseOperation(openNewFormButton.DISPOSE_ON_CLOSE);
+                            openNewFormButton.addWindowListener(new WindowAdapter() {
+                                @Override
+                                public void windowClosed(WindowEvent e) {
+                                    // Khi form mới đóng, hiện lại form cũ
+                                    setVisible(true);
+                                }
+                            });
+                            setVisible(false);
+                            openNewFormButton.setVisible(true);
+                            /////// trỏ tới index
+                        }
+                        //////// trỏ tới index của admin -> Khi form mới close thì form cũ sẽ bật lại
+
+                        //CLsoe instance sql
+                    }
+                    //Auto Login after Register
+                    ConnectInstance.conn.close();
+
+                }
+            } else {
+                JOptionPane.showMessageDialog(null, validation, "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+                return;
             }
-           //Auto Login after Register
-             ConnectInstance.conn.close();
-             
-            }
-            
-        }catch(Exception e)
-        {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }//GEN-LAST:event_btnRegisActionPerformed

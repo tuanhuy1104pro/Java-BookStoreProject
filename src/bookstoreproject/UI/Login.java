@@ -202,7 +202,7 @@ public class Login extends javax.swing.JFrame {
     private void btnLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoginActionPerformed
         
         
-           User user = UserDAO.Login(txtUserName.getText(), txtPassword.getText());
+           User user = UserDAO.GetUser(txtUserName.getText(), txtPassword.getText());
             if(user != null){
                 
                 if(user.getUserRole().equals("Admin"))
