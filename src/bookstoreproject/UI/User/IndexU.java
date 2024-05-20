@@ -7,6 +7,7 @@ package bookstoreproject.UI.User;
 import bookstoreproject.MODAL.BookDetail;
 import bookstoreproject.MODAL.User;
 import bookstoreproject.DAO.Connect;
+import bookstoreproject.DAO.UserDAO;
 import java.awt.List;
 import java.sql.ResultSet;
 import java.sql.Statement;
@@ -532,10 +533,6 @@ public class IndexU extends javax.swing.JFrame {
     private void btnSavePActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSavePActionPerformed
         // TODO add your handling code here:
          try{
-             Connect sqlinstance = new Connect();
-            sqlinstance.Connect();
-            Statement statement = sqlinstance.conn.createStatement();
-            
              /////Validation
             String validation ="";
             //
@@ -561,32 +558,21 @@ public class IndexU extends javax.swing.JFrame {
             
             ////Validation
             
-            String updatequery = "update Users\n" 
-            +"set FullName = '"
-            + txtHoTenP.getText()
-            + "',UserAddress = '"
-            + txtAddressP.getText()
-            +"',PhoneNumber = '"
-            + txtSdt.getText()
-            +"'\n" +
-            "where UserName = '"
-            + UserInstance.getUserName()
-            + "' and UserPass ='"
-            + UserInstance.getUserPass()
-            +"';";
+            User temp = new User();
+            temp.setFullName(txtHoTenP.getText());
+            temp.setUserAddress(txtAddressP.getText());
+            temp.setPhoneNumber(txtSdt.getText());
 
-            int issucceed = statement.executeUpdate(updatequery);
-            if(issucceed != 0)
-            {
-               
+            Boolean isEdit = UserDAO.EditProfile(UserInstance, temp);
+            if (isEdit) {
+
                 this.UserInstance.setFullName(txtHoTenP.getText());
                 this.UserInstance.setUserAddress(txtAddressP.getText());
                 this.UserInstance.setPhoneNumber(txtSdt.getText());
                 lbUser.setText(this.UserInstance.getFullName());
-                JOptionPane.showMessageDialog(null, "Edited successful","Thông báo",JOptionPane.INFORMATION_MESSAGE);
-                sqlinstance.conn.close();
+                JOptionPane.showMessageDialog(null, "Edited successful", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+
             }
-            sqlinstance.conn.close();
        
         }catch(Exception e)
         {

@@ -4,13 +4,18 @@
  */
 package bookstoreproject.UI.Admin;
 
+import bookstoreproject.DAO.ChiTietHoaDonDAO;
 import bookstoreproject.MODAL.User;
 import bookstoreproject.DAO.Connect;
+import bookstoreproject.DAO.CouponDAO;
+import bookstoreproject.DAO.HoaDonDAO;
+import bookstoreproject.DAO.UserDAO;
+import bookstoreproject.MODAL.Coupon;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.sql.ResultSet;
 import java.sql.Statement;
-
+import java.util.ArrayList;
 
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
@@ -25,10 +30,11 @@ public class Index extends javax.swing.JFrame {
     private String CurrentRowCouponId;
     private String CurrentRowBookId;
     private String CurrentRowUserId; // được lấy tại event click của bản đấy
-   
+
     /**
      * Creates new form Index
-     * @param UserInstance 
+     *
+     * @param UserInstance
      */
     public Index(User UserInstance) {
         initComponents();
@@ -37,14 +43,11 @@ public class Index extends javax.swing.JFrame {
         setLocationRelativeTo(null);
         this.UserInstance = UserInstance;
         btnReloadH.setVisible(false);
-         /////Start-Up Config
+        /////Start-Up Config
         //Config hiện tên người dùng
-        if(this.UserInstance.getFullName() == null)
-        {
+        if (this.UserInstance.getFullName() == null) {
             lbUser.setText(this.UserInstance.getUserName());
-        }
-        else
-        {
+        } else {
             lbUser.setText(this.UserInstance.getFullName());
         }
         //Config hiện tên người dùng
@@ -616,7 +619,7 @@ public class Index extends javax.swing.JFrame {
         Tabpanel.setSelectedIndex(0);
         showBookTable();
         btnReloadH.setVisible(false);
-        
+
     }//GEN-LAST:event_btnHomeActionPerformed
 
     private void btnQuanLyCouponActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnQuanLyCouponActionPerformed
@@ -629,27 +632,27 @@ public class Index extends javax.swing.JFrame {
         // TODO add your handling code here:
         Tabpanel.setSelectedComponent(ProfilePanel);
         showProfilePanel();
-        
+
     }//GEN-LAST:event_lbUserMouseClicked
 
     private void btnAddHActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddHActionPerformed
-                //Open Form Quản lý người dùng
-                QuanLySach  openNewFormButton = new QuanLySach();
-                    openNewFormButton.setDefaultCloseOperation(openNewFormButton.DISPOSE_ON_CLOSE);
-                    openNewFormButton.addWindowListener(new WindowAdapter() {
-                    @Override
-                    public void windowClosed(WindowEvent e) {
-                        // Khi form mới đóng, hiện lại form cũ
-                         setVisible(true);
-                    }
-                });
-                 setVisible(false);
-                 openNewFormButton.setVisible(true);
-                 /////// trỏ tới index
+        //Open Form Quản lý người dùng
+        QuanLySach openNewFormButton = new QuanLySach();
+        openNewFormButton.setDefaultCloseOperation(openNewFormButton.DISPOSE_ON_CLOSE);
+        openNewFormButton.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosed(WindowEvent e) {
+                // Khi form mới đóng, hiện lại form cũ
+                setVisible(true);
+            }
+        });
+        setVisible(false);
+        openNewFormButton.setVisible(true);
+        /////// trỏ tới index
     }//GEN-LAST:event_btnAddHActionPerformed
 
     private void btnEditPActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditPActionPerformed
-     
+
         //Start up config
         btnSaveP.setVisible(true);
         txtHoTenP.setEnabled(true);
@@ -660,73 +663,52 @@ public class Index extends javax.swing.JFrame {
 
     private void btnSavePActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSavePActionPerformed
         // TODO add your handling code here:
-        try{
-             Connect sqlinstance = new Connect();
-            sqlinstance.Connect();
-            Statement statement = sqlinstance.conn.createStatement();
-            
-             /////Validation
-            String validation ="";
+        try {
+            /////Validation
+            String validation = "";
             //
-            if(txtHoTenP.getText().isEmpty() || txtAddressP.getText().isEmpty() ||txtSdt.getText().isEmpty())
-            {
-                if(txtHoTenP.getText().isEmpty())
+            if (txtHoTenP.getText().isEmpty() || txtAddressP.getText().isEmpty() || txtSdt.getText().isEmpty()) {
+                if (txtHoTenP.getText().isEmpty()) {
                     validation += "Họ tên must be fill ";
-                if(txtAddressP.getText().isEmpty())
+                }
+                if (txtAddressP.getText().isEmpty()) {
                     validation += "- Address must be fill ";
-                if(txtSdt.getText().isEmpty())
+                }
+                if (txtSdt.getText().isEmpty()) {
                     validation += "- Phone Number must be fill ";
+                }
                 JOptionPane.showMessageDialog(null, validation, "Thông báo", JOptionPane.INFORMATION_MESSAGE);
                 return;
             }
-            
-            ////////////////////PhoneNumber validation - only number
-            if(!txtSdt.getText().matches("\\d+"))
-            {
-               JOptionPane.showMessageDialog(null, "Phone number must only contain number", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
-               return;
-            }
-            
-            
-            ////Validation
-            
-            String updatequery = "update Users\n" 
-            +"set FullName = '"
-            + txtHoTenP.getText()
-            + "',UserAddress = '"
-            + txtAddressP.getText()
-            +"',PhoneNumber = '"
-            + txtSdt.getText()
-            +"'\n" +
-            "where UserName = '"
-            + UserInstance.getUserName()
-            + "' and UserPass ='"
-            + UserInstance.getUserPass()
-            +"';";
 
-            int issucceed = statement.executeUpdate(updatequery);
-            if(issucceed != 0)
-            {
-               
+            ////////////////////PhoneNumber validation - only number
+            if (!txtSdt.getText().matches("\\d+")) {
+                JOptionPane.showMessageDialog(null, "Phone number must only contain number", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+                return;
+            }
+
+            ////Validation
+            User temp = new User();
+            temp.setFullName(txtHoTenP.getText());
+            temp.setUserAddress(txtAddressP.getText());
+            temp.setPhoneNumber(txtSdt.getText());
+
+            Boolean isEdit = UserDAO.EditProfile(UserInstance, temp);
+            if (isEdit) {
+
                 this.UserInstance.setFullName(txtHoTenP.getText());
                 this.UserInstance.setUserAddress(txtAddressP.getText());
                 this.UserInstance.setPhoneNumber(txtSdt.getText());
                 lbUser.setText(this.UserInstance.getFullName());
-                JOptionPane.showMessageDialog(null, "Edited successful","Thông báo",JOptionPane.INFORMATION_MESSAGE);
-                sqlinstance.conn.close();
+                JOptionPane.showMessageDialog(null, "Edited successful", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+
             }
-            sqlinstance.conn.close();
-       
-        }catch(Exception e)
-        {
+
+        } catch (Exception e) {
             e.printStackTrace();
         }
-       
-        
-        
-        
-        
-         //End config
+
+        //End config
         btnSaveP.setVisible(false);
         txtHoTenP.setEnabled(false);
         txtAddressP.setEnabled(false);
@@ -743,75 +725,21 @@ public class Index extends javax.swing.JFrame {
 
     private void btnAddCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddCActionPerformed
         // TODO add your handling code here:
-         /////Validation
-            String validation ="";
-            //
-            if(txtCouponName.getText().isEmpty() || txtCouponPercent.getText().isEmpty())
-            {
-                if(txtCouponName.getText().isEmpty())
-                    validation += "Name Coupon must be fill ";
-                if(txtCouponPercent.getText().isEmpty())
-                    validation += "- Discount value must be fill ";
-                
-                JOptionPane.showMessageDialog(null, validation, "Thông báo", JOptionPane.INFORMATION_MESSAGE);
-                return;
-            }
-            
-            ////////////////////Discount validation - float
-            if(!txtCouponPercent.getText().matches("\\d+\\.\\d+"))
-            {
-               JOptionPane.showMessageDialog(null, "Format error", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
-               return;
-            }
-            
-            ////Validation
-            
-           try{
-                Connect ConnectInstance  = new Connect();
-            ConnectInstance.Connect();
-            Statement statement = ConnectInstance.conn.createStatement();
-            
-             //////////////////////Exist validation
-            String FindUser = "Select * from Coupon where CouponName ='"
-                    +txtCouponName.getText()
-                    +"'; " ;
-                    
-             ResultSet FindResult  = statement.executeQuery(FindUser);
-            if(FindResult.next()){
-                 JOptionPane.showMessageDialog(null, "Coupon đã tồn tại", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
-                 return;
-            }
-            //////////////////////Exist validation
-            
-            /////////////////// add Coupon stage
-            // Get all existing IDs
-            String IdQuery = "select CouponId from Coupon order by CouponId;";
-            ResultSet idResult = statement.executeQuery(IdQuery);
+        /////Validation
+        String validation = CouponDAO.ValidationString(txtCouponName.getText(), txtCouponPercent.getText());
+        //
+        if (!validation.isEmpty()) {
+            JOptionPane.showMessageDialog(null, validation, "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+            return;
+        }
+        ////Validation
 
-            // Find the first missing ID
-            int expectedId = 1;
-            while(idResult.next()){
-                    String currentId = idResult.getString("CouponId").substring(1); // Remove 'C' prefix
-                    int currentIdNumber = Integer.parseInt(currentId);
-                    if(currentIdNumber != expectedId){
-                        break;
-                     }
-                    expectedId++;
-            }
-            ///Begin add coupon
-            String InsertQuery = "insert into Coupon(CouponId,CouponName,Discount) values('"
-                    +"C"+expectedId
-                    +"','"
-                    +txtCouponName.getText()
-                    +"',"
-                    +txtCouponPercent.getText()
-                    +");";
-                    
-            
-            Statement state = ConnectInstance.conn.createStatement();
-            int row = state.executeUpdate(InsertQuery);
-            if(row != 0)
-            {
+        try {
+            Coupon cp = new Coupon();
+            cp.setCouponName(txtCouponName.getText());
+            cp.setDiscount(Float.parseFloat(txtCouponPercent.getText()));
+            Boolean row = CouponDAO.CreateCoupon(cp);
+            if (row == true) {
                 JOptionPane.showMessageDialog(null, "Add mã coupon thành công", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
                 txtCouponName.setText("");
                 txtCouponPercent.setText("");
@@ -820,159 +748,84 @@ public class Index extends javax.swing.JFrame {
                 model.setRowCount(0);
                 showCouponTable();
                 /////
-                ConnectInstance.conn.close();
-            }
-            else
-            {
-                JOptionPane.showMessageDialog(null, "Xảy ra lỗi khi add mã", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
 
-                ConnectInstance.conn.close();
             }
-           }catch(Exception e)
-           {
-               e.printStackTrace();
-           }
-            
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
     }//GEN-LAST:event_btnAddCActionPerformed
 
     private void tblCouponMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblCouponMouseClicked
         // TODO add your handling code here:
-             DefaultTableModel model = (DefaultTableModel)tblCoupon.getModel();
-             int rowselected = tblCoupon.getSelectedRow();
-              CurrentRowCouponId = tblCoupon.getValueAt(rowselected, 0).toString();
-             txtCouponName.setText(tblCoupon.getValueAt(rowselected, 1).toString());
-             txtCouponPercent.setText(tblCoupon.getValueAt(rowselected, 2).toString());
+        DefaultTableModel model = (DefaultTableModel) tblCoupon.getModel();
+        int rowselected = tblCoupon.getSelectedRow();
+        CurrentRowCouponId = tblCoupon.getValueAt(rowselected, 0).toString();
+        txtCouponName.setText(tblCoupon.getValueAt(rowselected, 1).toString());
+        txtCouponPercent.setText(tblCoupon.getValueAt(rowselected, 2).toString());
     }//GEN-LAST:event_tblCouponMouseClicked
 
     private void btnEditCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditCActionPerformed
         // TODO add your handling code here:
-        try
-        {
+        try {
             Connect sqlinstance = new Connect();
             sqlinstance.Connect();
             Statement statement = sqlinstance.conn.createStatement();
-            
-             /////Validation
+
+            String validation = CouponDAO.ValidationString(txtCouponName.getText(), txtCouponPercent.getText());
             //
-            if(txtCouponName.getText().isEmpty() || txtCouponPercent.getText().isEmpty())
-            {
-                
-                JOptionPane.showMessageDialog(null, "Can nhap day du thong tin de edit", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+            if (!validation.isEmpty()) {
+                JOptionPane.showMessageDialog(null, validation, "Thông báo", JOptionPane.INFORMATION_MESSAGE);
                 return;
             }
-            ///validation float
-             if(!txtCouponPercent.getText().matches("\\d+\\.\\d+"))
-            {
-               JOptionPane.showMessageDialog(null, "Format error", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
-               return;
-            }
-            ////Validation
-                //////////////////////Exist validation
-            String FindUser = "Select * from Coupon where CouponName ='"
-                    +txtCouponName.getText()
-                    +"'; " ;
-                    
-             ResultSet FindResult  = statement.executeQuery(FindUser);
-             
-            if(FindResult.next()){
-               
-                if(FindResult.getString("CouponName").equals(txtCouponName.getText())&& !FindResult.getString("CouponId").equals(CurrentRowCouponId))
-                {
-                     JOptionPane.showMessageDialog(null, "Coupon đã tồn tại", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
-                    return;
-                }   
-            }
-            //////////////////////Exist validation
-            ///////////////////////update stage
-            
-            String updatequery = "update Coupon\n" 
-            +"set CouponName = '"
-            + txtCouponName.getText()
-            + "',Discount = "
-            + txtCouponPercent.getText()     
-            +"\n" 
-            +"where CouponId = '"
-            + CurrentRowCouponId
-            +"';";
+            Coupon cp = new Coupon();
+            cp.setCouponId(CurrentRowCouponId);
+            cp.setCouponName(txtCouponName.getText());
+            cp.setDiscount(Float.parseFloat(txtCouponPercent.getText()));
 
-            int issucceed = statement.executeUpdate(updatequery);
-            if(issucceed != 0)
-            {
-                
-                
+            ///////////Update
+            Boolean issucceed = CouponDAO.EditCoupon(cp);
+            if (issucceed == true) {
+
                 showCouponTable();
-               
-                JOptionPane.showMessageDialog(null, "Edited successful","Thông báo",JOptionPane.INFORMATION_MESSAGE);
+
+                JOptionPane.showMessageDialog(null, "Edited successful", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
                 sqlinstance.conn.close();
             }
             sqlinstance.conn.close();
-        }catch(Exception e)
-        {
-            
+        } catch (Exception e) {
+
         }
     }//GEN-LAST:event_btnEditCActionPerformed
 
     private void btnXoaCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnXoaCActionPerformed
         // TODO add your handling code here:
-        try
-        {
+        try {
             Connect sqlinstance = new Connect();
             sqlinstance.Connect();
             Statement statement = sqlinstance.conn.createStatement();
-            
-             //////////////////Delete chitiet Hoadon
-            String SelectHoadonQ = "select IdHoaDon from HoaDon where CouponId = '"
-                    + CurrentRowCouponId
-                    + "';";
-            ResultSet rs = statement.executeQuery(SelectHoadonQ);
-            
-            while(rs.next())
-            {
-                String IdHoaDon = rs.getString("IdHoaDon");
-                 String DeleteChiTietHoaDonC = "Delete from ChiTietHoaDon\n" 
-                +"\n" 
-                +"where IdHoaDon = '"
-                + IdHoaDon
-                +"';";
-                 
-                Statement deleteStatement = sqlinstance.conn.createStatement();
-                deleteStatement.executeUpdate(DeleteChiTietHoaDonC);
-                deleteStatement.close();
-            }
+
+            //////////////////Delete chitiet Hoadon
+            Boolean isDeleteChiTietHd = ChiTietHoaDonDAO.DeleteChiTietHdByCouponId(CurrentRowCouponId);
+           
             ///////////Delete HoaDon Lien quan đến Coupon
-             String DeleteHoaDonQ = "Delete from HoaDon\n" 
-            +"\n" 
-            +"where CouponId = '"
-            + CurrentRowCouponId
-            +"';";
-
-            statement.executeUpdate(DeleteHoaDonQ);
-            
-            
-             
+            Boolean isDeleteHd = HoaDonDAO.DeleteHdById(CurrentRowCouponId);
+         
             ///////////////////////Delete stage
-            
-            String updatequery = "Delete from Coupon\n" 
-            +"\n" 
-            +"where CouponId = '"
-            + CurrentRowCouponId
-            +"';";
+           
 
-            int issucceed = statement.executeUpdate(updatequery);
-            if(issucceed != 0)
-            {
-                
-                
+            Boolean issucceed = CouponDAO.DeleteCoupon(CurrentRowCouponId);
+            if (issucceed == true) {
+
                 showCouponTable();
-               
-                JOptionPane.showMessageDialog(null, "delete successful","Thông báo",JOptionPane.INFORMATION_MESSAGE);
-                
+
+                JOptionPane.showMessageDialog(null, "delete successful", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+
                 sqlinstance.conn.close();
             }
             sqlinstance.conn.close();
-        }catch(Exception e)
-        {
-            
+        } catch (Exception e) {
+
         }
     }//GEN-LAST:event_btnXoaCActionPerformed
 
@@ -980,29 +833,17 @@ public class Index extends javax.swing.JFrame {
         // TODO add your handling code here:
         DefaultTableModel model = (DefaultTableModel) tblCoupon.getModel();
         model.setRowCount(0);
-        try
-        {
-            Connect sqlinstance = new Connect();
-            sqlinstance.Connect();
-            Statement stateget = sqlinstance.conn.createStatement();
-            String SelectQueryAll = "Select * from Coupon \n"
-                    +"Where "
-                    + "CouponName = '"
-                    + txtSearchC.getText()
-                    +"' or CouponId = '"
-                    + txtSearchC.getText()
-                    +"';";
+        try {
             
-                               
-            ResultSet couponResult = stateget.executeQuery(SelectQueryAll);
-            while(couponResult.next())
-            {
-                model.addRow(new Object[]{couponResult.getString("CouponId"),couponResult.getString("CouponName"),couponResult.getString("Discount")});
-            }
-            sqlinstance.conn.close();
-        }catch(Exception e)
-        {
+                ArrayList<Coupon> cp = new ArrayList<>();
+                cp = CouponDAO.SearchCoupon(txtSearchC.getText());
+                for(Coupon item:cp)
+                {
+                    model.addRow(new Object[]{item.getCouponId(), item.getCouponName(), item.getDiscount()});
+                }
             
+        } catch (Exception e) {
+
             e.printStackTrace();
         }
     }//GEN-LAST:event_btnSearchCActionPerformed
@@ -1013,135 +854,64 @@ public class Index extends javax.swing.JFrame {
     }//GEN-LAST:event_btnReloadCActionPerformed
 
     private void btnXoaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnXoaActionPerformed
-       
-         try
-        {
-            Connect sqlinstance = new Connect();
-            sqlinstance.Connect();
-            Statement statement = sqlinstance.conn.createStatement();
-            
+
+        try {
             //////////////////Delete chitiet Hoadon
-            String SelectHoadonQ = "select IdHoaDon from HoaDon where UserId = '"
-                    + CurrentRowUserId
-                    + "';";
-            ResultSet rs = statement.executeQuery(SelectHoadonQ);
-            
-            while(rs.next())
-            {
-                String IdHoaDon = rs.getString("IdHoaDon");
-                 String DeleteChiTietHoaDonQ = "Delete from ChiTietHoaDon\n" 
-                +"\n" 
-                +"where IdHoaDon = '"
-                + IdHoaDon
-                +"';";
-                 
-                Statement deleteStatement = sqlinstance.conn.createStatement();
-                deleteStatement.executeUpdate(DeleteChiTietHoaDonQ);
-                deleteStatement.close();
-            }
+            Boolean isDelChiTietHd = ChiTietHoaDonDAO.DeleteChiTietHDByUserId(CurrentRowUserId);
+
             ///////////Delete HoaDon Lien quan đến Users
-             String DeleteHoaDonQ = "Delete from HoaDon\n" 
-            +"\n" 
-            +"where UserId = '"
-            + CurrentRowUserId
-            +"';";
+            Boolean isDelHd = HoaDonDAO.DeleteHdByUSerId(CurrentRowUserId);
 
-            statement.executeUpdate(DeleteHoaDonQ);
             ///////////////////////Delete User
-            
-            String updatequery = "Delete from Users\n" 
-            +"\n" 
-            +"where UserId = '"
-            + CurrentRowUserId
-            +"';";
+            Boolean issucceed = UserDAO.DeleteUserById(CurrentRowUserId);
 
-            int issucceed = statement.executeUpdate(updatequery);
-            if(issucceed != 0)
-            {
-                
-                
+            if (issucceed == true) {
+
                 showUserTable();
-               
-                JOptionPane.showMessageDialog(null, "delete successful","Thông báo",JOptionPane.INFORMATION_MESSAGE);
-                
-                sqlinstance.conn.close();
-            }
-            sqlinstance.conn.close();
-        }catch(Exception e)
-        {
-            e.printStackTrace();
-           JOptionPane.showMessageDialog(null, "Không thể xóa","Thông báo",JOptionPane.INFORMATION_MESSAGE);
 
+                JOptionPane.showMessageDialog(null, "delete successful", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+                return;
+            }
+            JOptionPane.showMessageDialog(null, "Không thể xóa", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }//GEN-LAST:event_btnXoaActionPerformed
 
     private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
         // TODO add your handling code here:
-          /////Validation
-            String validation ="";
-            //
-            if(txtUserName.getText().isEmpty() || txtPassword.getText().isEmpty())
-            {
-                if(txtUserName.getText().isEmpty())
-                    validation += "Email  must be fill ";
-                if(txtPassword.getText().isEmpty())
-                    validation += " Password must be fill ";
-                
-                JOptionPane.showMessageDialog(null, validation, "Thông báo", JOptionPane.INFORMATION_MESSAGE);
-                return;
+        /////Validation
+        String validation = "";
+        //
+        if (txtUserName.getText().isEmpty() || txtPassword.getText().isEmpty()) {
+            if (txtUserName.getText().isEmpty()) {
+                validation += "Email  must be fill ";
             }
-            
-            ////Validation
-            
-           try{
-                Connect ConnectInstance  = new Connect();
-            ConnectInstance.Connect();
-            Statement statement = ConnectInstance.conn.createStatement();
-            
-             //////////////////////Exist validation
-            String FindUser = "Select * from Users where UserName ='"
-                    +txtUserName.getText()
-                    +"';";
-                    
-             ResultSet FindResult  = statement.executeQuery(FindUser);
-            if(FindResult.next()){
-                 JOptionPane.showMessageDialog(null, "User đã tồn tại", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
-                 return;
+            if (txtPassword.getText().isEmpty()) {
+                validation += " Password must be fill ";
             }
-            //////////////////////Exist validation
-            
-            /////////////////// add User stage
-            // Get all existing IDs
-            String IdQuery = "select UserId from Users order by UserId;";
-            ResultSet idResult = statement.executeQuery(IdQuery);
 
-            // Find the first missing ID
-            int expectedId = 1;
-            while(idResult.next()){
-                    String currentId = idResult.getString("UserId").substring(1); // Remove 'C' prefix
-                    int currentIdNumber = Integer.parseInt(currentId);
-                    if(currentIdNumber != expectedId){
-                        break;
-                     }
-                    expectedId++;
+            JOptionPane.showMessageDialog(null, validation, "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+            return;
+        }
+
+        ////Validation
+        try {
+
+            Boolean isEmailExist = UserDAO.ExistUserName(txtUserName.getText());
+            if (isEmailExist) {
+                JOptionPane.showMessageDialog(null, "Tài khoản đã tồn tại", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+
             }
-            ///Begin add User
-            String InsertQuery = "insert into Users(UserId,UserName,UserPass,FullName,UserRole) values('"
-                    +"U"+expectedId
-                    +"','"
-                    +txtUserName.getText()
-                    +"','"
-                    +txtPassword.getText()
-                    +"','"
-                    +"','"
-                    +"User"
-                    + "');";
-                    
-            
-            Statement state = ConnectInstance.conn.createStatement();
-            int row = state.executeUpdate(InsertQuery);
-            if(row != 0)
-            {
+            ///////Email đã tồn tại
+
+            /////////////////// add User stage
+            User temp = new User();
+            temp.setUserName(txtUserName.getText());
+            temp.setUserPass(txtPassword.getText());
+            Boolean row = UserDAO.Register(temp);
+            if (row) {
                 JOptionPane.showMessageDialog(null, "Add User thành công", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
                 txtUserName.setText("");
                 txtPassword.setText("");
@@ -1150,18 +920,14 @@ public class Index extends javax.swing.JFrame {
                 model.setRowCount(0);
                 showUserTable();
                 /////
-                ConnectInstance.conn.close();
-            }
-            else
-            {
+
+            } else {
                 JOptionPane.showMessageDialog(null, "Xảy ra lỗi khi add mã", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
 
-                ConnectInstance.conn.close();
             }
-           }catch(Exception e)
-           {
-               e.printStackTrace();
-           }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }//GEN-LAST:event_btnAddActionPerformed
 
     private void btnEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditActionPerformed
@@ -1174,78 +940,50 @@ public class Index extends javax.swing.JFrame {
 
     private void tblUserMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblUserMouseClicked
         // TODO add your handling code here:
-            DefaultTableModel model = (DefaultTableModel)tblUser.getModel();
-             int rowselected = tblUser.getSelectedRow();
-             CurrentRowUserId = tblUser.getValueAt(rowselected, 0).toString();
-             txtUserName.setText(tblUser.getValueAt(rowselected, 1).toString());
-             cboRoleQ.setSelectedItem(tblUser.getValueAt(rowselected, 4).toString());
+        DefaultTableModel model = (DefaultTableModel) tblUser.getModel();
+        int rowselected = tblUser.getSelectedRow();
+        CurrentRowUserId = tblUser.getValueAt(rowselected, 0).toString();
+        txtUserName.setText(tblUser.getValueAt(rowselected, 1).toString());
+        cboRoleQ.setSelectedItem(tblUser.getValueAt(rowselected, 4).toString());
     }//GEN-LAST:event_tblUserMouseClicked
 
     private void btnSaveEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveEditActionPerformed
         // TODO add your handling code here:
-           try
-        {
-            Connect sqlinstance = new Connect();
-            sqlinstance.Connect();
-            Statement statement = sqlinstance.conn.createStatement();
-           
+        try {
             ///////////////////////update stage
-            
-            String updatequery = "update Users\n" 
-            +"set UserRole = '"
-            + cboRoleQ.getSelectedItem().toString()
-            +"' where UserId = '"
-            + CurrentRowUserId
-            + "';";
 
-            int issucceed = statement.executeUpdate(updatequery);
-            if(issucceed != 0)
-            {
-                
+            Boolean issucceed = UserDAO.UpdateUserRole(cboRoleQ.getSelectedItem().toString(), CurrentRowUserId);
+            if (issucceed) {
+
                 cboRoleQ.setEnabled(false);
                 btnSaveEdit.setVisible(false);
                 txtUserName.setEnabled(true);
                 txtPassword.setEnabled(true);
                 showUserTable();
-               
-                JOptionPane.showMessageDialog(null, "Edited successful","Thông báo",JOptionPane.INFORMATION_MESSAGE);
-                sqlinstance.conn.close();
+
+                JOptionPane.showMessageDialog(null, "Edited successful", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+
             }
-            sqlinstance.conn.close();
-        }catch(Exception e)
-        {
-            
+
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }//GEN-LAST:event_btnSaveEditActionPerformed
 
     private void btnSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchActionPerformed
         // TODO add your handling code here:
-         DefaultTableModel model = (DefaultTableModel) tblUser.getModel();
+        DefaultTableModel model = (DefaultTableModel) tblUser.getModel();
         model.setRowCount(0);
-        try
-        {
-            Connect sqlinstance = new Connect();
-            sqlinstance.Connect();
-            Statement stateget = sqlinstance.conn.createStatement();
-            String SelectQueryAll = "Select * from Users \n"
-                    +"Where "
-                    + "UserName = '"
-                    + txtSearch.getText()
-                    +"' or UserId = '"
-                    + txtSearch.getText()
-                    +"';";
-            
-                               
-            ResultSet UserResult = stateget.executeQuery(SelectQueryAll);
-            while(UserResult.next())
-            {
-                model.addRow(new Object[]{UserResult.getString("UserId"),UserResult.getString("UserName"),UserResult.getString("FullName"),UserResult.getString("PhoneNumber"),UserResult.getString("UserRole")});
+        try {
+            ArrayList<User> userList = UserDAO.SearchUser(txtSearch.getText());
+
+            for (User item : userList) {
+                model.addRow(new Object[]{item.getUserId(), item.getUserName(), item.getFullName(), item.getPhoneNumber(), item.getUserRole()});
 
             }
-            sqlinstance.conn.close();
-        }catch(Exception e)
-        {
-            
+
+        } catch (Exception e) {
+
             e.printStackTrace();
         }
     }//GEN-LAST:event_btnSearchActionPerformed
@@ -1256,44 +994,39 @@ public class Index extends javax.swing.JFrame {
     }//GEN-LAST:event_btnReloadUserActionPerformed
 
     private void tblBooktableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblBooktableMouseClicked
-        DefaultTableModel model = (DefaultTableModel)tblBooktable.getModel();
-            int rowselected = tblBooktable.getSelectedRow();
-            CurrentRowBookId = tblBooktable.getValueAt(rowselected, 0).toString();
-              
+        DefaultTableModel model = (DefaultTableModel) tblBooktable.getModel();
+        int rowselected = tblBooktable.getSelectedRow();
+        CurrentRowBookId = tblBooktable.getValueAt(rowselected, 0).toString();
+
     }//GEN-LAST:event_tblBooktableMouseClicked
 
     private void btnSearchHActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchHActionPerformed
         // TODO add your handling code here:
         DefaultTableModel model = (DefaultTableModel) tblBooktable.getModel();
         model.setRowCount(0);
-        try
-        {
+        try {
             Connect sqlinstance = new Connect();
             sqlinstance.Connect();
             Statement stateget = sqlinstance.conn.createStatement();
-            String SelectQueryAll = "select BookId, BookName, CategoryName, Price, GioiThieu " +
-             "from Book, Category " +
-             "where Book.CategoryId = Category.CategoryId " +
-             "and (Book.BookId = '" + txtSearchH.getText() + "' " +
-             "or Book.BookName = '" + txtSearchH.getText() + "' " +
-             "or CategoryName =N'" + txtSearchH.getText() + "')";
-            
-                               
+            String SelectQueryAll = "select BookId, BookName, CategoryName, Price, GioiThieu "
+                    + "from Book, Category "
+                    + "where Book.CategoryId = Category.CategoryId "
+                    + "and (Book.BookId = '" + txtSearchH.getText() + "' "
+                    + "or Book.BookName = '" + txtSearchH.getText() + "' "
+                    + "or CategoryName =N'" + txtSearchH.getText() + "')";
+
             ResultSet BookResult = stateget.executeQuery(SelectQueryAll);
-            while(BookResult.next())
-            {
-                model.addRow(new Object[]{BookResult.getString("BookId"),BookResult.getString("BookName"),BookResult.getString("CategoryName"),BookResult.getString("Price"),BookResult.getString("GioiThieu")});
+            while (BookResult.next()) {
+                model.addRow(new Object[]{BookResult.getString("BookId"), BookResult.getString("BookName"), BookResult.getString("CategoryName"), BookResult.getString("Price"), BookResult.getString("GioiThieu")});
             }
             btnReloadH.setVisible(true);
             sqlinstance.conn.close();
-        }catch(Exception e)
-        {
-            
+        } catch (Exception e) {
+
             e.printStackTrace();
         }
-        
-        
-        
+
+
     }//GEN-LAST:event_btnSearchHActionPerformed
 
     private void btnReloadHActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReloadHActionPerformed
@@ -1303,60 +1036,53 @@ public class Index extends javax.swing.JFrame {
     }//GEN-LAST:event_btnReloadHActionPerformed
 
     private void btnXoaHActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnXoaHActionPerformed
-        try
-        {
+        try {
             Connect sqlinstance = new Connect();
             sqlinstance.Connect();
             Statement statement = sqlinstance.conn.createStatement();
-            
-             
+
             ///////////////////////Delete stage
             //Delete Book Detail
-            String Delete = "Delete from BookDetail" 
-            +"\n" 
-            +"where BookId = '"
-            + CurrentRowBookId
-            +"';";
+            String Delete = "Delete from BookDetail"
+                    + "\n"
+                    + "where BookId = '"
+                    + CurrentRowBookId
+                    + "';";
 
             int issucceed = statement.executeUpdate(Delete);
-            if(issucceed != 0)
-            {
-                
-                ////
-            //// Delete chi tiet hoa don
-              String DeleteCTHoaDonH = "Delete from ChiTietHoaDon\n" 
-            +"\n" 
-            +"where BookId = '"
-            + CurrentRowBookId
-            +"';";
-              int rowEffect = statement.executeUpdate(DeleteCTHoaDonH);
-            ////          
-            ////Delete Book
-            String updatequery = "Delete from Book\n" 
-            +"\n" 
-            +"where BookId = '"
-            + CurrentRowBookId
-            +"';";
+            if (issucceed != 0) {
 
-            int issucceed2 = statement.executeUpdate(updatequery);
-            if(issucceed2 != 0)
-            {
-                
-                
-                showBookTable();
-               
-                JOptionPane.showMessageDialog(null, "delete successful","Thông báo",JOptionPane.INFORMATION_MESSAGE);
-                
+                ////
+                //// Delete chi tiet hoa don
+                String DeleteCTHoaDonH = "Delete from ChiTietHoaDon\n"
+                        + "\n"
+                        + "where BookId = '"
+                        + CurrentRowBookId
+                        + "';";
+                int rowEffect = statement.executeUpdate(DeleteCTHoaDonH);
+                ////          
+                ////Delete Book
+                String updatequery = "Delete from Book\n"
+                        + "\n"
+                        + "where BookId = '"
+                        + CurrentRowBookId
+                        + "';";
+
+                int issucceed2 = statement.executeUpdate(updatequery);
+                if (issucceed2 != 0) {
+
+                    showBookTable();
+
+                    JOptionPane.showMessageDialog(null, "delete successful", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+
+                    sqlinstance.conn.close();
+                }
                 sqlinstance.conn.close();
+
             }
-            sqlinstance.conn.close();
-               
-            }
-            
-            
-        }catch(Exception e)
-        {
-          e.printStackTrace();
+
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }//GEN-LAST:event_btnXoaHActionPerformed
 
@@ -1399,80 +1125,70 @@ public class Index extends javax.swing.JFrame {
             }
         });
     }
-   
-    public void showProfilePanel()
-    {
+
+    public void showProfilePanel() {
         //Start up config
         btnSaveP.setVisible(false);
         txtHoTenP.setEnabled(false);
         txtAddressP.setEnabled(false);
         txtSdt.setEnabled(false);
         //Start up config
-        
+
         txtHoTenP.setText(UserInstance.getFullName());
         txtAddressP.setText(UserInstance.getUserAddress());
         txtSdt.setText(UserInstance.getPhoneNumber());
     }
-    public final void showCouponTable()
-    {
+
+    public final void showCouponTable() {
         DefaultTableModel model = (DefaultTableModel) tblCoupon.getModel();
         model.setRowCount(0);
-        try
-        {
+        try {
             Connect sqlinstance = new Connect();
             sqlinstance.Connect();
             Statement stateget = sqlinstance.conn.createStatement();
             String SelectQueryAll = "Select * from Coupon";
             ResultSet couponResult = stateget.executeQuery(SelectQueryAll);
-            while(couponResult.next())
-            {
-                model.addRow(new Object[]{couponResult.getString("CouponId"),couponResult.getString("CouponName"),couponResult.getString("Discount")});
+            while (couponResult.next()) {
+                model.addRow(new Object[]{couponResult.getString("CouponId"), couponResult.getString("CouponName"), couponResult.getString("Discount")});
             }
             sqlinstance.conn.close();
-        }catch(Exception e)
-        {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
-    public final void showUserTable()
-    {
+
+    public final void showUserTable() {
         DefaultTableModel model = (DefaultTableModel) tblUser.getModel();
         model.setRowCount(0);
-        try
-        {
+        try {
             Connect sqlinstance = new Connect();
             sqlinstance.Connect();
             Statement stateget = sqlinstance.conn.createStatement();
             String SelectQueryAll = "Select * from Users";
             ResultSet UserResult = stateget.executeQuery(SelectQueryAll);
-            while(UserResult.next())
-            {
-                model.addRow(new Object[]{UserResult.getString("UserId"),UserResult.getString("UserName"),UserResult.getString("FullName"),UserResult.getString("PhoneNumber"),UserResult.getString("UserRole")});
+            while (UserResult.next()) {
+                model.addRow(new Object[]{UserResult.getString("UserId"), UserResult.getString("UserName"), UserResult.getString("FullName"), UserResult.getString("PhoneNumber"), UserResult.getString("UserRole")});
             }
             sqlinstance.conn.close();
-        }catch(Exception e)
-        {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
-    public final void showBookTable()
-    {
-         DefaultTableModel model = (DefaultTableModel) tblBooktable.getModel();
+
+    public final void showBookTable() {
+        DefaultTableModel model = (DefaultTableModel) tblBooktable.getModel();
         model.setRowCount(0);
-        try
-        {
+        try {
             Connect sqlinstance = new Connect();
             sqlinstance.Connect();
             Statement stateget = sqlinstance.conn.createStatement();
             String SelectQueryAll = "select Book.BookId,BookName,CategoryName,Price,Book.GioiThieu, Name as TacGia,TonKho from Book,Category,BookDetail,Author where Book.CategoryId = Category.CategoryId and Book.BookId = BookDetail.BookId and BookDetail.AuthorId = Author.AuthorId";
             ResultSet BookResult = stateget.executeQuery(SelectQueryAll);
-            while(BookResult.next())
-            {
-                model.addRow(new Object[]{BookResult.getString("BookId"),BookResult.getString("BookName"),BookResult.getString("CategoryName"),BookResult.getString("TacGia"),BookResult.getString("Price"),BookResult.getString("TonKho"),BookResult.getString("GioiThieu")});
+            while (BookResult.next()) {
+                model.addRow(new Object[]{BookResult.getString("BookId"), BookResult.getString("BookName"), BookResult.getString("CategoryName"), BookResult.getString("TacGia"), BookResult.getString("Price"), BookResult.getString("TonKho"), BookResult.getString("GioiThieu")});
             }
             sqlinstance.conn.close();
-        }catch(Exception e)
-        {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }

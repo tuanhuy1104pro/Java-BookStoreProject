@@ -158,7 +158,7 @@ public class Register extends javax.swing.JFrame {
                 User user = new User();
                 user.setUserName(txtUserName.getText());
                 user.setUserPass(txtPassword.getText());
-                Boolean isadd = UserDAO.AddUser(user);
+                Boolean isadd = UserDAO.Register(user);
                 
                
                 if (isadd == false) {
