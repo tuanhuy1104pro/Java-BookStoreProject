@@ -4,10 +4,12 @@
  */
 package bookstoreproject.UI.Admin;
 
+import bookstoreproject.DAO.CategoryDAO;
 import bookstoreproject.DAO.Connect;
 import java.sql.*;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author Acer
@@ -176,179 +178,115 @@ public class QuanLySach extends javax.swing.JFrame {
     private void btnAddCateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddCateActionPerformed
         // TODO add your handling code here:
         /////Validation
-            String validation ="";
-            //
-            if(txtTheLoai.getText().isEmpty())
-            {
-                if(txtTheLoai.getText().isEmpty())
-                    validation += "Cần phải nhập thể loại cần add";   
-                JOptionPane.showMessageDialog(null, validation, "Thông báo", JOptionPane.INFORMATION_MESSAGE);
-                return;
+        String validation = "";
+        //
+        if (txtTheLoai.getText().isEmpty()) {
+            if (txtTheLoai.getText().isEmpty()) {
+                validation += "Cần phải nhập thể loại cần add";
             }
-            
-            ////Validation
-            
-           try{
-                Connect ConnectInstance  = new Connect();
-            ConnectInstance.Connect();
-            Statement statement = ConnectInstance.conn.createStatement();
-            
-             //////////////////////Exist validation
-            String FindCate = "Select * from Category where CategoryName ='"
-                    +txtTheLoai.getText()
-                    +"';";
-                    
-             ResultSet FindResult  = statement.executeQuery(FindCate);
-            if(FindResult.next()){
-                 JOptionPane.showMessageDialog(null, "Category đã tồn tại", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
-                 return;
-            }
-            //////////////////////Exist validation
-            
-            /////////////////// add User stage
-            // Get all existing IDs
-            String IdQuery = "select CategoryId from Category order by CategoryId;";
-            ResultSet idResult = statement.executeQuery(IdQuery);
+            JOptionPane.showMessageDialog(null, validation, "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+            return;
+        }
 
-            // Find the first missing ID
-            int expectedId = 1;
-            while(idResult.next()){
-                    String currentId = idResult.getString("CategoryId"); // Remove 'C' prefix
-                    int currentIdNumber = Integer.parseInt(currentId);
-                    if(currentIdNumber != expectedId){
-                        break;
-                     }
-                    expectedId++;
-            }
-            ///Begin add User
-            String InsertQuery = "insert into Category(CategoryId,CategoryName) values("
-                    +expectedId
-                    +",'"
-                    +txtTheLoai.getText()
-                     + "');";
-                    
-            
-            Statement state = ConnectInstance.conn.createStatement();
-            int row = state.executeUpdate(InsertQuery);
-            if(row != 0)
-            {
+        ////Validation
+        try {
+
+            Boolean row = CategoryDAO.AddCate(txtTheLoai.getText());
+            if (row != false) {
                 JOptionPane.showMessageDialog(null, "Add Category thành công", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
                 txtTheLoai.setText("");
-                
+
                 /////
-                
                 LoadCombobox();
                 /////
-                ConnectInstance.conn.close();
-            }
-            else
-            {
-                JOptionPane.showMessageDialog(null, "Xảy ra lỗi khi add mã", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
 
-                ConnectInstance.conn.close();
             }
-           }catch(Exception e)
-           {
-               e.printStackTrace();
-           }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }//GEN-LAST:event_btnAddCateActionPerformed
 
     private void btnDelCategoryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDelCategoryActionPerformed
         // TODO add your handling code here:
-         try
-        {
+        try {
             /////Validation
-            String validation ="";
+            String validation = "";
             //
-            if(txtTheLoai.getText().isEmpty())
-            {
-                if(txtTheLoai.getText().isEmpty())
-                    validation += "Cần phải nhập thể loại cần add";   
+            if (txtTheLoai.getText().isEmpty()) {
+                if (txtTheLoai.getText().isEmpty()) {
+                    validation += "Cần phải nhập thể loại cần add";
+                }
                 JOptionPane.showMessageDialog(null, validation, "Thông báo", JOptionPane.INFORMATION_MESSAGE);
                 return;
             }
-            
-            ////Validation
-            Connect sqlinstance = new Connect();
-            sqlinstance.Connect();
-            Statement statement = sqlinstance.conn.createStatement();
-            
-             
-            ///////////////////////Delete stage
-            
-            String updatequery = "Delete from Category\n" 
-            +"\n" 
-            +"where CategoryName = '"
-            + txtTheLoai.getText()
-            +"';";
 
-            int issucceed = statement.executeUpdate(updatequery);
-            if(issucceed != 0)
-            {
-                
-                
-                LoadCombobox();
-               
-                JOptionPane.showMessageDialog(null, "delete successful","Thông báo",JOptionPane.INFORMATION_MESSAGE);
-                
-                sqlinstance.conn.close();
-            }
-            sqlinstance.conn.close();
-        }catch(Exception e)
-        {
+            ////Validation
             
+            Boolean issucceed = CategoryDAO.DelCateByName(txtTheLoai.getText());
+            if (issucceed != false) {
+
+                LoadCombobox();
+
+                JOptionPane.showMessageDialog(null, "delete successful", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+
+                
+            }
+            
+        } catch (Exception e) {
+
         }
     }//GEN-LAST:event_btnDelCategoryActionPerformed
 
     private void btnAddBookActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddBookActionPerformed
         // TODO add your handling code here:
         /////Validation
-            String validation ="";
-            int TonKho;
-            //
-            if(txtTenSach.getText().isEmpty() || txtGiaTien.getText().isEmpty())
-            {
-                if(txtTenSach.getText().isEmpty())
-                    validation += "Tên sách must be fill ";
-                if(txtGiaTien.getText().isEmpty())
-                    validation += "- Giá tiền value must be fill ";
-                
-                JOptionPane.showMessageDialog(null, validation, "Thông báo", JOptionPane.INFORMATION_MESSAGE);
-                return;
+        String validation = "";
+        int TonKho;
+        //
+        if (txtTenSach.getText().isEmpty() || txtGiaTien.getText().isEmpty()) {
+            if (txtTenSach.getText().isEmpty()) {
+                validation += "Tên sách must be fill ";
             }
-             if(txtTonKho.getText().isEmpty())
-                    TonKho = 0;
-             else
-                 TonKho = Integer.parseInt(txtTonKho.getText());
-            ////////////////////Discount validation - float
-            if(!txtGiaTien.getText().matches("\\d+"))
-            {
-               JOptionPane.showMessageDialog(null, "Format error", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
-               return;
+            if (txtGiaTien.getText().isEmpty()) {
+                validation += "- Giá tiền value must be fill ";
             }
-            
-            ////Validation
-            
-           try{
-                Connect ConnectInstance  = new Connect();
+
+            JOptionPane.showMessageDialog(null, validation, "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+            return;
+        }
+        if (txtTonKho.getText().isEmpty()) {
+            TonKho = 0;
+        } else {
+            TonKho = Integer.parseInt(txtTonKho.getText());
+        }
+        ////////////////////Discount validation - float
+        if (!txtGiaTien.getText().matches("\\d+")) {
+            JOptionPane.showMessageDialog(null, "Format error", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+            return;
+        }
+
+        ////Validation
+        try {
+            Connect ConnectInstance = new Connect();
             ConnectInstance.Connect();
             Statement statement = ConnectInstance.conn.createStatement();
-            
-             //////////////////////Exist validation
-            String FindBook = "select * from Book,Author,BookDetail\n" +
-"where Book.BookId = BookDetail.BookId and Author.AuthorId = BookDetail.AuthorId and Author.Name = N'"
-                    +txtAuthor.getText()
-                    +"' and Book.BookName = '"
+
+            //////////////////////Exist validation
+            String FindBook = "select * from Book,Author,BookDetail\n"
+                    + "where Book.BookId = BookDetail.BookId and Author.AuthorId = BookDetail.AuthorId and Author.Name = N'"
+                    + txtAuthor.getText()
+                    + "' and Book.BookName = '"
                     + txtTenSach.getText()
-                    + "';" ;
-                    
-             ResultSet FindResult  = statement.executeQuery(FindBook);
-            if(FindResult.next()){
-                 JOptionPane.showMessageDialog(null, "Sách đã tồn tại", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
-                 return;
+                    + "';";
+
+            ResultSet FindResult = statement.executeQuery(FindBook);
+            if (FindResult.next()) {
+                JOptionPane.showMessageDialog(null, "Sách đã tồn tại", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+                return;
             }
             //////////////////////Exist validation
-            
+
             /////////////////// add Book stage
             // Get all existing IDs
             String IdQuery = "select BookId from Book order by BookId;";
@@ -356,50 +294,46 @@ public class QuanLySach extends javax.swing.JFrame {
 
             // Find the first missing ID
             int expectedId = 1;
-            while(idResult.next()){
-                    String currentId = idResult.getString("BookId").substring(1); // Remove 'C' prefix
-                    int currentIdNumber = Integer.parseInt(currentId);
-                    if(currentIdNumber != expectedId){
-                        break;
-                     }
-                    expectedId++;
+            while (idResult.next()) {
+                String currentId = idResult.getString("BookId").substring(1); // Remove 'C' prefix
+                int currentIdNumber = Integer.parseInt(currentId);
+                if (currentIdNumber != expectedId) {
+                    break;
+                }
+                expectedId++;
             }
             ////// Lấy Id combobox
-             String FindCate = "select * from Category where CategoryName = N'"
-                    +cboCategory.getSelectedItem()
-                    +"'; " ;
-                    
-            ResultSet FindResult3  = statement.executeQuery(FindCate);
-           FindResult3.next();
-                int CateId = Integer.parseInt(FindResult3.getString("CategoryId"));
-            
-           
-           
-            
+            String FindCate = "select * from Category where CategoryName = N'"
+                    + cboCategory.getSelectedItem()
+                    + "'; ";
+
+            ResultSet FindResult3 = statement.executeQuery(FindCate);
+            FindResult3.next();
+            int CateId = Integer.parseInt(FindResult3.getString("CategoryId"));
+
             ////
-                  
             ////Xử lí tác giả
             String FindAuthor = "select * from Author where Name = N'"
-                    +txtAuthor.getText()
-                    +"'; " ;
-                    
-            ResultSet FindResult2  = statement.executeQuery(FindAuthor);
-            
+                    + txtAuthor.getText()
+                    + "'; ";
+
+            ResultSet FindResult2 = statement.executeQuery(FindAuthor);
+
             int row;
             int row2;
             int row3;
-            String newBookId = "B"+expectedId;
-           
+            String newBookId = "B" + expectedId;
+
             /////Trường hợp khi đã có tác giả
-            if(FindResult2.next()){
+            if (FindResult2.next()) {
                 ///Begin add Book
                 String AuthorId = FindResult2.getString("AuthorId");
                 String InsertQuery = "insert into Book values('"
                         + newBookId
-                        +"',"
+                        + "',"
                         + CateId
                         + ",N'"
-                        +txtTenSach.getText()
+                        + txtTenSach.getText()
                         + "',"
                         + txtGiaTien.getText()
                         + ",'"
@@ -407,41 +341,34 @@ public class QuanLySach extends javax.swing.JFrame {
                         + "',"
                         + TonKho
                         + ")";
-                    
-            
-                
-                 row = statement.executeUpdate(InsertQuery);
-                 
-                 //Begin Add DetailBook
-                 String InsertDetail = "insert into BookDetail values('"
+
+                row = statement.executeUpdate(InsertQuery);
+
+                //Begin Add DetailBook
+                String InsertDetail = "insert into BookDetail values('"
                         + newBookId
-                        +"','"
+                        + "','"
                         + AuthorId
                         + "')";
-                  row2 = statement.executeUpdate(InsertDetail);
-                   /////////////////
-            if(row != 0 && row2 !=0)
-            {
-                JOptionPane.showMessageDialog(null, "Add thành công", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
-                /////
-                ConnectInstance.conn.close();
-            }
-            else
-            {
-                JOptionPane.showMessageDialog(null, "Xảy ra lỗi khi add sách", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+                row2 = statement.executeUpdate(InsertDetail);
+                /////////////////
+                if (row != 0 && row2 != 0) {
+                    JOptionPane.showMessageDialog(null, "Add thành công", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+                    /////
+                    ConnectInstance.conn.close();
+                } else {
+                    JOptionPane.showMessageDialog(null, "Xảy ra lỗi khi add sách", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
 
-                ConnectInstance.conn.close();
-            }
-            }
-            else
-            {
-                 ///Begin add Book
+                    ConnectInstance.conn.close();
+                }
+            } else {
+                ///Begin add Book
                 String InsertQuery = "insert into Book values('"
                         + newBookId
-                        +"',"
+                        + "',"
                         + CateId
                         + ",N'"
-                        +txtTenSach.getText()
+                        + txtTenSach.getText()
                         + "',"
                         + txtGiaTien.getText()
                         + ",'"
@@ -449,61 +376,55 @@ public class QuanLySach extends javax.swing.JFrame {
                         + "',"
                         + TonKho
                         + ")";
-                    
-            
-                 row = statement.executeUpdate(InsertQuery);
-                 //////////////////////Begin add author
-                   // Get all existing IDs
-            String selectauthor = "select AuthorId from Author order by AuthorId;";
-            ResultSet Resultauthor = statement.executeQuery(selectauthor);
 
-            // Find the first missing ID
-            int expectedIdAuthor = 1;
-            while(Resultauthor.next()){
+                row = statement.executeUpdate(InsertQuery);
+                //////////////////////Begin add author
+                // Get all existing IDs
+                String selectauthor = "select AuthorId from Author order by AuthorId;";
+                ResultSet Resultauthor = statement.executeQuery(selectauthor);
+
+                // Find the first missing ID
+                int expectedIdAuthor = 1;
+                while (Resultauthor.next()) {
                     String currentId = Resultauthor.getString("AuthorId").substring(1); // Remove 'C' prefix
                     int currentIdNumber = Integer.parseInt(currentId);
-                    if(currentIdNumber != expectedIdAuthor){
+                    if (currentIdNumber != expectedIdAuthor) {
                         break;
-                     }
+                    }
                     expectedIdAuthor++;
-            }
-                 
-            String newAuthorId = "A"+ expectedIdAuthor;
-            String InsertAuthor = "insert into Author(AuthorId,Name) values('"
+                }
+
+                String newAuthorId = "A" + expectedIdAuthor;
+                String InsertAuthor = "insert into Author(AuthorId,Name) values('"
                         + newAuthorId
-                        +"',N'"
+                        + "',N'"
                         + txtAuthor.getText()
                         + "');";
-                  row2 = statement.executeUpdate(InsertAuthor);
-                  //////////////////////Begin add author
-                  
-                  
-                 //Begin Add DetailBook
-                 String InsertDetail = "insert into BookDetail values('"
+                row2 = statement.executeUpdate(InsertAuthor);
+                //////////////////////Begin add author
+
+                //Begin Add DetailBook
+                String InsertDetail = "insert into BookDetail values('"
                         + newBookId
-                        +"','"
+                        + "','"
                         + newAuthorId
                         + "');";
-                  row3 = statement.executeUpdate(InsertDetail);
-                   /////////////////
-            if(row != 0 && row2 !=0 && row3!=0)
-            {
-                JOptionPane.showMessageDialog(null, "Add thành công", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
-                /////
-                ConnectInstance.conn.close();
-            }
-            else
-            {
-                JOptionPane.showMessageDialog(null, "Xảy ra lỗi khi add sách", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+                row3 = statement.executeUpdate(InsertDetail);
+                /////////////////
+                if (row != 0 && row2 != 0 && row3 != 0) {
+                    JOptionPane.showMessageDialog(null, "Add thành công", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+                    /////
+                    ConnectInstance.conn.close();
+                } else {
+                    JOptionPane.showMessageDialog(null, "Xảy ra lỗi khi add sách", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
 
-                ConnectInstance.conn.close();
+                    ConnectInstance.conn.close();
+                }
             }
-            }
-            
-           }catch(Exception e)
-           {
-               e.printStackTrace();
-           }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }//GEN-LAST:event_btnAddBookActionPerformed
 
     /**
@@ -541,23 +462,20 @@ public class QuanLySach extends javax.swing.JFrame {
             }
         });
     }
-    public final void LoadCombobox()
-    {
+
+    public final void LoadCombobox() {
         cboCategory.removeAllItems();
-        try
-        {
+        try {
             Connect sqlinstance = new Connect();
             sqlinstance.Connect();
             Statement state = sqlinstance.conn.createStatement();
-            String SelectString = "Select * from Category" ;
+            String SelectString = "Select * from Category";
             ResultSet result = state.executeQuery(SelectString);
-            while(result.next())
-            {
+            while (result.next()) {
                 cboCategory.addItem(result.getString("CategoryName"));
             }
             sqlinstance.conn.close();
-        }catch(Exception e)
-        {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }

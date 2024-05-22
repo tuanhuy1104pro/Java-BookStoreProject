@@ -4,6 +4,8 @@
  */
 package bookstoreproject.UI.Admin;
 
+import bookstoreproject.DAO.BookDAO;
+import bookstoreproject.DAO.BookDetailDAO;
 import bookstoreproject.DAO.ChiTietHoaDonDAO;
 import bookstoreproject.MODAL.User;
 import bookstoreproject.DAO.Connect;
@@ -1043,33 +1045,20 @@ public class Index extends javax.swing.JFrame {
 
             ///////////////////////Delete stage
             //Delete Book Detail
-            String Delete = "Delete from BookDetail"
-                    + "\n"
-                    + "where BookId = '"
-                    + CurrentRowBookId
-                    + "';";
-
-            int issucceed = statement.executeUpdate(Delete);
-            if (issucceed != 0) {
+          
+            Boolean issucceed = BookDetailDAO.DeleteBookDetailById(CurrentRowBookId);
+            if (issucceed != false) {
 
                 ////
                 //// Delete chi tiet hoa don
-                String DeleteCTHoaDonH = "Delete from ChiTietHoaDon\n"
-                        + "\n"
-                        + "where BookId = '"
-                        + CurrentRowBookId
-                        + "';";
-                int rowEffect = statement.executeUpdate(DeleteCTHoaDonH);
+               
+                Boolean rowEffect = ChiTietHoaDonDAO.DeleteChiTietHdByBookId(CurrentRowBookId);
                 ////          
                 ////Delete Book
-                String updatequery = "Delete from Book\n"
-                        + "\n"
-                        + "where BookId = '"
-                        + CurrentRowBookId
-                        + "';";
+               
 
-                int issucceed2 = statement.executeUpdate(updatequery);
-                if (issucceed2 != 0) {
+                Boolean issucceed2 = BookDAO.DeleteBookById(CurrentRowBookId);
+                if (issucceed2 != false) {
 
                     showBookTable();
 

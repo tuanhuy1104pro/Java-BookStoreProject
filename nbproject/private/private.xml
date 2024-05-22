@@ -20,6 +20,9 @@
             <file>file:/F:/Project/Java/BookStoreProject/src/bookstoreproject/MODAL/BookDetail.java</file>
             <file>file:/F:/Project/Java/BookStoreProject/src/bookstoreproject/DAO/Connect.java</file>
             <file>file:/F:/Project/Java/BookStoreProject/src/bookstoreproject/MODAL/Author.java</file>
+            <file>file:/F:/Project/Java/BookStoreProject/src/bookstoreproject/DAO/BookDetailDAO.java</file>
+            <file>file:/F:/Project/Java/BookStoreProject/src/bookstoreproject/DAO/BookDAO.java</file>
+            <file>file:/F:/Project/Java/BookStoreProject/src/bookstoreproject/DAO/CategoryDAO.java</file>
             <file>file:/F:/Project/Java/BookStoreProject/src/bookstoreproject/UI/Admin/QuanLySach.java</file>
             <file>file:/F:/Project/Java/BookStoreProject/src/bookstoreproject/MODAL/Book.java</file>
         </group>

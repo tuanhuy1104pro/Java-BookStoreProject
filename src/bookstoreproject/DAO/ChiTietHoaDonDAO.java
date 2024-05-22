@@ -78,4 +78,28 @@ public class ChiTietHoaDonDAO {
 
         return false;
     }
+
+    public static Boolean DeleteChiTietHdByBookId(String BookId) {
+        try {
+            Connect sqlinstance = new Connect();
+            sqlinstance.Connect();
+            Statement statement = sqlinstance.conn.createStatement();
+
+            ////
+            //// Delete chi tiet hoa don
+            String DeleteCTHoaDonH = "Delete from ChiTietHoaDon\n"
+                    + "\n"
+                    + "where BookId = '"
+                    + BookId
+                    + "';";
+            int rowEffect = statement.executeUpdate(DeleteCTHoaDonH);
+            if (rowEffect != 0) {
+                return true;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return false;
+    }
 }
