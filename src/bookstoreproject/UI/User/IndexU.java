@@ -4,6 +4,7 @@
  */
 package bookstoreproject.UI.User;
 
+import bookstoreproject.DAO.BookDAO;
 import bookstoreproject.MODAL.BookDetail;
 import bookstoreproject.MODAL.User;
 import bookstoreproject.DAO.Connect;
@@ -111,9 +112,9 @@ public class IndexU extends javax.swing.JFrame {
         jPanel3 = new javax.swing.JPanel();
         btnThanhToan1 = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
-        jMenu2 = new javax.swing.JMenu();
         jMenu1 = new javax.swing.JMenu();
         miExit = new javax.swing.JMenuItem();
+        jMenu2 = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setSize(new java.awt.Dimension(1080, 720));
@@ -328,8 +329,6 @@ public class IndexU extends javax.swing.JFrame {
         jLabel4.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel4.setText("Coupon: ");
 
-        txtCoupon.setText("None");
-
         jLabel10.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel10.setForeground(new java.awt.Color(255, 51, 51));
         jLabel10.setText(" Thành Tiền: ");
@@ -500,15 +499,20 @@ public class IndexU extends javax.swing.JFrame {
         getContentPane().add(TabPanel);
         TabPanel.setBounds(0, 82, 777, 330);
 
-        jMenu2.setText("Edit");
-        jMenuBar1.add(jMenu2);
-
         jMenu1.setText("File");
 
         miExit.setText("Exit");
+        miExit.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                miExitActionPerformed(evt);
+            }
+        });
         jMenu1.add(miExit);
 
         jMenuBar1.add(jMenu1);
+
+        jMenu2.setText("Edit");
+        jMenuBar1.add(jMenu2);
 
         setJMenuBar(jMenuBar1);
 
@@ -532,32 +536,31 @@ public class IndexU extends javax.swing.JFrame {
 
     private void btnSavePActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSavePActionPerformed
         // TODO add your handling code here:
-         try{
-             /////Validation
-            String validation ="";
+        try {
+            /////Validation
+            String validation = "";
             //
-            if(txtHoTenP.getText().isEmpty() || txtAddressP.getText().isEmpty() ||txtSdt.getText().isEmpty())
-            {
-                if(txtHoTenP.getText().isEmpty())
+            if (txtHoTenP.getText().isEmpty() || txtAddressP.getText().isEmpty() || txtSdt.getText().isEmpty()) {
+                if (txtHoTenP.getText().isEmpty()) {
                     validation += "Họ tên must be fill ";
-                if(txtAddressP.getText().isEmpty())
+                }
+                if (txtAddressP.getText().isEmpty()) {
                     validation += "- Address must be fill ";
-                if(txtSdt.getText().isEmpty())
+                }
+                if (txtSdt.getText().isEmpty()) {
                     validation += "- Phone Number must be fill ";
+                }
                 JOptionPane.showMessageDialog(null, validation, "Thông báo", JOptionPane.INFORMATION_MESSAGE);
                 return;
             }
-            
+
             ////////////////////PhoneNumber validation - only number
-            if(!txtSdt.getText().matches("\\d+"))
-            {
-               JOptionPane.showMessageDialog(null, "Phone number must only contain number", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
-               return;
+            if (!txtSdt.getText().matches("\\d+")) {
+                JOptionPane.showMessageDialog(null, "Phone number must only contain number", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+                return;
             }
-            
-            
+
             ////Validation
-            
             User temp = new User();
             temp.setFullName(txtHoTenP.getText());
             temp.setUserAddress(txtAddressP.getText());
@@ -573,21 +576,17 @@ public class IndexU extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(null, "Edited successful", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
 
             }
-       
-        }catch(Exception e)
-        {
+
+        } catch (Exception e) {
             e.printStackTrace();
         }
-       
-        
-        
-        
-        
-         //End config
+
+        //End config
         btnSaveP.setVisible(false);
         txtHoTenP.setEnabled(false);
         txtAddressP.setEnabled(false);
         txtSdt.setEnabled(false);
+        //End config
     }//GEN-LAST:event_btnSavePActionPerformed
 
     private void tblBooktableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblBooktableMouseClicked
@@ -607,7 +606,12 @@ public class IndexU extends javax.swing.JFrame {
 
     private void btnBuyHActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuyHActionPerformed
         // TODO add your handling code here:
-       
+       if(Integer.parseInt(txtSoLuongH.getText()) > currentNumberOfBook)
+       {
+           JOptionPane.showMessageDialog(null, "Trong kho khong co du sach");
+           return;
+       }
+        
          if(Dic.get(currentBookDetail)== null)
             Dic.put(currentBookDetail, Integer.parseInt(txtSoLuongH.getText()));
         else
@@ -671,10 +675,10 @@ public class IndexU extends javax.swing.JFrame {
                      }
                     expectedId++;
             }
-            if(txtCoupon.getText().equals("None"))
+            if(txtCoupon.getText().isEmpty())
             {
                  String findCoupon = "Select * from Coupon where CouponName = N'"
-                    + txtCoupon.getText() +"';";
+                    + "None" +"';";
                  ResultSet coupon = state.executeQuery(findCoupon);
                  coupon.next();
                  CurrentIdCoupon = coupon.getString("CouponId");
@@ -687,9 +691,9 @@ public class IndexU extends javax.swing.JFrame {
                     +UserInstance.getUserId()
                     +"',"
                     +Long.parseLong(txtThanhTien.getText())
-                    +","
-                    + dtf.format(now)
                     +",'"
+                    + dtf.format(now)
+                    +"','"
                     +CurrentIdCoupon
                     +"');";
                     
@@ -717,7 +721,9 @@ public class IndexU extends javax.swing.JFrame {
                 ///////////////////Xử lí sau khi add thành công chi tiết hóa đơn
                 if(rowChitiet != 0)
                 {
-                     updateDbAfterBuyBook(BookId,Soluong);
+                   
+                     BookDAO.updateDbAfterBuyBook(BookId,Soluong);
+                     
                 }           
                 }
             }
@@ -830,6 +836,11 @@ public class IndexU extends javax.swing.JFrame {
             e.printStackTrace();
         }
     }//GEN-LAST:event_btnSearchHActionPerformed
+
+    private void miExitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_miExitActionPerformed
+        // TODO add your handling code here:
+        System.exit(0);
+    }//GEN-LAST:event_miExitActionPerformed
        public void showProfilePanel()
     {
         //Start up config
@@ -874,34 +885,7 @@ public class IndexU extends javax.swing.JFrame {
             e.printStackTrace();
         }
        }
-       public void updateDbAfterBuyBook(String BookId,int SOluongMua)
-       {
-           try
-           {
-                Connect sqlinstance = new Connect();
-                sqlinstance.Connect();
-                Statement state = sqlinstance.conn.createStatement();
-                String GetOldTonKho = "Select TonKho from Book where BookId = '"
-                   + BookId
-                   +"';";
-                ResultSet oldTonKho = state.executeQuery(GetOldTonKho);
-                oldTonKho.next();
-                int NewTonKho = Integer.parseInt(oldTonKho.getString("TonKho")) - SOluongMua;
-                
-                String updateString = "update  Book\n"
-                +"set TonKho = " + NewTonKho
-                + " where BookId = '" + BookId
-                + "'";
-                
-                int isUpdated = state.executeUpdate(updateString);
-                sqlinstance.conn.close();
-           }
-           
-          catch(Exception e)
-          {
-              
-          }
-       }
+       
        public void loadCartPanel()
        {
            tblCart.removeAll();

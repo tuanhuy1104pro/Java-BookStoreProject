@@ -4,8 +4,10 @@
  */
 package bookstoreproject.UI.Admin;
 
+import bookstoreproject.DAO.AuthorDAO;
 import bookstoreproject.DAO.BookDAO;
 import bookstoreproject.DAO.BookDetailDAO;
+import bookstoreproject.DAO.CategoryDAO;
 import bookstoreproject.DAO.ChiTietHoaDonDAO;
 import bookstoreproject.MODAL.User;
 import bookstoreproject.DAO.Connect;
@@ -71,7 +73,7 @@ public class Index extends javax.swing.JFrame {
         btnQuanLyCoupon = new javax.swing.JButton();
         btnQuanLyUser = new javax.swing.JButton();
         btnThongKe = new javax.swing.JButton();
-        Tabpanel = new javax.swing.JTabbedPane();
+        Panel = new javax.swing.JTabbedPane();
         HomePanel = new javax.swing.JPanel();
         btnSearchH = new javax.swing.JButton();
         btnXoaH = new javax.swing.JButton();
@@ -124,10 +126,29 @@ public class Index extends javax.swing.JFrame {
         cboRoleQ = new javax.swing.JComboBox<>();
         btnSaveEdit = new javax.swing.JButton();
         btnReloadUser = new javax.swing.JButton();
+        ThongKePanel = new javax.swing.JPanel();
+        jPanel10 = new javax.swing.JPanel();
+        jScrollPane5 = new javax.swing.JScrollPane();
+        tblBooktableTK = new javax.swing.JTable();
+        jLabel12 = new javax.swing.JLabel();
+        jLabel13 = new javax.swing.JLabel();
+        jLabel14 = new javax.swing.JLabel();
+        lbSoSachDuocBanTK = new javax.swing.JLabel();
+        lbTongDoanhThuTK = new javax.swing.JLabel();
+        jLabel16 = new javax.swing.JLabel();
+        jLabel17 = new javax.swing.JLabel();
+        lbTag = new javax.swing.JLabel();
+        lbValuetag = new javax.swing.JLabel();
+        jLabel18 = new javax.swing.JLabel();
+        lbSumOfBook = new javax.swing.JLabel();
+        jLabel19 = new javax.swing.JLabel();
+        lbSumOfCate = new javax.swing.JLabel();
+        jLabel20 = new javax.swing.JLabel();
+        lbSumOfAuthor = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
-        jMenu2 = new javax.swing.JMenu();
         jMenu1 = new javax.swing.JMenu();
         miExit = new javax.swing.JMenuItem();
+        jMenu2 = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setSize(new java.awt.Dimension(1080, 720));
@@ -176,33 +197,28 @@ public class Index extends javax.swing.JFrame {
         HeaderPanelLayout.setHorizontalGroup(
             HeaderPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(HeaderPanelLayout.createSequentialGroup()
-                .addContainerGap()
+                .addGap(12, 12, 12)
                 .addComponent(lbUser)
-                .addGap(37, 37, 37)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(btnHome, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(35, 35, 35)
+                .addGap(18, 18, 18)
                 .addComponent(btnQuanLyUser)
-                .addGap(52, 52, 52)
+                .addGap(18, 18, 18)
                 .addComponent(btnQuanLyCoupon)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 43, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
                 .addComponent(btnThongKe, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(17, 17, 17))
+                .addContainerGap(112, Short.MAX_VALUE))
         );
         HeaderPanelLayout.setVerticalGroup(
             HeaderPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(HeaderPanelLayout.createSequentialGroup()
-                .addGroup(HeaderPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, HeaderPanelLayout.createSequentialGroup()
-                        .addContainerGap(12, Short.MAX_VALUE)
-                        .addGroup(HeaderPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(btnHome, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btnQuanLyCoupon, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btnQuanLyUser, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btnThongKe, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(HeaderPanelLayout.createSequentialGroup()
-                        .addGap(19, 19, 19)
-                        .addComponent(lbUser)
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addContainerGap(12, Short.MAX_VALUE)
+                .addGroup(HeaderPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnHome, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnQuanLyCoupon, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnQuanLyUser, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnThongKe, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lbUser))
                 .addContainerGap())
         );
 
@@ -283,7 +299,7 @@ public class Index extends javax.swing.JFrame {
         HomePanel.add(btnReloadH);
         btnReloadH.setBounds(250, 20, 72, 23);
 
-        Tabpanel.addTab("Home", HomePanel);
+        Panel.addTab("Home", HomePanel);
 
         txtSdt.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
 
@@ -378,7 +394,7 @@ public class Index extends javax.swing.JFrame {
                     .addGap(65, 65, 65)))
         );
 
-        Tabpanel.addTab("Profile", ProfilePanel);
+        Panel.addTab("Profile", ProfilePanel);
 
         CouponPanel.setLayout(null);
         CouponPanel.add(txtCouponName);
@@ -478,7 +494,7 @@ public class Index extends javax.swing.JFrame {
         CouponPanel.add(btnReloadC);
         btnReloadC.setBounds(630, 80, 72, 23);
 
-        Tabpanel.addTab("Coupon", CouponPanel);
+        Panel.addTab("Coupon", CouponPanel);
 
         QLNguoiDung.setLayout(null);
         QLNguoiDung.add(txtPassword);
@@ -596,20 +612,181 @@ public class Index extends javax.swing.JFrame {
         QLNguoiDung.add(btnReloadUser);
         btnReloadUser.setBounds(570, 200, 72, 23);
 
-        Tabpanel.addTab("Quản Lý Người dùng", QLNguoiDung);
+        Panel.addTab("Quản Lý Người dùng", QLNguoiDung);
 
-        getContentPane().add(Tabpanel);
-        Tabpanel.setBounds(0, 54, 753, 380);
+        tblBooktableTK.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
 
-        jMenu2.setText("Edit");
-        jMenuBar1.add(jMenu2);
+            },
+            new String [] {
+                "BookId", "BookName", "Category", "TacGia"
+            }
+        ));
+        tblBooktableTK.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblBooktableTKMouseClicked(evt);
+            }
+        });
+        jScrollPane5.setViewportView(tblBooktableTK);
+
+        javax.swing.GroupLayout jPanel10Layout = new javax.swing.GroupLayout(jPanel10);
+        jPanel10.setLayout(jPanel10Layout);
+        jPanel10Layout.setHorizontalGroup(
+            jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel10Layout.createSequentialGroup()
+                .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 320, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 1, Short.MAX_VALUE))
+        );
+        jPanel10Layout.setVerticalGroup(
+            jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel10Layout.createSequentialGroup()
+                .addComponent(jScrollPane5, javax.swing.GroupLayout.DEFAULT_SIZE, 219, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+
+        jLabel12.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
+        jLabel12.setForeground(new java.awt.Color(0, 51, 255));
+        jLabel12.setText("Tổng doanh thu");
+
+        jLabel13.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jLabel13.setText("Đầu sách đã bán: ");
+
+        jLabel14.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jLabel14.setForeground(new java.awt.Color(255, 51, 51));
+        jLabel14.setText("Tổng doanh thu: ");
+
+        lbSoSachDuocBanTK.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        lbSoSachDuocBanTK.setText("jLabel16");
+
+        lbTongDoanhThuTK.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        lbTongDoanhThuTK.setText("jLabel16");
+
+        jLabel16.setText("Tag: ");
+
+        jLabel17.setText("Value:");
+
+        lbTag.setText("jLabel18");
+
+        lbValuetag.setText("jLabel18");
+
+        jLabel18.setText("Tổng sách đang bán:");
+
+        lbSumOfBook.setText("jLabel18");
+
+        jLabel19.setText("Số thể loại");
+
+        lbSumOfCate.setText("jLabel18");
+
+        jLabel20.setText("Số tác giả");
+
+        lbSumOfAuthor.setText("jLabel18");
+
+        javax.swing.GroupLayout ThongKePanelLayout = new javax.swing.GroupLayout(ThongKePanel);
+        ThongKePanel.setLayout(ThongKePanelLayout);
+        ThongKePanelLayout.setHorizontalGroup(
+            ThongKePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(ThongKePanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(ThongKePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(ThongKePanelLayout.createSequentialGroup()
+                        .addGroup(ThongKePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addGroup(ThongKePanelLayout.createSequentialGroup()
+                                .addComponent(jLabel16)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(lbTag)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jLabel17)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(lbValuetag)
+                                .addGap(6, 6, 6))
+                            .addComponent(jPanel10, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(ThongKePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(ThongKePanelLayout.createSequentialGroup()
+                                .addGap(18, 18, 18)
+                                .addGroup(ThongKePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(ThongKePanelLayout.createSequentialGroup()
+                                        .addComponent(jLabel14)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addComponent(lbTongDoanhThuTK, javax.swing.GroupLayout.DEFAULT_SIZE, 190, Short.MAX_VALUE))
+                                    .addGroup(ThongKePanelLayout.createSequentialGroup()
+                                        .addComponent(jLabel13)
+                                        .addGap(35, 35, 35)
+                                        .addComponent(lbSoSachDuocBanTK, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(0, 0, Short.MAX_VALUE)))
+                                .addGap(61, 61, 61))
+                            .addGroup(ThongKePanelLayout.createSequentialGroup()
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jLabel12)
+                                .addGap(118, 118, 118))))
+                    .addGroup(ThongKePanelLayout.createSequentialGroup()
+                        .addComponent(jLabel18)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(lbSumOfBook)
+                        .addGap(118, 118, 118)
+                        .addComponent(jLabel19)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(lbSumOfCate)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jLabel20)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(lbSumOfAuthor)
+                        .addGap(81, 81, 81))))
+        );
+        ThongKePanelLayout.setVerticalGroup(
+            ThongKePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, ThongKePanelLayout.createSequentialGroup()
+                .addContainerGap(60, Short.MAX_VALUE)
+                .addGroup(ThongKePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel12)
+                    .addComponent(jLabel16)
+                    .addComponent(jLabel17)
+                    .addComponent(lbTag)
+                    .addComponent(lbValuetag))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(ThongKePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(ThongKePanelLayout.createSequentialGroup()
+                        .addComponent(jPanel10, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(ThongKePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel18)
+                            .addComponent(lbSumOfBook)
+                            .addGroup(ThongKePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(jLabel19)
+                                .addComponent(lbSumOfCate)
+                                .addGroup(ThongKePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(jLabel20)
+                                    .addComponent(lbSumOfAuthor)))))
+                    .addGroup(ThongKePanelLayout.createSequentialGroup()
+                        .addGap(23, 23, 23)
+                        .addGroup(ThongKePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel13)
+                            .addComponent(lbSoSachDuocBanTK))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(ThongKePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel14)
+                            .addComponent(lbTongDoanhThuTK))
+                        .addGap(69, 69, 69))))
+        );
+
+        Panel.addTab("Thống Kê", ThongKePanel);
+
+        getContentPane().add(Panel);
+        Panel.setBounds(0, 54, 753, 380);
 
         jMenu1.setText("File");
 
         miExit.setText("Exit");
+        miExit.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                miExitActionPerformed(evt);
+            }
+        });
         jMenu1.add(miExit);
 
         jMenuBar1.add(jMenu1);
+
+        jMenu2.setText("Edit");
+        jMenuBar1.add(jMenu2);
 
         setJMenuBar(jMenuBar1);
 
@@ -618,7 +795,7 @@ public class Index extends javax.swing.JFrame {
 
     private void btnHomeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHomeActionPerformed
         // TODO add your handling code here:
-        Tabpanel.setSelectedIndex(0);
+        Panel.setSelectedIndex(0);
         showBookTable();
         btnReloadH.setVisible(false);
 
@@ -626,13 +803,13 @@ public class Index extends javax.swing.JFrame {
 
     private void btnQuanLyCouponActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnQuanLyCouponActionPerformed
         // TODO add your handling code here:
-        Tabpanel.setSelectedComponent(CouponPanel);
+        Panel.setSelectedComponent(CouponPanel);
         showCouponTable();
     }//GEN-LAST:event_btnQuanLyCouponActionPerformed
 
     private void lbUserMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lbUserMouseClicked
         // TODO add your handling code here:
-        Tabpanel.setSelectedComponent(ProfilePanel);
+        Panel.setSelectedComponent(ProfilePanel);
         showProfilePanel();
 
     }//GEN-LAST:event_lbUserMouseClicked
@@ -720,7 +897,7 @@ public class Index extends javax.swing.JFrame {
 
     private void btnQuanLyUserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnQuanLyUserActionPerformed
         // TODO add your handling code here:
-        Tabpanel.setSelectedComponent(QLNguoiDung);
+        Panel.setSelectedComponent(QLNguoiDung);
         showUserTable();
         btnSaveEdit.setVisible(false);
     }//GEN-LAST:event_btnQuanLyUserActionPerformed
@@ -809,13 +986,11 @@ public class Index extends javax.swing.JFrame {
 
             //////////////////Delete chitiet Hoadon
             Boolean isDeleteChiTietHd = ChiTietHoaDonDAO.DeleteChiTietHdByCouponId(CurrentRowCouponId);
-           
+
             ///////////Delete HoaDon Lien quan đến Coupon
             Boolean isDeleteHd = HoaDonDAO.DeleteHdById(CurrentRowCouponId);
-         
-            ///////////////////////Delete stage
-           
 
+            ///////////////////////Delete stage
             Boolean issucceed = CouponDAO.DeleteCoupon(CurrentRowCouponId);
             if (issucceed == true) {
 
@@ -836,14 +1011,13 @@ public class Index extends javax.swing.JFrame {
         DefaultTableModel model = (DefaultTableModel) tblCoupon.getModel();
         model.setRowCount(0);
         try {
-            
-                ArrayList<Coupon> cp = new ArrayList<>();
-                cp = CouponDAO.SearchCoupon(txtSearchC.getText());
-                for(Coupon item:cp)
-                {
-                    model.addRow(new Object[]{item.getCouponId(), item.getCouponName(), item.getDiscount()});
-                }
-            
+
+            ArrayList<Coupon> cp = new ArrayList<>();
+            cp = CouponDAO.SearchCoupon(txtSearchC.getText());
+            for (Coupon item : cp) {
+                model.addRow(new Object[]{item.getCouponId(), item.getCouponName(), item.getDiscount()});
+            }
+
         } catch (Exception e) {
 
             e.printStackTrace();
@@ -1045,17 +1219,14 @@ public class Index extends javax.swing.JFrame {
 
             ///////////////////////Delete stage
             //Delete Book Detail
-          
             Boolean issucceed = BookDetailDAO.DeleteBookDetailById(CurrentRowBookId);
             if (issucceed != false) {
 
                 ////
                 //// Delete chi tiet hoa don
-               
                 Boolean rowEffect = ChiTietHoaDonDAO.DeleteChiTietHdByBookId(CurrentRowBookId);
                 ////          
                 ////Delete Book
-               
 
                 Boolean issucceed2 = BookDAO.DeleteBookById(CurrentRowBookId);
                 if (issucceed2 != false) {
@@ -1077,7 +1248,29 @@ public class Index extends javax.swing.JFrame {
 
     private void btnThongKeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnThongKeActionPerformed
         // TODO add your handling code here:
+        Panel.setSelectedComponent(ThongKePanel);
+        showBookTableTK();
+        GetNumberOfBook_Author_Cate();
     }//GEN-LAST:event_btnThongKeActionPerformed
+
+    private void miExitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_miExitActionPerformed
+        // TODO add your handling code here:
+        System.exit(0);
+    }//GEN-LAST:event_miExitActionPerformed
+
+    private void tblBooktableTKMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblBooktableTKMouseClicked
+        // TODO add your handling code here:
+        DefaultTableModel model = (DefaultTableModel) tblBooktableTK.getModel();
+        int rowselected = tblBooktableTK.getSelectedRow();
+        CurrentRowBookId = tblBooktableTK.getValueAt(rowselected, 0).toString();
+
+        lbTag.setText(tblBooktableTK.getColumnName(tblBooktableTK.getSelectedColumn()));
+        lbValuetag.setText(tblBooktableTK.getValueAt(rowselected, tblBooktableTK.getSelectedColumn()).toString());
+
+        ////////// xử lí thống kê use method
+        ShowThongKe(lbTag.getText(), lbValuetag.getText());
+        ////////// xử lí
+    }//GEN-LAST:event_tblBooktableTKMouseClicked
 
     /**
      * @param args the command line arguments
@@ -1181,13 +1374,74 @@ public class Index extends javax.swing.JFrame {
             e.printStackTrace();
         }
     }
+
+    public final void showBookTableTK() {
+        DefaultTableModel model = (DefaultTableModel) tblBooktableTK.getModel();
+        model.setRowCount(0);
+        try {
+            Connect sqlinstance = new Connect();
+            sqlinstance.Connect();
+            Statement stateget = sqlinstance.conn.createStatement();
+            String SelectQueryAll = "select Book.BookId,BookName,CategoryName,Price,Book.GioiThieu, Name as TacGia,TonKho from Book,Category,BookDetail,Author where Book.CategoryId = Category.CategoryId and Book.BookId = BookDetail.BookId and BookDetail.AuthorId = Author.AuthorId";
+            ResultSet BookResult = stateget.executeQuery(SelectQueryAll);
+            while (BookResult.next()) {
+                model.addRow(new Object[]{BookResult.getString("BookId"), BookResult.getString("BookName"), BookResult.getString("CategoryName"), BookResult.getString("TacGia")});
+            }
+            sqlinstance.conn.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void ShowThongKe(String By, String Value) {
+        if (By.equals("BookName") || Value.equals("BookId")) {
+            int sosachdaban = BookDAO.GetSoSachDaBanById(CurrentRowBookId);
+            int TongDoanhthu = sosachdaban * BookDAO.GetGiaSachById(CurrentRowBookId);
+            lbSoSachDuocBanTK.setText(Integer.toString(sosachdaban));
+            lbTongDoanhThuTK.setText(Integer.toString(TongDoanhthu));
+            return;
+        }
+        if (By.equals("Category")) {
+            int sosachdaban = CategoryDAO.GetSoSachDaBanByCategory(Value);
+            int TongDoanhthu = CategoryDAO.TongDoanhThuTheoCategory(Value);
+
+            lbSoSachDuocBanTK.setText(Integer.toString(sosachdaban));
+            lbTongDoanhThuTK.setText(Integer.toString(TongDoanhthu));
+            return;
+        }
+        if (By.equals("TacGia")) {
+            int sosachdaban = AuthorDAO.GetSoSachDaBanByAuthor(Value);
+            int TongDoanhthu = AuthorDAO.TongDoanhThuTheoAuthor(Value);
+
+            lbSoSachDuocBanTK.setText(Integer.toString(sosachdaban));
+            lbTongDoanhThuTK.setText(Integer.toString(TongDoanhthu));
+            return;
+
+        }
+    }
+
+    public void GetNumberOfBook_Author_Cate() {
+        //////////Number of Book
+        lbSumOfBook.setText(Integer.toString(BookDAO.getSoLuongSachConBan()));
+
+        ////
+        ////Number of Cate
+        lbSumOfCate.setText(Integer.toString(CategoryDAO.getSoLuongCate()));
+
+        ////
+        /////Number of Author
+        lbSumOfAuthor.setText(Integer.toString(AuthorDAO.getSoLuongAuthor()));
+
+        /////
+    }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel CouponPanel;
     private javax.swing.JPanel HeaderPanel;
     private javax.swing.JPanel HomePanel;
+    private javax.swing.JTabbedPane Panel;
     private javax.swing.JPanel ProfilePanel;
     private javax.swing.JPanel QLNguoiDung;
-    private javax.swing.JTabbedPane Tabpanel;
+    private javax.swing.JPanel ThongKePanel;
     private javax.swing.JButton btnAdd;
     private javax.swing.JButton btnAddC;
     private javax.swing.JButton btnAddH;
@@ -1213,7 +1467,15 @@ public class Index extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
+    private javax.swing.JLabel jLabel12;
+    private javax.swing.JLabel jLabel13;
+    private javax.swing.JLabel jLabel14;
+    private javax.swing.JLabel jLabel16;
+    private javax.swing.JLabel jLabel17;
+    private javax.swing.JLabel jLabel18;
+    private javax.swing.JLabel jLabel19;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel20;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
@@ -1224,15 +1486,25 @@ public class Index extends javax.swing.JFrame {
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JPanel jPanel10;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel9;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
+    private javax.swing.JScrollPane jScrollPane5;
+    private javax.swing.JLabel lbSoSachDuocBanTK;
+    private javax.swing.JLabel lbSumOfAuthor;
+    private javax.swing.JLabel lbSumOfBook;
+    private javax.swing.JLabel lbSumOfCate;
+    private javax.swing.JLabel lbTag;
+    private javax.swing.JLabel lbTongDoanhThuTK;
     private javax.swing.JLabel lbUser;
+    private javax.swing.JLabel lbValuetag;
     private javax.swing.JMenuItem miExit;
     private javax.swing.JTable tblBooktable;
+    private javax.swing.JTable tblBooktableTK;
     private javax.swing.JTable tblCoupon;
     private javax.swing.JTable tblUser;
     private javax.swing.JTextField txtAddressP;

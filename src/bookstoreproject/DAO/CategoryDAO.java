@@ -117,4 +117,71 @@ public class CategoryDAO {
         
         return false;
     }
+    public static int getSoLuongCate()
+    {
+        try
+        {
+            Connect conn = new Connect();
+            conn.Connect();
+            Statement state = conn.conn.createStatement();
+            String select = "select COUNT(CategoryId) as soLuong from Category";
+            ResultSet rs = state.executeQuery(select);
+            rs.next();
+            return Integer.parseInt(rs.getString("soLuong"));
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+    public static int GetSoSachDaBanByCategory(String CategoryName)
+    {
+        try
+        {
+            Connect con = new Connect();
+            con.Connect();
+            Statement state = con.conn.createStatement();
+            
+            String select = "select SUM(SoLuong) as TongSachDaBan from Book,ChiTietHoaDon,Category where Book.BookId = ChiTietHoaDon.BookId and Book.CategoryId = Category.CategoryId and Category.CategoryName = N'"
+                    + CategoryName
+                    + "';";
+            ResultSet rs = state.executeQuery(select);
+            while(rs.next())
+            {
+                return Integer.parseInt(rs.getString("TongSachDaBan"));
+            }
+            
+        }catch(Exception e)
+        {
+            
+        }
+        return 0;
+    }
+    public static int TongDoanhThuTheoCategory(String CategoryName)
+    {
+        int sum = 0;
+        try
+        {
+            Connect con = new Connect();
+            con.Connect();
+            Statement state = con.conn.createStatement();
+            
+            String select = "select * from Book,ChiTietHoaDon,Category where Book.BookId = ChiTietHoaDon.BookId and Book.CategoryId = Category.CategoryId and Category.CategoryName = N'"
+                    + CategoryName
+                    + "';";
+            ResultSet rs = state.executeQuery(select);
+            while(rs.next())
+            {
+                int giatien  = Integer.parseInt(rs.getString("Price"));
+                 int soluong  = Integer.parseInt(rs.getString("SoLuong"));
+                 sum += giatien * soluong;
+            }
+            
+        }catch(Exception e)
+        {
+            
+        }
+        return sum;
+    }
 }

@@ -28,19 +28,16 @@ public class ChiTietHoaDonDAO {
             while (rs.next()) {
                 String GetIdHoaDon = rs.getString("IdHoaDon");
                 String DeleteChiTietHoaDonQ = "Delete from ChiTietHoaDon\n"
-                        + "\n"
                         + "where IdHoaDon = '"
                         + GetIdHoaDon
                         + "';";
-
-                int result = statement.executeUpdate(DeleteChiTietHoaDonQ);
-                if (result != 0) {
-                    statement.close();
-                    return true;
-                }
-
-                statement.close();
+                Statement statement2 = sqlinstance.conn.createStatement();
+                int result = statement2.executeUpdate(DeleteChiTietHoaDonQ);
+              
             }
+            sqlinstance.closeConnect();
+            return true;
+            
         } catch (Exception e) {
             e.printStackTrace();
         }
