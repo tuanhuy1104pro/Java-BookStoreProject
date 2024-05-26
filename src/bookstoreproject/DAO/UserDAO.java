@@ -246,6 +246,35 @@ public class UserDAO {
        }
        return false;
    }
+   public static String GetPasswordByUserName(String Username)
+   {
+       try{
+            Connect ConnectInstance = new Connect();
+            ConnectInstance.Connect();
+            Statement statement = ConnectInstance.conn.createStatement();
+
+            //////////////////////Exist validation
+            String FindUser = "Select * from Users where UserName ='"
+                    + Username
+                    + "';";
+
+            ResultSet FindResult = statement.executeQuery(FindUser);
+            if (FindResult.next()) {
+               
+                
+               
+               ConnectInstance.closeConnect();
+                return FindResult.getString("UserPass");
+            }
+            //////////////////////Exist validation
+             ConnectInstance.closeConnect();
+       }
+       catch(Exception e)
+       {
+           e.printStackTrace();
+       }
+       return null;
+   }
    public static Boolean DeleteUserById(String UserId)
    {
        try

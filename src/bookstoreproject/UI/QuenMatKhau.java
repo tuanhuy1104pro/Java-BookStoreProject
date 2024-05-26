@@ -4,6 +4,10 @@
  */
 package bookstoreproject.UI;
 
+import bookstoreproject.DAO.EmailDAO;
+import bookstoreproject.DAO.UserDAO;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author Acer
@@ -48,6 +52,11 @@ public class QuenMatKhau extends javax.swing.JFrame {
 
         btnConfirm.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         btnConfirm.setText("Xác nhận");
+        btnConfirm.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnConfirmActionPerformed(evt);
+            }
+        });
 
         jMenu1.setText("File");
 
@@ -107,6 +116,21 @@ public class QuenMatKhau extends javax.swing.JFrame {
         // TODO add your handling code here:
         System.exit(0);
     }//GEN-LAST:event_miExitActionPerformed
+
+    private void btnConfirmActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConfirmActionPerformed
+        // TODO add your handling code here:
+        if(UserDAO.ExistUserName(txtUserName.getText()))
+        {
+            String Password = UserDAO.GetPasswordByUserName(txtUserName.getText());
+            String noiDung = "Mật khẩu của email " + txtUserName.getText() + " là : " + Password;
+            EmailDAO.sendEmail(txtUserName.getText(), "Lấy lại mật khẩu", noiDung);
+            JOptionPane.showMessageDialog(null, "Vui lòng vào email của bạn để kiểm tra");
+        }
+        else
+        {
+            JOptionPane.showMessageDialog(null, "Email Không tồn tại");
+        }
+    }//GEN-LAST:event_btnConfirmActionPerformed
 
     /**
      * @param args the command line arguments
