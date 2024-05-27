@@ -24,23 +24,25 @@ import javax.swing.table.DefaultTableModel;
 //import com.itextpdf.text.Document;
 //import com.itextpdf.text.Paragraph;
 //import com.itextpdf.text.pdf.PdfWriter;
-
 import java.io.FileOutputStream;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.Enumeration;
+
 /**
  *
  * @author Acer
  */
 public class IndexU extends javax.swing.JFrame {
+
     private User UserInstance;
     private ArrayList<BookDetail> ListBookDetail = new ArrayList<BookDetail>();
     private BookDetail currentBookDetail;
     private int currentNumberOfBook;
     private String CurrentIdCoupon = "";
-    private Dictionary<BookDetail,Integer> Dic = new Hashtable<>();
+    private Dictionary<BookDetail, Integer> Dic = new Hashtable<>();
+
     /*@param UserInstance */
     public IndexU(User UserInstance) {
         initComponents();
@@ -49,12 +51,9 @@ public class IndexU extends javax.swing.JFrame {
         setResizable(false);
         setLocationRelativeTo(null);
         //config hiện tên người dùng
-        if(this.UserInstance.getFullName().equals(""))
-        {
+        if (this.UserInstance.getFullName().equals("")) {
             lbUser.setText(this.UserInstance.getUserName());
-        }
-        else
-        {
+        } else {
             lbUser.setText(this.UserInstance.getFullName());
         }
         //config hiện tên người dùng
@@ -109,9 +108,6 @@ public class IndexU extends javax.swing.JFrame {
         tblCart = new javax.swing.JTable();
         btnRemoveCart = new javax.swing.JButton();
         btnApplyCoupon = new javax.swing.JButton();
-        PaymentHistory = new javax.swing.JPanel();
-        jPanel3 = new javax.swing.JPanel();
-        btnThanhToan1 = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         miExit = new javax.swing.JMenuItem();
@@ -451,52 +447,6 @@ public class IndexU extends javax.swing.JFrame {
 
         TabPanel.addTab("Cart", CartPanel);
 
-        jPanel3.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-
-        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
-        jPanel3.setLayout(jPanel3Layout);
-        jPanel3Layout.setHorizontalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 520, Short.MAX_VALUE)
-        );
-        jPanel3Layout.setVerticalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 287, Short.MAX_VALUE)
-        );
-
-        btnThanhToan1.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        btnThanhToan1.setText("Xem Chi Tiết");
-
-        javax.swing.GroupLayout PaymentHistoryLayout = new javax.swing.GroupLayout(PaymentHistory);
-        PaymentHistory.setLayout(PaymentHistoryLayout);
-        PaymentHistoryLayout.setHorizontalGroup(
-            PaymentHistoryLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 777, Short.MAX_VALUE)
-            .addGroup(PaymentHistoryLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(PaymentHistoryLayout.createSequentialGroup()
-                    .addGap(45, 45, 45)
-                    .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 35, Short.MAX_VALUE)
-                    .addComponent(btnThanhToan1)
-                    .addGap(45, 45, 45)))
-        );
-        PaymentHistoryLayout.setVerticalGroup(
-            PaymentHistoryLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 295, Short.MAX_VALUE)
-            .addGroup(PaymentHistoryLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(PaymentHistoryLayout.createSequentialGroup()
-                    .addContainerGap()
-                    .addGroup(PaymentHistoryLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGroup(PaymentHistoryLayout.createSequentialGroup()
-                            .addGap(100, 100, 100)
-                            .addComponent(btnThanhToan1)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 124, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addContainerGap()))
-        );
-
-        TabPanel.addTab("Payment History", PaymentHistory);
-
         getContentPane().add(TabPanel);
         TabPanel.setBounds(0, 82, 777, 330);
 
@@ -524,7 +474,7 @@ public class IndexU extends javax.swing.JFrame {
         // TODO add your handling code here:
         TabPanel.setSelectedComponent(ProfilePanel);
         showProfilePanel();
-        
+
     }//GEN-LAST:event_lbUserMouseClicked
 
     private void btnEditPActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditPActionPerformed
@@ -591,13 +541,13 @@ public class IndexU extends javax.swing.JFrame {
     }//GEN-LAST:event_btnSavePActionPerformed
 
     private void tblBooktableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblBooktableMouseClicked
-       DefaultTableModel model = (DefaultTableModel)tblBooktable.getModel();
-       int rowselected = tblBooktable.getSelectedRow();
-       BookDetail temp = new BookDetail();
-       temp.setAuthorId(ListBookDetail.get(rowselected).getAuthorId());
-       temp.setBookId(ListBookDetail.get(rowselected).getBookId());
-       currentBookDetail = temp;
-       currentNumberOfBook = Integer.parseInt(model.getValueAt(rowselected, 3).toString());
+        DefaultTableModel model = (DefaultTableModel) tblBooktable.getModel();
+        int rowselected = tblBooktable.getSelectedRow();
+        BookDetail temp = new BookDetail();
+        temp.setAuthorId(ListBookDetail.get(rowselected).getAuthorId());
+        temp.setBookId(ListBookDetail.get(rowselected).getBookId());
+        currentBookDetail = temp;
+        currentNumberOfBook = Integer.parseInt(model.getValueAt(rowselected, 3).toString());
     }//GEN-LAST:event_tblBooktableMouseClicked
 
     private void btnHomeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHomeActionPerformed
@@ -607,23 +557,20 @@ public class IndexU extends javax.swing.JFrame {
 
     private void btnBuyHActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuyHActionPerformed
         // TODO add your handling code here:
-       if(Integer.parseInt(txtSoLuongH.getText()) > currentNumberOfBook)
-       {
-           JOptionPane.showMessageDialog(null, "Trong kho khong co du sach");
-           return;
-       }
-        
-         if(Dic.get(currentBookDetail)== null)
+        if (Integer.parseInt(txtSoLuongH.getText()) > currentNumberOfBook) {
+            JOptionPane.showMessageDialog(null, "Trong kho khong co du sach");
+            return;
+        }
+
+        if (Dic.get(currentBookDetail) == null) {
             Dic.put(currentBookDetail, Integer.parseInt(txtSoLuongH.getText()));
-        else
-        {
+        } else {
             int soluong = Dic.get(currentBookDetail);
-            soluong+=Integer.parseInt(txtSoLuongH.getText());
+            soluong += Integer.parseInt(txtSoLuongH.getText());
             Dic.put(currentBookDetail, soluong);
         }
 
-        
-       JOptionPane.showMessageDialog(null, "Đã thêm vào giỏ hàng","Thông báo",JOptionPane.INFORMATION_MESSAGE);
+        JOptionPane.showMessageDialog(null, "Đã thêm vào giỏ hàng", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
     }//GEN-LAST:event_btnBuyHActionPerformed
 
     private void btnCartActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCartActionPerformed
@@ -636,7 +583,7 @@ public class IndexU extends javax.swing.JFrame {
     }//GEN-LAST:event_btnCartActionPerformed
 
     private void btnThanhToanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnThanhToanActionPerformed
-        
+
         /*
         Document document = new Document();
         try {
@@ -650,128 +597,123 @@ public class IndexU extends javax.swing.JFrame {
         } finally {
             document.close();
         }
-        */
-        try{
+         */
+        if (Dic.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Giỏ hàng không có gì để thanh toán", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+            return;
+        }
+        try {
             DefaultTableModel model = (DefaultTableModel) tblCart.getModel();
             Connect sqlinstance = new Connect();
             sqlinstance.Connect();
             Statement state = sqlinstance.conn.createStatement();
-            
+
             //////////////////////////////// Tạo Hóa ĐƠn
-            
             LocalDateTime now = LocalDateTime.now();
             DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd");
             ////Tự động tìm mã hóa đơn trống để add
             // Get all existing IDs
             String IdQuery = "select IdHoaDon from HoaDon order by IdHoaDon;";
             ResultSet idResult = state.executeQuery(IdQuery);
-            
+
             // Find the first missing ID
             int expectedId = 1;
-            while(idResult.next()){
-                    String currentId = idResult.getString("IdHoaDon").substring(1); // Remove 'C' prefix
-                    int currentIdNumber = Integer.parseInt(currentId);
-                    if(currentIdNumber != expectedId){
-                        break;
-                     }
-                    expectedId++;
+            while (idResult.next()) {
+                String currentId = idResult.getString("IdHoaDon").substring(1); // Remove 'C' prefix
+                int currentIdNumber = Integer.parseInt(currentId);
+                if (currentIdNumber != expectedId) {
+                    break;
+                }
+                expectedId++;
             }
-            if(txtCoupon.getText().isEmpty())
-            {
-                 String findCoupon = "Select * from Coupon where CouponName = N'"
-                    + "None" +"';";
-                 ResultSet coupon = state.executeQuery(findCoupon);
-                 coupon.next();
-                 CurrentIdCoupon = coupon.getString("CouponId");
+            if (txtCoupon.getText().isEmpty()) {
+                String findCoupon = "Select * from Coupon where CouponName = N'"
+                        + "None" + "';";
+                ResultSet coupon = state.executeQuery(findCoupon);
+                coupon.next();
+                CurrentIdCoupon = coupon.getString("CouponId");
             }
             ///Begin add HoaDon
-            String ExpectedId = "H"+expectedId;
+            String ExpectedId = "H" + expectedId;
             String InsertQuery = "insert into HoaDon values('"
-                    +ExpectedId
-                    +"','"
-                    +UserInstance.getUserId()
-                    +"',"
-                    +Long.parseLong(txtThanhTien.getText())
-                    +",'"
+                    + ExpectedId
+                    + "','"
+                    + UserInstance.getUserId()
+                    + "',"
+                    + Long.parseLong(txtThanhTien.getText())
+                    + ",'"
                     + dtf.format(now)
-                    +"','"
-                    +CurrentIdCoupon
-                    +"');";
-                    
-            
-           
+                    + "','"
+                    + CurrentIdCoupon
+                    + "');";
+
             int row = state.executeUpdate(InsertQuery);
-            if(row != 0)
-            {
+            if (row != 0) {
                 JOptionPane.showMessageDialog(null, "Tạo Hóa đơn thành công", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
                 ////////////// Khi đã tạo hóa đơn rồi thì chỉ cần tạo các chi tiết hóa đơn
                 for (int i = 0; i < tblCart.getRowCount(); i++) {
                     //////Lấy thông tin
-                    String BookId = model.getValueAt(i,0).toString();
+                    String BookId = model.getValueAt(i, 0).toString();
                     int Soluong = Integer.parseInt(model.getValueAt(i, 3).toString());
                     //////
-                String InsertChiTietHoaDon = "insert into ChiTietHoaDon values('"
-                    +ExpectedId
-                    +"','"
-                    + BookId
-                    +"',"
-                    +Soluong
-                    +");";
-                int rowChitiet = state.executeUpdate(InsertChiTietHoaDon);
-          
-                ///////////////////Xử lí sau khi add thành công chi tiết hóa đơn
-                if(rowChitiet != 0)
-                {
-                   
-                     BookDAO.updateDbAfterBuyBook(BookId,Soluong);
-                     
-                }           
+                    String InsertChiTietHoaDon = "insert into ChiTietHoaDon values('"
+                            + ExpectedId
+                            + "','"
+                            + BookId
+                            + "',"
+                            + Soluong
+                            + ");";
+                    int rowChitiet = state.executeUpdate(InsertChiTietHoaDon);
+
+                    ///////////////////Xử lí sau khi add thành công chi tiết hóa đơn
+                    if (rowChitiet != 0) {
+
+                        BookDAO.updateDbAfterBuyBook(BookId, Soluong);
+                        Enumeration<BookDetail> keys = Dic.keys();
+                        while (keys.hasMoreElements()) {
+                            BookDetail key = keys.nextElement();
+                           Dic.remove(key);
+                        }
+                        loadCartPanel();
+                    }
                 }
-            }
-            else
-            {
-              JOptionPane.showMessageDialog(null, "Tạo Hóa đơn không thành công", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+            } else {
+                JOptionPane.showMessageDialog(null, "Tạo Hóa đơn không thành công", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
 
             }
             sqlinstance.conn.close();
-        }
-        catch(Exception e)
-        {
+        } catch (Exception e) {
             e.printStackTrace();
-        }    
+        }
     }//GEN-LAST:event_btnThanhToanActionPerformed
 
     private void btnApplyCouponActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnApplyCouponActionPerformed
         // TODO add your handling code here:
-        if(Dic.isEmpty())
+        if (Dic.isEmpty()) {
             return;
-        try
-        {
+        }
+        try {
             Connect sqlinstance = new Connect();
             sqlinstance.Connect();
             Statement state = sqlinstance.conn.createStatement();
-            
+
             String findCoupon = "Select * from Coupon where CouponName = N'"
-                    + txtCoupon.getText() +"';";
+                    + txtCoupon.getText() + "';";
             ResultSet coupon = state.executeQuery(findCoupon);
-            if(coupon.next())
-            {
+            if (coupon.next()) {
                 int OldThanhTien = Integer.parseInt(txtThanhTien.getText());
-                float soTienGiam =   OldThanhTien * Float.parseFloat(coupon.getString("Discount"));
-                int newTongTien = OldThanhTien - (int)soTienGiam;
+                float soTienGiam = OldThanhTien * Float.parseFloat(coupon.getString("Discount"));
+                int newTongTien = OldThanhTien - (int) soTienGiam;
                 CurrentIdCoupon = coupon.getString("CouponId");
                 txtThanhTien.setText(Integer.toString(newTongTien));
-                JOptionPane.showMessageDialog(null, "You have applied Coupon","Thông báo",JOptionPane.INFORMATION_MESSAGE);
-                sqlinstance.conn.close(); 
-            }
-            else
-            {
-                sqlinstance.conn.close(); 
-                JOptionPane.showMessageDialog(null, "Coupon is not Exist","Thông báo",JOptionPane.INFORMATION_MESSAGE);
+                JOptionPane.showMessageDialog(null, "You have applied Coupon", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+                sqlinstance.conn.close();
+            } else {
+                sqlinstance.conn.close();
+                JOptionPane.showMessageDialog(null, "Coupon is not Exist", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
 
             }
-        }catch(Exception e)
-        {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }//GEN-LAST:event_btnApplyCouponActionPerformed
@@ -779,61 +721,53 @@ public class IndexU extends javax.swing.JFrame {
     private void btnRemoveCartActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRemoveCartActionPerformed
         // TODO add your handling code here:
         DefaultTableModel model = (DefaultTableModel) tblCart.getModel();
-        try
-        {
+        try {
             Connect sqlinstane = new Connect();
             sqlinstane.Connect();
             Statement state = sqlinstane.conn.createStatement();
             String selectBookDetail = "Select * from BookDetail where BookId = '"
                     + model.getValueAt(tblCart.getSelectedRow(), 0) + "';";
             ResultSet set = state.executeQuery(selectBookDetail);
-            while(set.next())
-            {
+            while (set.next()) {
                 BookDetail temp = new BookDetail();
                 temp.setAuthorId(set.getString("AuthorId"));
                 temp.setBookId(set.getString("BookId"));
-                if(Dic.get(temp) != null)
-                {
+                if (Dic.get(temp) != null) {
                     Dic.remove(temp);
-                    JOptionPane.showMessageDialog(null, "Xóa khỏi Cart thành công","Thông báo",JOptionPane.INFORMATION_MESSAGE);
+                    JOptionPane.showMessageDialog(null, "Xóa khỏi Cart thành công", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
                     break;
                 }
             }
             loadCartPanel();
             sqlinstane.conn.close();
-        }catch(Exception e)
-        {
+        } catch (Exception e) {
             e.printStackTrace();
         }
-        
+
     }//GEN-LAST:event_btnRemoveCartActionPerformed
 
     private void btnSearchHActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchHActionPerformed
         DefaultTableModel model = (DefaultTableModel) tblBooktable.getModel();
         model.setRowCount(0);
-        try
-        {
+        try {
             Connect sqlinstance = new Connect();
             sqlinstance.Connect();
             Statement stateget = sqlinstance.conn.createStatement();
-            String SelectQueryAll = "select BookId, BookName, CategoryName, Price, GioiThieu " +
-             "from Book, Category " +
-             "where Book.CategoryId = Category.CategoryId " +
-             "and (Book.BookId = '" + txtSearchH.getText() + "' " +
-             "or Book.BookName = N'" + txtSearchH.getText() + "' " +
-             "or CategoryName =N'" + txtSearchH.getText() + "')";
-            
-                               
+            String SelectQueryAll = "select BookId, BookName, CategoryName, Price, GioiThieu "
+                    + "from Book, Category "
+                    + "where Book.CategoryId = Category.CategoryId "
+                    + "and (Book.BookId = '" + txtSearchH.getText() + "' "
+                    + "or Book.BookName = N'" + txtSearchH.getText() + "' "
+                    + "or CategoryName =N'" + txtSearchH.getText() + "')";
+
             ResultSet BookResult = stateget.executeQuery(SelectQueryAll);
-            while(BookResult.next())
-            {
-                model.addRow(new Object[]{BookResult.getString("BookId"),BookResult.getString("BookName"),BookResult.getString("CategoryName"),BookResult.getString("Price"),BookResult.getString("GioiThieu")});
+            while (BookResult.next()) {
+                model.addRow(new Object[]{BookResult.getString("BookId"), BookResult.getString("BookName"), BookResult.getString("CategoryName"), BookResult.getString("Price"), BookResult.getString("GioiThieu")});
             }
-            
+
             sqlinstance.conn.close();
-        }catch(Exception e)
-        {
-            
+        } catch (Exception e) {
+
             e.printStackTrace();
         }
     }//GEN-LAST:event_btnSearchHActionPerformed
@@ -842,95 +776,87 @@ public class IndexU extends javax.swing.JFrame {
         // TODO add your handling code here:
         System.exit(0);
     }//GEN-LAST:event_miExitActionPerformed
-       public void showProfilePanel()
-    {
+    public void showProfilePanel() {
         //Start up config
         btnSaveP.setVisible(false);
         txtHoTenP.setEnabled(false);
         txtAddressP.setEnabled(false);
         txtSdt.setEnabled(false);
         //Start up config
-        
+
         txtHoTenP.setText(UserInstance.getFullName());
         txtAddressP.setText(UserInstance.getUserAddress());
         txtSdt.setText(UserInstance.getPhoneNumber());
     }
-       public final void loadCategory()
-       {
-           
-       }
-       public final void loadBooktable()
-       {
-           DefaultTableModel model = (DefaultTableModel) tblBooktable.getModel();
-            model.setRowCount(0);
-            ListBookDetail.clear();
-        try
-        {
+
+    public final void loadCategory() {
+
+    }
+
+    public final void loadBooktable() {
+        DefaultTableModel model = (DefaultTableModel) tblBooktable.getModel();
+        model.setRowCount(0);
+        ListBookDetail.clear();
+        try {
             Connect sqlinstance = new Connect();
             sqlinstance.Connect();
             Statement stateget = sqlinstance.conn.createStatement();
             String SelectQueryAll = "select Book.BookId,BookName,CategoryName,Price,Book.GioiThieu,Author.AuthorId, Name as TacGia,TonKho from Book,Category,BookDetail,Author where Book.CategoryId = Category.CategoryId and Book.BookId = BookDetail.BookId and BookDetail.AuthorId = Author.AuthorId and Book.TonKho > 0";
             ResultSet BookResult = stateget.executeQuery(SelectQueryAll);
-            while(BookResult.next())
-            {
-                model.addRow(new Object[]{BookResult.getString("BookName"),BookResult.getString("TacGia"),BookResult.getString("Price"),BookResult.getString("TonKho"),BookResult.getString("GioiThieu")});
+            while (BookResult.next()) {
+                model.addRow(new Object[]{BookResult.getString("BookName"), BookResult.getString("TacGia"), BookResult.getString("Price"), BookResult.getString("TonKho"), BookResult.getString("GioiThieu")});
                 BookDetail book = new BookDetail();
                 book.setBookId(BookResult.getString("BookId"));
                 book.setAuthorId(BookResult.getString("AuthorId"));
                 ListBookDetail.add(book);
-                
+
             }
             sqlinstance.conn.close();
-        }catch(Exception e)
-        {
+        } catch (Exception e) {
             e.printStackTrace();
         }
-       }
-       
-       public void loadCartPanel()
-       {
-           tblCart.removeAll();
-           if(Dic.isEmpty())
-               return;
-           DefaultTableModel model = (DefaultTableModel) tblCart.getModel();
-            model.setRowCount(0);
-           
-        try
-        {
+    }
+
+    public void loadCartPanel() {
+        tblCart.removeAll();
+        DefaultTableModel model = (DefaultTableModel) tblCart.getModel();
+        model.setRowCount(0);
+        if (Dic.isEmpty()) {
+            return;
+        }
+        try {
             Connect sqlinstance = new Connect();
             sqlinstance.Connect();
             Statement stateget = sqlinstance.conn.createStatement();
             int TongTien = 0;
-            
+
             Enumeration<BookDetail> keys = Dic.keys();
-            while(keys.hasMoreElements())
-            {
+            while (keys.hasMoreElements()) {
                 BookDetail key = keys.nextElement();
                 int value = Dic.get(key);
                 String SelectQueryAll = "Select * from Book where BookId='"
-                        +key.getBookId()
-                        +"';";
+                        + key.getBookId()
+                        + "';";
                 ResultSet BookResult = stateget.executeQuery(SelectQueryAll);
                 BookResult.next();
-                TongTien+= Integer.parseInt(BookResult.getString("Price")) * value;
-                model.addRow(new Object[]{BookResult.getString("BookId"),BookResult.getString("BookName"),BookResult.getString("Price"),value});
-        
+                TongTien += Integer.parseInt(BookResult.getString("Price")) * value;
+                model.addRow(new Object[]{BookResult.getString("BookId"), BookResult.getString("BookName"), BookResult.getString("Price"), value});
+
             }
-          
+
             //txt
             /////////////
             txtTongTien.setText(Integer.toString(TongTien));
             int ThanhTien = TongTien + Integer.parseInt(txtPhiVanChuyen.getText());
             txtThanhTien.setText(Integer.toString(ThanhTien));
-            
+
             ////
-        
             sqlinstance.conn.close();
-        }catch(Exception e)
-        {
+        } catch (Exception e) {
             e.printStackTrace();
         }
-       }
+    }
+
     /**
      * @param args the command line arguments
      */
@@ -981,11 +907,10 @@ public class IndexU extends javax.swing.JFrame {
             }
         });
     }
-    
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel CartPanel;
     private javax.swing.JPanel HomePanel;
-    private javax.swing.JPanel PaymentHistory;
     private javax.swing.JPanel ProfilePanel;
     private javax.swing.JTabbedPane TabPanel;
     private javax.swing.JButton btnApplyCoupon;
@@ -997,7 +922,6 @@ public class IndexU extends javax.swing.JFrame {
     private javax.swing.JButton btnSaveP;
     private javax.swing.JButton btnSearchH;
     private javax.swing.JButton btnThanhToan;
-    private javax.swing.JButton btnThanhToan1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel2;
@@ -1013,7 +937,6 @@ public class IndexU extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel14;
     private javax.swing.JPanel jPanel2;
-    private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JLabel lbUser;

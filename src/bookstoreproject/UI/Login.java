@@ -180,7 +180,6 @@ public class Login extends javax.swing.JFrame {
         setVisible(false);
         openNewFormButton.setVisible(true);
         /////// trỏ tới index
-           
     }//GEN-LAST:event_txtQuenMkMouseClicked
 
     private void txtNoAccountMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_txtNoAccountMouseClicked

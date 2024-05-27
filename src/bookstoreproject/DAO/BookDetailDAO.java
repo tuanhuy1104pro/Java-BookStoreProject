@@ -36,5 +36,4 @@ public class BookDetailDAO {
         }
         return false;
     }
-   
 }

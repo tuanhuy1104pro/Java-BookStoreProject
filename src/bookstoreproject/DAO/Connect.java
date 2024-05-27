@@ -11,7 +11,7 @@ import java.util.Scanner;
  * @author Acer
  */
 public class Connect {
-    String DatabaseName="DbBookStore",User="sa",Password="tumbao71661",Server="LAPTOP-753E617N\\TUANHUY1104PRO";
+    String DatabaseName="DbBookStore",User="",Password="",Server="LAPTOP-753E617N\\TUANHUY1104PRO";
     public Connection conn;
     public Connect() {
     }
