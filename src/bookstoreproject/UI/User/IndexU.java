@@ -46,6 +46,7 @@ public class IndexU extends javax.swing.JFrame {
         initComponents();
         this.UserInstance = UserInstance;
         setSize(730, 520);
+        setResizable(false);
         setLocationRelativeTo(null);
         //config hiện tên người dùng
         if(this.UserInstance.getFullName().equals(""))

@@ -10,7 +10,7 @@ package bookstoreproject.DAO;
  */
 
 //https://github.com/javaee/javamail/releases
-
+//https://mvnrepository.com/artifact/javax.activation/activation/1.1.1
 import java.util.Date;
 import java.util.Iterator;
 import java.util.Properties;

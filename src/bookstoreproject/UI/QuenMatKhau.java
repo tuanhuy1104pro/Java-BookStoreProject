@@ -21,6 +21,7 @@ public class QuenMatKhau extends javax.swing.JFrame {
         initComponents();
         setSize(730, 520);
         setLocationRelativeTo(null);
+        setResizable(false);
     }
 
     /**

@@ -22,6 +22,7 @@ public class QuanLySach extends javax.swing.JFrame {
     public QuanLySach() {
         initComponents();
         setSize(670, 600);
+        setResizable(false);
         setLocationRelativeTo(null);
         LoadCombobox();
     }

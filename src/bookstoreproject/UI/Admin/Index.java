@@ -45,6 +45,7 @@ public class Index extends javax.swing.JFrame {
         /////Start-Up Config
         setSize(730, 520);
         setLocationRelativeTo(null);
+        setResizable(false);
         this.UserInstance = UserInstance;
         btnReloadH.setVisible(false);
         /////Start-Up Config
